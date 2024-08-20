@@ -1,0 +1,16 @@
+{
+    "hyperparam": {
+        "env_name" : "BabyAI-GoToObj-v0",
+        "agent_num" : 1,
+        "max_step" : 50,
+        "realtime_rendering" : true
+    },
+
+    "policy_option":{
+        "policy_name" : "simple_llm",
+
+        "llm_model" : "meta-llama/Meta-Llama-3-70B-Instruct",
+        "free_mode" : false,
+        "pre_action_count" : 0
+    }
+}
