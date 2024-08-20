@@ -10,12 +10,13 @@ from openai import OpenAI
 from matplotlib import pyplot as plt
 
 from movie_maker import MovieMaker
+import KEY
 
 # 各種設定
 hyperparams = {
     "directory":"./log/gpt/",
     "model": "gpt-4",#"gpt-3.5-turbo",
-    "api_key": "",
+    "api_key": KEY.openai_api_key,
     "env": "CliffWalking-v0",
     "episodes": 1,
     "max_steps": 20,

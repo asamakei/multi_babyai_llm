@@ -6,6 +6,8 @@ from openai import OpenAI
 import transformers
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+import KEY
+
 
 from gym_minigrid.minigrid import (
     IDX_TO_OBJECT,
@@ -13,7 +15,7 @@ from gym_minigrid.minigrid import (
 )
 
 hyperparams = {
-    "api_key": "",
+    "api_key": KEY.openai_api_key,
 }
 
 gpt = {
