@@ -345,7 +345,7 @@ def load_llama(model_name:str):
     llama["model"] = AutoModelForCausalLM.from_pretrained(
         model_name,
         quantization_config=quantization_config,
-        cache_dir="/home/data/asama",
+        cache_dir=KEY.model_dir,
     )
     llama["pipeline"] = transformers.pipeline(
         "text-generation",

@@ -1,6 +1,7 @@
 import transformers
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+import KEY
 
 #transformers.set_seed(42) # シード固定
 
@@ -14,7 +15,7 @@ model = AutoModelForCausalLM.from_pretrained(
     model_id,
     quantization_config=quantization_config,
     #device_map="auto",
-    cache_dir="/home/data/asama",
+    cache_dir=KEY.model_dir,
 )
 
 pipeline = transformers.pipeline(
