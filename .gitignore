@@ -1,3 +1,4 @@
 KEY.py
 **/__pycache__/**
-*.pyc
+**/*.pyc
+nohup.out
