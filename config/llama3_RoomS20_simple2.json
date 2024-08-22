@@ -2,21 +2,18 @@
     "hyperparam": {
         "env_name" : "BabyAI-1RoomS20-v0",
         "agent_num" : 2,
-        "max_step" : 100,
+        "max_step" : 300,
         "realtime_rendering" : true
     },
 
     "policy_option":{
-        "policy_name" : "conversation_llm",
+        "policy_name" : "simple_llm",
 
         "llm_model" : "meta-llama/Meta-Llama-3-70B-Instruct",
         "free_mode" : false,
 
         "sight_include_agents": true,
-        "pre_action_count" : 0,
-        "is_add_pre_plan" : true,
-        
-        "conversation_pairs" : [[0, 1]],
-        "conversation_count" : 3
+        "pre_action_count" : 2,
+        "is_add_pre_plan" : false
     }
 }

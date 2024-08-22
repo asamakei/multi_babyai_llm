@@ -5,6 +5,7 @@ import policy
 from logger import Logger
 import json
 from tqdm import tqdm
+from executed_configs import configs
 
 def run(config_name:str):
     with open(f'./config/{config_name}.json') as f:
@@ -70,25 +71,6 @@ def run(config_name:str):
     movie_maker.render()
     movie_maker.make()
     # TODO!を潰す
-
-configs = [
-    #"gpt4",
-    #"debug",
-    #"llama3_BlockedUnlock_simple",
-    #"llama3_BlockedUnlock_message_twoside",
-    #"llama3_BlockedUnlock_message_conversation",
-    #"llama3_RoomS20_message_conversation",
-    "llama3_RoomS20_simple",
-    #"llama3_BlockedUnlock_message_conversation_3",
-    #"llama3_BlockedUnlock_message_oneside",
-    #"llama3_BlockedUnlock_message_twoside",
-    #"llama3_BlockedUnlock_message_oneside",
-    #"llama3_GoToObj_message_twoside",
-    #"llama3_GoToObj_message_twoside",
-    #"llama3_GoToObj_message_twoside",
-    #"llama3_GoToObj_simple",
-    #"llama3_BlockedUnlock_simple",
-]
 
 for config in configs:
     print(f"------ execute {config} ------")

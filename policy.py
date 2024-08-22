@@ -119,7 +119,8 @@ def message_llm_policy(env:gym.Env, obs, options:dict={}):
     # 行動を生成
     actions = generate_actions_llm(env, obs, messages, info, options)
     # 現在の方針を生成
-    generate_plans_llm(env, obs, messages, info, options)
+    if options["is_add_pre_plan"]:
+        generate_plans_llm(env, obs, messages, info, options)
 
     return actions, info
 
@@ -292,6 +293,8 @@ def obs_to_text(env:gym.Env, observations, agent_id:int, options:dict={}) -> lis
                     continue
                 obj_name = object_to_text(obj)
 
+                if obj_name == "":
+                    continue
                 if pos == (0, 0) and len(obj_name) > 0:
                     carrying_info = obj_name
                     continue
