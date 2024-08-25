@@ -2,7 +2,7 @@
     "hyperparam": {
         "env_name" : "BabyAI-1RoomS20-v0",
         "agent_num" : 2,
-        "max_step" : 300,
+        "max_step" : 100,
         "realtime_rendering" : true
     },
 

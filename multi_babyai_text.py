@@ -14,7 +14,7 @@ def run(config_name:str):
     hyperparam = config["hyperparam"]
     policy_option = config["policy_option"]
 
-    logger = Logger("./result/" + policy_option["policy_name"])
+    logger = Logger("./result/" + policy_option["policy_name"], "_" + config_name)
 
     env = gym.make(hyperparam["env_name"], agent_num = hyperparam["agent_num"])
     initial_grid = env.grid.encode().tolist()

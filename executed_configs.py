@@ -5,10 +5,30 @@ configs = [
     #"llama3_BlockedUnlock_message_twoside",
     #"llama3_BlockedUnlock_message_conversation",
     #"llama3_RoomS20_message_conversation",
-    "llama3_RoomS20_simple2",
+    
+    #"llama3_RoomS20_simple2",
+    #"llama3_RoomS20_message",
+    #"llama3_RoomS20_message_oneside",
+    "llama3_RoomS20_conversation",
     "llama3_RoomS20_message",
     "llama3_RoomS20_message_oneside",
+
     "llama3_RoomS20_conversation",
+    "llama3_RoomS20_message",
+    "llama3_RoomS20_message_oneside",
+
+    "llama3_RoomS20_conversation",
+    "llama3_RoomS20_message",
+    "llama3_RoomS20_message_oneside",
+
+    "llama3_RoomS20_conversation",
+    "llama3_RoomS20_message",
+    "llama3_RoomS20_message_oneside",
+
+    "llama3_RoomS20_conversation",
+    "llama3_RoomS20_message",
+    "llama3_RoomS20_message_oneside",
+    
     #"llama3_BlockedUnlock_message_conversation_3",
     #"llama3_BlockedUnlock_message_oneside",
     #"llama3_BlockedUnlock_message_twoside",

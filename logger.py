@@ -18,7 +18,7 @@ class NumpyJSONEncoder(json.JSONEncoder):
         return JSONEncoder.default(self, o)
 
 class Logger:
-    def __init__(self, path):
+    def __init__(self, path, name = ""):
         self.log = []
         self.path = path
 
@@ -28,7 +28,7 @@ class Logger:
         if self.path[-1] != '/': self.path += '/'
         dt_now = datetime.datetime.now()
         dt_str = dt_now.strftime('%Y%m%d%H%M%S')
-        self.path = self.path + dt_str + "/"
+        self.path = self.path + dt_str + name + "/"
         os.mkdir(self.path[:-1])
 
     def append(self, obj):
