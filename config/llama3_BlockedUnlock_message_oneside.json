@@ -2,7 +2,7 @@
     "hyperparam": {
         "env_name" : "BabyAI-BlockedUnlockPickup-v0",
         "agent_num" : 2,
-        "max_step" : 50,
+        "max_step" : 100,
         "realtime_rendering" : true
     },
 
@@ -14,6 +14,9 @@
 
         "sight_include_agents": true,
         "pre_action_count" : 1,
+        "is_add_pre_plan" : false,
+        "is_add_reason" : true,
+
         "message_graph" : [[1],[]]
     }
 }

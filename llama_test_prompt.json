@@ -1,0 +1,18 @@
+[
+    {"role": "system",
+        "content": "You are an excellent strategist named agent0. You are successful if achieve \"mission\" as soon as possible selecting actions each turn.\nYour mission is \"pick up the ball\". You are facing east. The followings is in your sight.\n- grey ball in 3 steps forward and 1 step left\n- agent1 facing south in 7 steps forward and 2 steps right"},
+    {"role": "agent0",
+        "content": "\"Hey agent1, can you move 5 steps forward and 2 steps left to help me get the ball?\""},
+    {"role": "agent1",
+        "content": "\"I'll move 5 steps forward, then we can reassess the situation together.\""},
+    {"role": "agent0",
+        "content": "\"Great, after you move, I'll take 3 steps forward to get closer to the ball.\""},
+    {"role": "agent1",
+        "content": "\"Sounds good, I'll move 5 steps forward now, then we can figure out the next step together.\""},
+    {"role": "agent0",
+        "content": "\"I'll take 3 steps forward now, and then I'll be 1 step right from the ball, can you guide me from there?\""},
+    {"role": "agent1",
+        "content": "\"Turn left and you'll be facing the ball, then you can pick it up!\""},
+    {"role": "system",
+        "content": "You can select an action in followings.\n- \"left\" to turn left\n- \"right\" to turn right\n- \"forward\" to go 1 step forward\n- \"pick up\" to pick up object in front\n- \"drop\" to drop the object you are carrying to front\n- \"toggle\" to open door in front.\nWhich is the best action? Output only your selection and the reason in 2 different lines."}
+]

@@ -39,3 +39,13 @@ configs = [
     #"llama3_GoToObj_simple",
     #"llama3_BlockedUnlock_simple",
 ]
+
+configs = [
+    "llama3_BlockedUnlock_message_conversation",
+    "llama3_BlockedUnlock_message_twoside",
+    "llama3_BlockedUnlock_message_oneside",
+] * 10
+
+# configs = [
+#     "llama3_RoomS20_conversation",
+#] * 20

@@ -13,8 +13,9 @@
         "free_mode" : false,
 
         "sight_include_agents": true,
-        "pre_action_count" : 0,
-        "is_add_pre_plan" : true,
+        "pre_action_count" : 1,
+        "is_add_pre_plan" : false,
+        "is_add_reason" : true,
         
         "conversation_pairs" : [[0, 1]],
         "conversation_count" : 3

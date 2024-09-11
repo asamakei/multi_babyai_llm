@@ -14,7 +14,7 @@ def run(config_name:str):
     hyperparam = config["hyperparam"]
     policy_option = config["policy_option"]
 
-    logger = Logger("./result/" + policy_option["policy_name"], "_" + config_name)
+    logger = Logger("./result_reason/" + policy_option["policy_name"], "_" + config_name)
 
     env = gym.make(hyperparam["env_name"], agent_num = hyperparam["agent_num"])
     initial_grid = env.grid.encode().tolist()
@@ -32,6 +32,7 @@ def run(config_name:str):
     step = 0
 
     policy_option["pre_action"] = []
+    policy_option["pre_reason"] = []
     policy_option["pre_plan"] = []
 
     for step in tqdm(range(hyperparam["max_step"])):
@@ -42,6 +43,7 @@ def run(config_name:str):
         
         if action[0] < 0 or action[0] > 6 : break
         policy_option["pre_action"].append(action)
+        policy_option["pre_reason"].append(response["reasons"])
         obs_pre = obs
 
         obs, reward, done, truncated, info =  env.step(action)
@@ -55,10 +57,6 @@ def run(config_name:str):
             "info":response
         })
 
-        if done:
-            print("done!")
-            break
-
         logger.clear()
         logger.append({
             "env_name" : hyperparam["env_name"],
@@ -67,6 +65,10 @@ def run(config_name:str):
         })
         logger.output("log")
         movie_maker.make()
+
+        if done:
+            print("done!")
+            break
 
     movie_maker.render()
     movie_maker.make()

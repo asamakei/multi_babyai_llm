@@ -51,6 +51,7 @@ def conversation_llm_policy(env:gym.Env, obs, options:dict={}):
         "plans":[],
         "actions":[],
         "actions_str":[],
+        "reasons":[],
     }
 
     # エージェント間のメッセージの生成
@@ -93,6 +94,7 @@ def message_llm_policy(env:gym.Env, obs, options:dict={}):
         "plans":[],
         "actions":[],
         "actions_str":[],
+        "reasons":[],
     }
 
     # エージェント間のメッセージの生成
@@ -146,9 +148,13 @@ def generate_actions_llm(env:gym.Env, obs, messages, info, options:dict={}):
             action_str, response = action_to_str(env.action_space.sample()[0]), {}
         else:
             action_str, response = llm(queries, options['llm_model'])
-            
+        
+        action_reason = action_str.splitlines()
+        action_str = action_reason[0]
+        reason_str = "\n".join(action_reason[1:])
         action = str_to_action(action_str)
         info["actions"].append(action)
+        info["reasons"].append(reason_str)
         info["actions_str"].append(action_str)
         info["responses"].append(str(response))
         info["queries"].append(queries)
@@ -175,13 +181,25 @@ def get_llm_query(env:gym.Env, obs, agent_id:int, query_type:str, messages:list[
     if "pre_action_count" in options.keys():
         count = options["pre_action_count"]
         actions = options["pre_action"]
+        reasons = options["pre_reason"]
+
+        is_add_reason = False
+        if "is_add_reason" in options.keys():
+            is_add_reason = options["is_add_reason"]
+
+        if is_add_reason:
+            count = 1
+
         count = min(count, len(actions))
+
         if count > 0:
             actions = actions[-count:]
             actions_str = [action_to_str(actions[i][agent_id]) for i in range(len(actions))]
             joined = ", ".join(actions_str)
             if count == 1:
-                past_prompt = ('system', f'One step ago you selected "{joined}".')
+                reason = reasons[-1][agent_id]
+                reason_prompt = f' because of "{reason}"' if is_add_reason else ''
+                past_prompt = ('system', f'One step ago you selected "{joined}"{reason_prompt}.')
             else:
                 past_prompt = ('system', f'Your past actions are, {joined}, in order from the past.')
             result.append(past_prompt)
@@ -197,7 +215,7 @@ def get_llm_query(env:gym.Env, obs, agent_id:int, query_type:str, messages:list[
     
     # 指示
     if query_type == "action":
-        instruction = 'Which is the best action? Output only result.'
+        instruction = 'Which is the best action? Output only your selection and the reason in 2 different lines.' # Output only result.
     elif query_type == "message":
         target = options["message_target"]
         instruction = f'You are in a cooperative relationship with {target}. To achieve mission efficiently, Output only message to {target} in one or two sentence.'
