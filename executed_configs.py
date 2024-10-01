@@ -47,5 +47,9 @@ configs = [
 ] * 10
 
 # configs = [
-#     "llama3_RoomS20_conversation",
-#] * 20
+#      "llama3_RoomS20_conversation",
+# ] * 20
+
+#configs = [
+#    "flan_RoomS8_simple"
+#]

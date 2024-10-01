@@ -14,5 +14,5 @@
     {"role": "agent1",
         "content": "\"Turn left and you'll be facing the ball, then you can pick it up!\""},
     {"role": "system",
-        "content": "You can select an action in followings.\n- \"left\" to turn left\n- \"right\" to turn right\n- \"forward\" to go 1 step forward\n- \"pick up\" to pick up object in front\n- \"drop\" to drop the object you are carrying to front\n- \"toggle\" to open door in front.\nWhich is the best action? Output only your selection and the reason in 2 different lines."}
+        "content": "You can select an action in followings.\n- \"left\" to turn left\n- \"right\" to turn right\n- \"forward\" to go 1 step forward\n- \"pick up\" to pick up object in front\n- \"drop\" to drop the object you are carrying to front\n- \"toggle\" to open door in front.\nWhich is the best action? Output only your selection."}
 ]

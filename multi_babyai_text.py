@@ -6,15 +6,18 @@ from logger import Logger
 import json
 from tqdm import tqdm
 from executed_configs import configs
+import random
 
 def run(config_name:str):
+    print(f"------ execute {config_name} ------")
+
     with open(f'./config/{config_name}.json') as f:
         config = json.load(f)
 
     hyperparam = config["hyperparam"]
     policy_option = config["policy_option"]
 
-    logger = Logger("./result_reason/" + policy_option["policy_name"], "_" + config_name)
+    logger = Logger("./result_00/" + policy_option["policy_name"], "_" + config_name)
 
     env = gym.make(hyperparam["env_name"], agent_num = hyperparam["agent_num"])
     initial_grid = env.grid.encode().tolist()
@@ -35,6 +38,8 @@ def run(config_name:str):
     policy_option["pre_reason"] = []
     policy_option["pre_plan"] = []
 
+    policy.init(policy_option)
+
     for step in tqdm(range(hyperparam["max_step"])):
         movie_maker.render()
         if hyperparam["realtime_rendering"] : rendering(env)
@@ -47,6 +52,9 @@ def run(config_name:str):
         obs_pre = obs
 
         obs, reward, done, truncated, info =  env.step(action)
+        reward = 1 if done else -1
+        reward = random.randint(-100,100) / 100
+        policy.train(reward)
 
         log_steps.append({
             "step":step,
@@ -75,5 +83,4 @@ def run(config_name:str):
     # TODO!を潰す
 
 for config in configs:
-    print(f"------ execute {config} ------")
     run(config)

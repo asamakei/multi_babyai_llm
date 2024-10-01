@@ -1,0 +1,20 @@
+{
+    "hyperparam": {
+        "env_name" : "BabyAI-1RoomS8-v0",
+        "agent_num" : 2,
+        "max_step" : 100,
+        "realtime_rendering" : true
+    },
+
+    "policy_option":{
+        "policy_name" : "simple_llm",
+
+        "llm_model" : "google/flan-t5-large",
+        "free_mode" : false,
+
+        "sight_include_agents": true,
+        "pre_action_count" : 2,
+        "is_add_pre_plan" : false,
+        "is_add_reason" : false
+    }
+}

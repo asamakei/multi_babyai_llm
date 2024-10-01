@@ -1,7 +1,13 @@
+import os
 import re
 import gym
 
 from openai import OpenAI
+
+from flan_rl_agent import FlanAgent
+from trl import AutoModelForSeq2SeqLMWithValueHead
+from transformers import T5Tokenizer
+from peft import LoraConfig
 
 import transformers
 import torch
@@ -28,6 +34,17 @@ llama = {
     "pipeline": None,
     "terminators": None,
 }
+
+flan = {
+    "agent": None
+}
+
+def init(options):
+    model_name = options["llm_model"]
+    if "llama" in model_name:
+        load_llama(model_name)
+    elif "flan" in model_name:
+        load_flan(model_name)
 
 def get_action(env:gym.Env, obs, options:dict={}) -> tuple[list[int], dict]:
     policy = policies[options["policy_name"]]
@@ -164,7 +181,7 @@ def get_llm_query(env:gym.Env, obs, agent_id:int, query_type:str, messages:list[
     result = []
 
     # 設定の説明
-    system_prompt = ("system", f'You are an excellent strategist named agent{agent_id}. You are successful if achieve "mission" as soon as possible selecting actions each turn.')
+    system_prompt = ("system", f'You are an excellent strategist named agent{agent_id}. You are successful if achieve "mission" as soon as possible.')
     result.append(system_prompt)
 
     # 状況の説明
@@ -210,18 +227,21 @@ def get_llm_query(env:gym.Env, obs, agent_id:int, query_type:str, messages:list[
         result.append(("system", f"One step ago you say, {plan}"))
 
     # 行動の説明
-    action_prompt = ("system", 'You can select an action in followings.\n- "left" to turn left\n- "right" to turn right\n- "forward" to go 1 step forward\n- "pick up" to pick up object in front\n- "drop" to drop the object you are carrying to front\n- "toggle" to open door in front.')
+    action_prompt = ("system", 'You can select an action in followings.\n- "left" to turn left\n- "right" to turn right\n- "forward" to go 1 step forward\n- "pick up" to pick up object in front\n- "drop" to drop the object you are carrying to front\n- "toggle" to open door in front')
     result.append(action_prompt)
     
     # 指示
     if query_type == "action":
-        instruction = 'Which is the best action? Output only your selection and the reason in 2 different lines.' # Output only result.
+        if is_add_reason:
+            instruction = 'Which is the best action? Output only your selection and the reason in 2 different lines.'
+        else:
+            instruction = 'Which is the best action? Output only action name.'
     elif query_type == "message":
         target = options["message_target"]
-        instruction = f'You are in a cooperative relationship with {target}. To achieve mission efficiently, Output only message to {target} in one or two sentence.'
+        instruction = f'You are in a cooperative relationship with {target}. To achieve mission, Output only message to {target} in one or two sentence.'
     elif query_type == "conversation":
         target = options["message_target"]
-        instruction = f'You are in a cooperative relationship with {target} and discussing. To achieve mission efficiently, output only reply message to them in one or two sentence.'
+        instruction = f'You are in a cooperative relationship with {target} and discussing to decide next action. To achieve mission, output only reply message to them in one or two sentence.'
     elif query_type == "plan":
         instruction = f'Output your current status and future plan in one or two sentences.'
 
@@ -381,7 +401,6 @@ def load_llama(model_name:str):
     ]
 
 def llama_create(model:str, messages:list):
-    load_llama(model)
     pipeline = llama["pipeline"]
     terminators = llama["terminators"]
     prompt = pipeline.tokenizer.apply_chat_template(
@@ -401,6 +420,67 @@ def llama_create(model:str, messages:list):
     text = response[0]["generated_text"][len(prompt):]
     return text, response
 
+def load_flan(model_name):
+    hyperparams = {
+        "model_name": model_name,
+        "env": "Blackjack-v1",
+        "lora/r": 16,
+        "lora/lora_alpha": 32,
+        "lora/lora_dropout": 0.05,
+        "lora/bias": "none",
+        "lora/task_type": "CAUSAL_LM",
+        "load_in_8bit": True,
+        "batch_size": 8,
+        "seed": 42069,
+        "episodes": 5000,
+        "generate/max_new_tokens": 32,
+        "generate/do_sample": True,
+        "generate/top_p": 0.6,
+        "generate/top_k": 0,
+        "generate/temperature": 0.9,
+    }
+    device = "cuda"
+    HF_TOKEN = os.environ.get("HF_TOKEN")
+
+    lora_config = LoraConfig(
+        **{
+            key.split("/")[-1]: value
+            for key, value in hyperparams.items()
+            if key.startswith("lora/")
+        }
+    )
+    model = AutoModelForSeq2SeqLMWithValueHead.from_pretrained(
+        pretrained_model_name_or_path=hyperparams["model_name"],
+        peft_config=lora_config,
+        load_in_8bit=hyperparams["load_in_8bit"],
+        token=HF_TOKEN,
+    ).to(device)
+    tokenizer = T5Tokenizer.from_pretrained(hyperparams["model_name"], device_map=device, token=HF_TOKEN)
+    tokenizer.add_special_tokens({"pad_token": "<pad>"})
+    model.pretrained_model.resize_token_embeddings(len(tokenizer))
+
+    flan["agent"] = FlanAgent(
+        model,
+        tokenizer,
+        device,
+        {
+            key: value
+            for key, value in hyperparams.items()
+            if key.startswith("generate/")
+        },
+        {
+            "batch_size": hyperparams["batch_size"],
+            "mini_batch_size": hyperparams["batch_size"],
+        },
+    )
+def flan_create(messages):
+    return flan["agent"].act(messages), {}
+
+def train(reward):
+    if flan["agent"] == None: return
+    flan["agent"].assign_reward(reward)
+    flan["agent"].terminate_episode()
+
 def llm(messages:list, model_name:str):
     messages_format = [{"role": message[0], "content": message[1]} for message in messages]
     
@@ -415,6 +495,10 @@ def llm(messages:list, model_name:str):
             messages = messages_format
         )
         text = response.choices[0].message.content
+    elif "flan" in model_name:
+        text, response = flan_create(
+            messages = messages_format
+        )
     return text, response
 
 def str_to_action(action_str:str):

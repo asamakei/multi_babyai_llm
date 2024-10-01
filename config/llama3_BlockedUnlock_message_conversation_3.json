@@ -9,12 +9,13 @@
     "policy_option":{
         "policy_name" : "conversation_llm",
 
-        "llm_model" : "meta-llama/Meta-Llama-3-70B-Instruct",
+        "llm_model" : "meta-llama/Meta-Llama-3.1-70B-Instruct",
         "free_mode" : false,
 
         "sight_include_agents": true,
-        "pre_action_count" : 2,
-        
+        "pre_action_count" : 1,
+        "is_add_reason" : false,
+
         "conversation_pairs" : [[0, 1, 2]],
         "conversation_count" : 3
     }

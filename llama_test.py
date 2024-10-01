@@ -48,6 +48,8 @@ while(True):
         pipeline.tokenizer.convert_tokens_to_ids("<|eot_id|>")
     ]
 
+    print("-----------output-------------")
+
     outputs = pipeline(
         prompt,
         max_new_tokens=64,
@@ -56,6 +58,30 @@ while(True):
         do_sample=True,
         temperature=0.6,
         top_p=0.9,
+        #return_dict_in_generate=True,
+        #output_logits=True,
     )
-    print("-----------output-------------")
-    print(outputs[0]["generated_text"][len(prompt):])
+    print(outputs)
+
+    continue
+    inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+    with torch.no_grad():
+        output = model.generate(
+            do_sample=True,
+            temperature=0.7,
+            top_p=0.9,
+            input_ids=inputs["input_ids"].to("cuda"),
+            max_length= 512,
+            eos_token_id=tokenizer.convert_tokens_to_ids("<|eot_id|>"),
+            return_dict_in_generate=True,
+            output_logits=True,
+        )
+        output_text = tokenizer.batch_decode(output.sequences, skip_special_tokens = False)[0]
+        logits = output.logits
+        print(output.sequences)
+        print(output_text)
+        print(logits)
+        print(len(logits))
+        print(logits[0][0])
+        print(logits[0][0].shape)
+    #print(outputs[0]["generated_text"][len(prompt):])

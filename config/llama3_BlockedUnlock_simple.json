@@ -9,7 +9,7 @@
     "policy_option":{
         "policy_name" : "simple_llm",
 
-        "llm_model" : "meta-llama/Meta-Llama-3-70B-Instruct",
+        "llm_model" : "meta-llama/Meta-Llama-3.1-70B-Instruct",
         "free_mode" : false,
 
         "sight_include_agents": true,
