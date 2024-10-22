@@ -3,3 +3,4 @@ KEY.py
 **/*.pyc
 nohup.out
 nohup2.out
+result_dqn
