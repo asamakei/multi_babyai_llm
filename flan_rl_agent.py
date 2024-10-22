@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict
 
+import random
+
+import numpy as np
 import gymnasium as gym
 import torch
 from trl import (
@@ -58,39 +61,50 @@ class Agent(ABC):
 
     def llm(self, message:str) -> str:
         inputs = self.tokenizer(message, return_tensors="pt").to(self.device)
-        generate_ids = self.model.generate(
+        output = self.model.generate(
             inputs=inputs.input_ids,
+            return_dict_in_generate=True,
+            output_logits=True,
             **{
                 key.split("/")[-1]: value
                 for key, value in self.generate_config_dict.items()
             }
         )
+        generate_ids = output.sequences
+        logits = output.logits
         outputs = self.tokenizer.batch_decode(
             generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
         )
         response = outputs[0].split("[/INST]")[-1].strip()
 
-        return response
+        return response, logits
 
     def act(self, observation):
-        message = self.tokenizer.apply_chat_template(
-            observation, tokenize=False, add_generation_prompt=True
-        )
+        # message = self.tokenizer.apply_chat_template(
+        #     observation, tokenize=False, add_generation_prompt=True
+        # )
         #message = self.format_observation(observation)
+        actions_str = ["up", "right", "down", "left"]
+        message = observation[0]["content"]
         self.inputs += [message]
-
-        response = self.llm(message)
+        response, logits = self.llm(message)
+        logits_np = logits[0][0].to('cpu').detach().numpy().copy()
+        probs = np.exp(logits_np)
+        ids = self.tokenizer.convert_tokens_to_ids(actions_str)
+        probs = np.array([probs[id] for id in ids], dtype=np.float32)
+        probs = (probs / np.sum(probs)).tolist()
+        action = random.choices(range(len(probs)), probs)[0]
+        response = actions_str[action]
         # try:
         #     action = self.extract_action(response)
         # except Exception as e:
         #     return None
 
         self.outputs += [response]
-        return response
+        return action
 
     def assign_reward(self, reward):
         self.rewards += [reward] * (len(self.inputs) - len(self.rewards))
-        print(self.rewards)
 
     def format_episode_for_ppo(self, query_list, response_list ,reward_list):
         

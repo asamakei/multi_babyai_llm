@@ -1,6 +1,6 @@
 {
     "hyperparam": {
-        "env_name" : "BabyAI-1RoomS20-v0",
+        "env_name" : "BabyAI-1RoomS8-v0",
         "agent_num" : 1,
         "max_step" : 100,
         "realtime_rendering" : true
@@ -9,7 +9,7 @@
     "policy_option":{
         "policy_name" : "simple_llm",
 
-        "llm_model" : "meta-llama/Meta-Llama-3-70B-Instruct",
+        "llm_model" : "meta-llama/Meta-Llama-3-8B-Instruct",
         "free_mode" : false,
 
         "sight_include_agents": true,

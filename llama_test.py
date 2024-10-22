@@ -26,6 +26,13 @@ pipeline = transformers.pipeline(
     model_kwargs={"torch_dtype": torch.bfloat16},
 )
 
+ids=[]
+ids.append(pipeline.tokenizer.convert_tokens_to_ids("up"))
+ids.append(pipeline.tokenizer.convert_tokens_to_ids("right"))
+ids.append(pipeline.tokenizer.convert_tokens_to_ids("down"))
+ids.append(pipeline.tokenizer.convert_tokens_to_ids("left"))
+print(ids)
+
 while(True):
     print("-----------input-------------")
     q = input()
@@ -58,8 +65,6 @@ while(True):
         do_sample=True,
         temperature=0.6,
         top_p=0.9,
-        #return_dict_in_generate=True,
-        #output_logits=True,
     )
     print(outputs)
 
@@ -68,7 +73,7 @@ while(True):
     with torch.no_grad():
         output = model.generate(
             do_sample=True,
-            temperature=0.7,
+            temperature=0.6,
             top_p=0.9,
             input_ids=inputs["input_ids"].to("cuda"),
             max_length= 512,

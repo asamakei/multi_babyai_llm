@@ -14,6 +14,10 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 import KEY
 
+from dqn_agent import DQNAgent
+
+from reflexion.env_history import EnvironmentHistory
+
 
 from gym_minigrid.minigrid import (
     IDX_TO_OBJECT,
@@ -33,18 +37,58 @@ llama = {
     "tokenizer": None,
     "pipeline": None,
     "terminators": None,
+    "agents": None
 }
 
 flan = {
     "agent": None
 }
 
-def init(options):
+reflexion = {
+    "history": None,
+    "memory": []
+}
+
+def init(params, options):
     model_name = options["llm_model"]
+
+    if "CliffWalking" in params["env_name"]:
+        base_prompt = "Interact with an grid world environment to solve a task."
+        reflexion["history"] = EnvironmentHistory(
+            base_prompt,
+            "Reach the goal as soon as possible without falling off the cliff.",
+            reflexion["memory"],
+            []
+        )
+
     if "llama" in model_name:
         load_llama(model_name)
+        if llama["agents"] == None:
+            llama["agents"] = [
+                #DQNAgent(128256, 6, "cuda") for _ in range(params["agent_num"])
+                DQNAgent(4+48, 4, "cuda") for _ in range(params["agent_num"])
+            ]
     elif "flan" in model_name:
         load_flan(model_name)
+
+def run_reflexion(is_success: bool, reason: str, options):
+    history = reflexion["history"]
+    result_str = "SUCCESS" if is_success else f"FALIED"
+    history.add("result", result_str)
+    if is_success: return reflexion["memory"]
+
+    query = f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Give your plan:"
+    prompt = [("system", str(history) + "\n" + query)]
+    text, response = llm(prompt, options["llm_model"])
+    reflexion["memory"].append(text)
+    if len(reflexion["memory"]) > 3:
+        reflexion["memory"] = reflexion["memory"][-3:]
+    return reflexion["memory"]
+
+def save_model(path:str, options):
+    if llama["agents"] is None: return
+    for i in range(len(llama["agents"])):
+        llama["agents"][i].save_model(path, f"agent{i}")
 
 def get_action(env:gym.Env, obs, options:dict={}) -> tuple[list[int], dict]:
     policy = policies[options["policy_name"]]
@@ -103,7 +147,81 @@ def conversation_llm_policy(env:gym.Env, obs, options:dict={}):
 
     return actions, info
 
-def message_llm_policy(env:gym.Env, obs, options:dict={}):
+def message_llm_policy(env:gym.Env, observation, options:dict={}):
+    info = {
+        "queries":[],
+        "responses":[],
+        "actions":[],
+        "actions_str":[],
+        "reasons":[]
+    }
+    obs_text = obs_to_text_cliff(observation)
+    reflexion["history"].add("observation", obs_text)
+    query = str(reflexion["history"]) + " What is the best action to achieve your task in moving 'north', 'east', 'south' or 'west'? Output only result.\n" + ">"
+    prompt = [("system", query)]
+    text, response = llm(prompt, options["llm_model"])
+    #print(query)
+    print(text)
+    actions = [str_to_action_cliff(text)]
+
+    reflexion["history"].add("action", text)
+    info["queries"].append(query)
+    info["actions"].append(actions)
+    info["actions_str"].append(text)
+    info["responses"].append(response)
+    return actions, info
+
+def message_llm_policy_cliff_agent(env:gym.Env, observation, options:dict={}):
+    info = {
+        "queries":[],
+        "responses":[],
+        "sended_messages":[],
+        "plans":[],
+        "actions":[],
+        "actions_str":[],
+        "reasons":[],
+    }
+
+    # 行動を生成
+    action_str_list = ["up", "right", "down", "left"]
+    obs_str = obs_to_text_cliff(observation)
+    query = [{"role":"system", "content":f'You are excellent strategist. You must reach goal moving on grid and avoiding cliff. {obs_str} You are select next action in "up", "down", "left", "right". Which action is the best to reach goal? Output only your selection.'}]
+    #actions = [generate_action_from_llama_agent_cliff(query, observation)]
+    actions = [flan["agent"].act(query)]
+    info["actions"].append(actions)
+    info["actions_str"].append([action_str_list[actions[0]]])
+    return actions, info
+
+def obs_to_text_cliff(obs:int) -> str:
+    object_name = ["Wall", "Nothing", "Cliff", "Goal"]
+    field = [
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,1,2,2,2,2,2,2,2,2,2,2,3,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ]
+    r = obs // 12 + 1
+    c = obs % 12 + 1
+    # up = f"{object_name[field[r-1][c]]} is in a step to your north."
+    # down = f"{object_name[field[r+1][c]]} is in a step to your south."
+    # right = f"{object_name[field[r][c+1]]} is in a step to your east."
+    # left = f"{object_name[field[r][c-1]]} is in a step to your west."
+    up = f"Your north is {object_name[field[r-1][c]]}."
+    down = f"Your south is {object_name[field[r+1][c]]}."
+    right = f"Your east is {object_name[field[r][c+1]]}."
+    left = f"Your west is {object_name[field[r][c-1]]}."
+    if 12 - c == 0:
+        goal = f"Goal is in {4 - r} steps to your south."
+    elif 4 - r == 0:
+        goal = f"Goal is in {12 - c} steps to your east."
+    else:
+        goal = f"Goal is in {12 - c} steps to your east and {4 - r} steps to your south."
+
+    return f"{up} {down} {right} {left} {goal}"
+
+def message_llm_policy_baby(env:gym.Env, obs, options:dict={}):
     info = {
         "queries":[],
         "responses":[],
@@ -161,15 +279,30 @@ def generate_plans_llm(env:gym.Env, obs, messages, info, options:dict={}):
 def generate_actions_llm(env:gym.Env, obs, messages, info, options:dict={}):
     for agent_id in range(env.agent_num):
         queries = get_llm_query(env, obs, agent_id, "action", messages[agent_id], options)
-        if options["free_mode"]:
-            action_str, response = action_to_str(env.action_space.sample()[0]), {}
-        else:
-            action_str, response = llm(queries, options['llm_model'])
         
-        action_reason = action_str.splitlines()
-        action_str = action_reason[0]
-        reason_str = "\n".join(action_reason[1:])
-        action = str_to_action(action_str)
+        if "llama" in options["llm_model"]:
+            action = generate_action_from_llama_agent(queries, agent_id)
+            reason_str = ""
+            action_str = action_to_str(action)
+            response = ""
+        else:
+            if options["free_mode"]:
+                action_str, response = action_to_str(env.action_space.sample()[0]), {}
+            else:
+                action_str, response = llm(queries, options['llm_model'])
+            
+            is_add_reason = False
+            if "is_add_reason" in options.keys():
+                is_add_reason = options["is_add_reason"]
+            
+            if is_add_reason:
+                action_reason = action_str.splitlines()
+                action_str = action_reason[0]
+                reason_str = "\n".join(action_reason[1:])
+            else:
+                reason_str = ""    
+            action = str_to_action(action_str)
+
         info["actions"].append(action)
         info["reasons"].append(reason_str)
         info["actions_str"].append(action_str)
@@ -262,7 +395,6 @@ def get_llm_query(env:gym.Env, obs, agent_id:int, query_type:str, messages:list[
             result_arrange.append(message)
 
     return result_arrange
-
 
 def obs_to_text(env:gym.Env, observations, agent_id:int, options:dict={}) -> list[str]:
     def direction_to_str(direction:int):
@@ -388,6 +520,7 @@ def load_llama(model_name:str):
         model_name,
         quantization_config=quantization_config,
         cache_dir=KEY.model_dir,
+        low_cpu_mem_usage=True
     )
     llama["pipeline"] = transformers.pipeline(
         "text-generation",
@@ -400,7 +533,7 @@ def load_llama(model_name:str):
         llama["pipeline"].tokenizer.convert_tokens_to_ids("<|eot_id|>")
     ]
 
-def llama_create(model:str, messages:list):
+def llama_create(messages:list):
     pipeline = llama["pipeline"]
     terminators = llama["terminators"]
     prompt = pipeline.tokenizer.apply_chat_template(
@@ -419,6 +552,65 @@ def llama_create(model:str, messages:list):
     )
     text = response[0]["generated_text"][len(prompt):]
     return text, response
+
+def generate_action_from_llama_agent_cliff(messages:list, obs:int):
+    messages_format = [{"role": message[0], "content": message[1]} for message in messages]
+    pipeline = llama["pipeline"]
+    tokenizer = llama["tokenizer"]
+    prompt = pipeline.tokenizer.apply_chat_template(
+        messages_format,
+        tokenize=False,
+        add_generation_prompt=True
+    )
+    inputs = tokenizer(prompt, return_tensors="pt")["input_ids"].to("cuda")
+    eos_token_id = tokenizer.eos_token_id
+
+    output = llama["model"].generate(
+        input_ids=inputs,
+        do_sample=True,
+        temperature=0.6,
+        top_p=0.9,
+        max_new_tokens=64,
+        eos_token_id=eos_token_id,
+        pad_token_id=eos_token_id,
+        return_dict_in_generate=True,
+        output_logits=True,
+    )
+    logits = output.logits[0][0].tolist()
+    logits = [logits[455], logits[1315], logits[2996], logits[2414]]
+    observation = [0.0] * 48
+    observation[obs] = 1.0
+    logits += observation
+    action = llama["agents"][0].get_action(logits)
+    return action
+
+def generate_action_from_llama_agent(messages:list, agent_id):
+    messages_format = [{"role": message[0], "content": message[1]} for message in messages]
+    pipeline = llama["pipeline"]
+    tokenizer = llama["tokenizer"]
+    prompt = pipeline.tokenizer.apply_chat_template(
+        messages_format,
+        tokenize=False,
+        add_generation_prompt=True
+    )
+    inputs = tokenizer(prompt, return_tensors="pt")["input_ids"].to("cuda")
+    eos_token_id = tokenizer.eos_token_id
+
+    output = llama["model"].generate(
+        input_ids=inputs,
+        do_sample=True,
+        temperature=0.6,
+        top_p=0.9,
+        max_new_tokens=64,
+        eos_token_id=eos_token_id,
+        pad_token_id=eos_token_id,
+        return_dict_in_generate=True,
+        output_logits=True,
+    )
+    logits = output.logits[0][0].tolist()
+
+    action = llama["agents"][agent_id].get_action(logits)
+    return action
 
 def load_flan(model_name):
     hyperparams = {
@@ -477,17 +669,19 @@ def flan_create(messages):
     return flan["agent"].act(messages), {}
 
 def train(reward):
-    if flan["agent"] == None: return
-    flan["agent"].assign_reward(reward)
-    flan["agent"].terminate_episode()
+    if flan["agent"] is not None:
+        flan["agent"].assign_reward(reward)
+        flan["agent"].terminate_episode()
+    if llama["agents"] is not None:
+        for i in range(len(llama["agents"])):
+            llama["agents"][i].train_brief(reward[i])
 
 def llm(messages:list, model_name:str):
     messages_format = [{"role": message[0], "content": message[1]} for message in messages]
     
     if "llama" in model_name:
         text, response = llama_create(
-            model = model_name,
-            messages = messages_format
+            messages = messages_format,
         )
     elif "gpt" in model_name:
         response = gpt["client"].chat.completions.create(
@@ -510,6 +704,18 @@ def str_to_action(action_str:str):
         "drop":4,
         "toggle":5,
         "done":6
+    }
+    for action, value in action_to_idx.items():
+        match = re.compile(action).search(action_str)
+        if match: return value
+    return 0
+
+def str_to_action_cliff(action_str:str):
+    action_to_idx = {
+        "north":0,
+        "east":1,
+        "south":2,
+        "west":3,
     }
     for action, value in action_to_idx.items():
         match = re.compile(action).search(action_str)

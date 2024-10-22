@@ -17,10 +17,10 @@ def run(config_name:str):
     hyperparam = config["hyperparam"]
     policy_option = config["policy_option"]
 
-    logger = Logger("./result_dqn/" + policy_option["policy_name"], "_" + config_name)
+    logger = Logger("./result_reflexion2/" + policy_option["policy_name"], "_" + config_name)
 
-    env = gym.make(hyperparam["env_name"], agent_num = hyperparam["agent_num"])
-    initial_grid = env.grid.encode().tolist()
+    env = gym.make(hyperparam["env_name"], render_mode="rgb_array")
+    env.agent_num = 1
     movie_maker = MovieMaker(env, logger.path)
     movie_maker.reset()
     obs, _ = env.reset()
@@ -51,10 +51,20 @@ def run(config_name:str):
         policy_option["pre_reason"].append(response["reasons"])
         obs_pre = obs
 
-        obs, reward, done, truncated, info =  env.step(action)
-        reward = [1 if done else -1 for _ in range(hyperparam["agent_num"])]
-        #reward = [random.randint(-100,100) / 100 for i in range(hyperparam["agent_num"])]
-        policy.train(reward)
+        obs, reward, done, truncated, info =  env.step(action[0])
+
+        reason = "time up"
+        is_success = False
+
+        if reward < -10:
+            reason = "falling to the cliff"
+            done = True
+        elif done:
+            is_success = True
+
+        #if reward > -10 and obs_pre == obs:
+        #    reward = -10
+        #policy.train([reward])
 
         log_steps.append({
             "step":step,
@@ -65,20 +75,25 @@ def run(config_name:str):
             "info":response
         })
 
+        memory = []
+        if done or (step == hyperparam["max_step"]-1):
+            memory = policy.run_reflexion(is_success, reason, policy_option)
+            if len(memory) > 0:
+                print(memory[-1])
+
         logger.clear()
         logger.append({
             "env_name" : hyperparam["env_name"],
-            "grid" : initial_grid,
-            "steps" : log_steps
+            "steps" : log_steps,
+            "memory" : memory
         })
         logger.output("log")
         movie_maker.make()
 
         if done:
-            print("done!")
             break
         
-    policy.save_model(logger.path, policy_option)
+    #policy.save_model(logger.path, policy_option)
 
     movie_maker.render()
     movie_maker.make()

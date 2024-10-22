@@ -46,9 +46,17 @@ configs = [
     "llama3_BlockedUnlock_message_oneside",
 ] * 10
 
-# configs = [
-#      "llama3_RoomS20_conversation",
-# ] * 20
+configs = [
+     "llama3_RoomS20_conversation",
+] * 100
+
+configs = [
+     "llama3_RoomS8_simple",
+] * 100
+
+configs = [
+     "cliff_test",
+] * 100
 
 #configs = [
 #    "flan_RoomS8_simple"
