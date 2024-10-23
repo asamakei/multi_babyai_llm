@@ -12,7 +12,7 @@ from transformers import (
 )
 
 import torch
-import KEY
+import ENV
 
 # 初期化とテキスト生成の機能を持ったLLM
 class LLM:
@@ -43,7 +43,7 @@ class Llama(LLM):
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
             quantization_config=quantization_config,
-            cache_dir=KEY.model_dir,
+            cache_dir=ENV.model_dir,
             low_cpu_mem_usage=True
         )
 
@@ -80,7 +80,7 @@ class Llama(LLM):
 class Gpt(LLM):
     def __init__(self, model_name):
         super.__init__(model_name)
-        self.client = OpenAI(api_key = KEY.openai_api_key)
+        self.client = OpenAI(api_key = ENV.openai_api_key)
     
     def generate_text(self, prompt):
         message = self.prompt_format(prompt)
