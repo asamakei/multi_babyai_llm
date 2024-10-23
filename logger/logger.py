@@ -23,7 +23,7 @@ class Logger:
         self.path = path
 
         if not os.path.exists(self.path):
-            os.mkdir(self.path)
+            os.makedirs(self.path)
 
         if self.path[-1] != '/': self.path += '/'
         dt_now = datetime.datetime.now()

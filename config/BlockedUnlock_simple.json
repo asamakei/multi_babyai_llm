@@ -1,0 +1,19 @@
+{
+    "hyperparam": {
+        "env_name" : "BabyAI-BlockedUnlockPickup-v0",
+        "agent_num" : 1,
+        "max_step" : 50,
+        "realtime_rendering" : true,
+        "reflexion_memory_size" : 3,
+        "trial_count" : 100,
+        "env_fixed_seed" : 0 
+    },
+
+    "policy_option":{
+        "policy_name" : "simple_llm",
+
+        "llm_model" : "meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "free_mode" : false,
+        "sight_include_agents": true
+    }
+}

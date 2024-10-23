@@ -14,10 +14,10 @@ class MovieMaker:
         #rgb = self.env.render(mode='rgb_array')
         rgb = self.env.render()
 
-        # img = Image.fromarray(np.array(rgb).astype(np.uint8))
+        img = Image.fromarray(np.array(rgb).astype(np.uint8))
         # if 'messages' in option:
         #     img = visualizer.add_message_to_image(img, option['messages'])
-        # rgb = np.array(img)
+        rgb = np.array(img)
 
         self.rgb_data.append(rgb)
     

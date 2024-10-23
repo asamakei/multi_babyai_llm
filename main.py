@@ -27,7 +27,7 @@ def load_config(config_name:str):
 # Reflexionを指定Trial分実行する
 def run(config:dict):
     # ログの設定
-    logger = Logger("./result_reflexion/" + config["policy_name"], "_" + config["config_name"])
+    logger = Logger("./result_reflexion/" + config["env_name"] + "/" + config["policy_name"], "_" + config["config_name"])
     logger.output("config", config)
 
     # リアルタイムに環境を描画する処理
@@ -39,16 +39,19 @@ def run(config:dict):
     # Reflexionに関する色々を初期化
     reflexion = Reflexion(config)
 
+    seed = None
+    if "env_fixed_seed" in config.keys():
+        seed = config["env_fixed_seed"]
+
     # 指定された回数分エピソードを実行する
     for trial in tqdm(range(config["trial_count"])):
         reflexion.reset(config)
 
         # 環境やログなどの初期化
-        env = gym.make(config["env_name"], render_mode="rgb_array")
-        env.agent_num = config["agent_num"]
+        env = env_utils.make(config)
+        obs, _ = env.reset(seed=seed)
+
         movie_maker = MovieMaker(env, logger.path)
-        movie_maker.reset()
-        obs, _ = env.reset()
         log_steps = []
 
         is_success = False
@@ -65,8 +68,8 @@ def run(config:dict):
             reflexion.add_histories("observation", obs_texts)
 
             # 行動を行う
-            action, response = policy.get_action(env, reflexion, config)
-            obs, reward, done, truncated, info =  env.step(action[0])
+            actions, response = policy.get_action(env, reflexion, config)
+            obs, reward, done, truncated, info =  env.step(actions)
 
             # 終了状態と状態の評価を取得
             done, is_success, reason = env_utils.get_achievement_status(reward, done, step, config)
@@ -96,7 +99,7 @@ def run(config:dict):
             if done: break
 
         # reflexionを実行
-        print("run reflexion...")
+        print("\n[info] running reflexion...")
         memory = reflexion.run(is_success, reason, config)
 
         # ログなどの処理

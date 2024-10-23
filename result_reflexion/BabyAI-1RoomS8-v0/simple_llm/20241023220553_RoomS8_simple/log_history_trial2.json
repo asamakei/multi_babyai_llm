@@ -1,0 +1,15 @@
+[
+ [
+  "Interact with an grid world environment to solve a task.",
+  "Here is the task:",
+  "Achieve the \"mission\" as soon as possible.",
+  "Your mission is \"pick up the ball\". You are facing east. Wall is in 5 steps forward and 2 steps left. Wall is in 5 steps forward and 1 step left. Wall is in 5 steps forward. Wall is in 5 steps forward and 1 step right. Wall is in 5 steps forward and 2 steps right. Wall is in 5 steps forward and 3 steps right. Wall is in 4 steps forward and 2 steps left. Wall is in 3 steps forward and 2 steps left. Yellow ball is in 3 steps forward and 2 steps right. Wall is in 2 steps forward and 2 steps left. Wall is in 1 step forward and 2 steps left. Wall is in 2 steps left.",
+  "> go forward",
+  "Your mission is \"pick up the ball\". You are facing east. Wall is in 4 steps forward and 2 steps left. Wall is in 4 steps forward and 1 step left. Wall is in 4 steps forward. Wall is in 4 steps forward and 1 step right. Wall is in 4 steps forward and 2 steps right. Wall is in 4 steps forward and 3 steps right. Wall is in 3 steps forward and 2 steps left. Wall is in 2 steps forward and 2 steps left. Yellow ball is in 2 steps forward and 2 steps right. Wall is in 1 step forward and 2 steps left. Wall is in 2 steps left.",
+  "> turn right",
+  "Your mission is \"pick up the ball\". You are facing south. Wall is in 5 steps forward and 3 steps left. Wall is in 5 steps forward and 2 steps left. Wall is in 5 steps forward and 1 step left. Wall is in 5 steps forward. Wall is in 5 steps forward and 1 step right. Wall is in 5 steps forward and 2 steps right. Wall is in 5 steps forward and 3 steps right. Wall is in 4 steps forward and 3 steps right. Wall is in 3 steps forward and 3 steps right. Yellow ball is in 2 steps forward and 2 steps left. Wall is in 2 steps forward and 3 steps right. Wall is in 1 step forward and 3 steps right. Wall is in 3 steps right.",
+  "> go forward",
+  "Your mission is \"pick up the ball\". You are facing south. Wall is in 4 steps forward and 3 steps left. Wall is in 4 steps forward and 2 steps left. Wall is in 4 steps forward and 1 step left. Wall is in 4 steps forward. Wall is in 4 steps forward and 1 step right. Wall is in 4 steps forward and 2 steps right. Wall is in 4 steps forward and 3 steps right. Wall is in 3 steps forward and 3 steps right. Wall is in 2 steps forward and 3 steps right. Yellow ball is in 1 step forward and 2 steps left. Wall is in 1 step forward and 3 steps right. Wall is in 3 steps right.",
+  "> turn left"
+ ]
+]

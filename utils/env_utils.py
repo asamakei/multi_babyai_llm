@@ -1,4 +1,5 @@
 import re
+import gym
 from gym_minigrid.minigrid import (
     IDX_TO_OBJECT,
     IDX_TO_COLOR,
@@ -6,6 +7,17 @@ from gym_minigrid.minigrid import (
 
 CLIFF = "Cliff"
 BABY = "Baby"
+
+# 環境を作成する
+def make(params:dict):
+    env_name = params["env_name"]
+    if CLIFF in env_name:
+        env = gym.make(env_name, render_mode="rgb_array")
+    elif BABY in env_name:
+        env = gym.make(env_name)
+
+    env.agent_num = params["agent_num"]
+    return env
 
 # エージェントの名前を返す
 def get_agent_name(agent_id:int, params = {}):
@@ -19,24 +31,22 @@ def get_base_task_prompt(params):
         task_prompt = "Reach the goal as soon as possible."
     elif BABY in env_name:
         base_prompt = "Interact with an grid world environment to solve a task."
-        task_prompt = "Achieve the 'mission' as soon as possible."
+        task_prompt = 'Achieve the "mission" as soon as possible.'
     return base_prompt, task_prompt
 
 # Reflexionを行う時のプロンプトに記述する指示文を返す
-def get_reflexion_prompt(reason, params):
-    env_name = params["env_name"]
-    if CLIFF in env_name:
-        prompt = f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Give your plan:"
-    elif BABY in env_name:
-        prompt = f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Give your plan:"
+def get_reflexion_prompt(reason:str, params = {}):
+    prompt = f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Give your plan briefly:"
+    #prompt = f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Output in 3 to 5 sentences. Give your plan:"
+    #prompt = f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Give your plan:"
     return prompt
 
 # 行動を生成する時のプロンプトに記述する指示文を返す
 def get_action_prompt(env_name:str):
     if CLIFF in env_name:
-            prompt = "What is the best action to achieve your task in moving 'north', 'east', 'south' or 'west'? Output only result."
+        prompt = "What is the best action to achieve your task in moving 'north', 'east', 'south' or 'west'? Output only result."
     elif BABY in env_name:
-        prompt = "aaa"
+        prompt = "What is the best action to achieve your task in 'turn right', 'turn left', 'go forward', 'pick up', 'drop', or 'toggle'? Output only result."
     return prompt
 
 # メッセージを生成する時のプロンプトに記述する指示文を返す
@@ -52,10 +62,10 @@ def get_communication_prompt(label:str, targets:str):
 def get_achievement_status(reward, done, step, params):
     env_name = params["env_name"]
     max_step = params["max_step"]
-
+    
+    reason = ""
+    is_success = False
     if CLIFF in env_name:
-        is_success = False
-        reason = ""
         if reward < -10:
             reason = "falling to the cliff"
             done = True
@@ -65,6 +75,15 @@ def get_achievement_status(reward, done, step, params):
         elif step == max_step-1:
             reason = "running out of time"
             done = True
+        return done, is_success, reason
+    elif BABY in env_name:
+        if done:
+            reason = "achieve the mission"
+            is_success = True
+        elif step == max_step-1:
+            reason = "running out of time"
+            done = True
+            is_success = False
         return done, is_success, reason
 
     return False, False, ""
@@ -181,7 +200,8 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
                     continue
 
                 obj_pos = position_to_text(pos)
-                obj_info = f"- {obj_name} in {obj_pos}"
+                obj_info = f"{obj_name} is in {obj_pos}."
+                obj_info = obj_info[:1].upper() + obj_info[1:]
                 obj_infos.append(obj_info)
         if "sight_include_agents" in options.keys():
             for target_id in range(env.agent_num):
@@ -200,21 +220,23 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
 
                 obj_pos = position_to_text(diff)
                 obj_name = f"agent{target_id} facing {target_dir_str}"
-                obj_info = f"- {obj_name} in {obj_pos}"
+                obj_info = f"{obj_name} is in {obj_pos}."
+                obj_info = obj_info[:1].upper() + obj_info[1:]
                 obj_infos.append(obj_info)
 
         direction = direction_to_str(obs['direction'])
         mission = obs['mission']
 
-        result = f'Your mission is "{mission}". You are facing {direction}.'
+        sentences = []
+        sentences.append(f'Your mission is "{mission}".')
+        sentences.append(f'You are facing {direction}.')
         if len(carrying_info) > 0:
-            result = f"{result} You are carrying {carrying_info}, so you can't pick up other objects without dropping it elsewhere."
-        result = f"{result} The followings is in your sight."
-        result = result + "\n" + '\n'.join(obj_infos)
-
+            sentences.append(f'You are carrying {carrying_info}.')
+        sentences.extend(obj_infos)
+        result = ' '.join(sentences)
         return result
 
-    return [one_agent(obs) for obs in observations]
+    return [one_agent(obs, agent_id) for agent_id, obs in enumerate(observations)]
 
 # 文字列を行動IDに変換する
 def str_to_action(text:str, params):
@@ -229,9 +251,9 @@ def str_to_action(text:str, params):
         }
     elif BABY in env_name:
         action_to_idx = {
-            "left":0,
-            "right":1,
-            "forward":2,
+            "turn left":0,
+            "turn right":1,
+            "go forward":2,
             "pick up":3,
             "drop":4,
             "toggle":5,
@@ -249,5 +271,5 @@ def action_to_str(action_idx:int, params):
     if CLIFF in env_name:
         actions = ["north","east","south","west"]
     elif BABY in env_name:
-        actions = ["left","right","forward","pick up","drop","toggle","done"]
+        actions = ["turn left","turn right","go forward","pick up","drop","toggle","done"]
     return actions[action_idx]

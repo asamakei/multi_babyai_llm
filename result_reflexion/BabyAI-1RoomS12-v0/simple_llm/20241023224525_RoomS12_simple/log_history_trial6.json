@@ -1,0 +1,33 @@
+[
+ [
+  "Interact with an grid world environment to solve a task.",
+  "",
+  "Your memory for the task below:",
+  "Trial 0:",
+  "Upon reflection, I realize that I spent too much time navigating through the environment without a clear plan to reach the ball. To correct this, my new plan is to initially turn right and head south to avoid the walls, then continue forward until I reach the ball's estimated location. I should have also paid closer attention to the ball's position relative to my movements and adjusted my path accordingly, rather than relying on trial and error. By doing so, I should be able to pick up the ball more efficiently.",
+  "Trial 1:",
+  "To improve my performance, I should have turned left earlier to avoid the walls and head directly towards the ball's estimated location. I should have also paid closer attention to the ball's position relative to my movements and adjusted my path accordingly, rather than relying on trial and error. A more efficient plan would be to initially turn right and head south, then continue forward while keeping track of the ball's location and making adjustments as needed.",
+  "Trial 2:",
+  "To complete the task of picking up the ball, I should have initially turned right and headed south to avoid the walls, then continued forward while keeping track of the ball's location and making adjustments as needed. I should have also paid closer attention to the ball's position relative to my movements and adjusted my path accordingly, rather than relying on trial and error. A more efficient plan would be to initially turn right and head south, then continue forward while keeping track of the ball's location and making adjustments as needed, and finally pick up the ball when it is directly in front of me.",
+  "Here is the task:",
+  "Achieve the \"mission\" as soon as possible.",
+  "Your mission is \"pick up the ball\". You are facing east. Wall is in 6 steps forward and 3 steps left. Wall is in 5 steps forward and 3 steps left. Wall is in 4 steps forward and 3 steps left. Yellow ball is in 4 steps forward and 3 steps right. Wall is in 3 steps forward and 3 steps left. Wall is in 2 steps forward and 3 steps left. Wall is in 1 step forward and 3 steps left. Wall is in 3 steps left.",
+  "> turn right",
+  "Your mission is \"pick up the ball\". You are facing south. Wall is in 6 steps forward and 3 steps right. Wall is in 5 steps forward and 3 steps right. Wall is in 4 steps forward and 3 steps right. Wall is in 3 steps forward and 3 steps right. Wall is in 2 steps forward and 3 steps right. Wall is in 1 step forward and 3 steps right. Wall is in 3 steps right.",
+  "> go forward",
+  "Your mission is \"pick up the ball\". You are facing south. Wall is in 6 steps forward and 3 steps right. Wall is in 5 steps forward and 3 steps right. Wall is in 4 steps forward and 3 steps right. Wall is in 3 steps forward and 3 steps right. Wall is in 2 steps forward and 3 steps right. Wall is in 1 step forward and 3 steps right. Wall is in 3 steps right.",
+  "> go forward",
+  "Your mission is \"pick up the ball\". You are facing south. Wall is in 6 steps forward and 3 steps left. Wall is in 6 steps forward and 2 steps left. Wall is in 6 steps forward and 1 step left. Wall is in 6 steps forward. Wall is in 6 steps forward and 1 step right. Wall is in 6 steps forward and 2 steps right. Wall is in 6 steps forward and 3 steps right. Wall is in 5 steps forward and 3 steps right. Wall is in 4 steps forward and 3 steps right. Wall is in 3 steps forward and 3 steps right. Wall is in 2 steps forward and 3 steps right. Wall is in 1 step forward and 3 steps right. Wall is in 3 steps right.",
+  "> go forward",
+  "Your mission is \"pick up the ball\". You are facing south. Wall is in 5 steps forward and 3 steps left. Wall is in 5 steps forward and 2 steps left. Wall is in 5 steps forward and 1 step left. Wall is in 5 steps forward. Wall is in 5 steps forward and 1 step right. Wall is in 5 steps forward and 2 steps right. Wall is in 5 steps forward and 3 steps right. Wall is in 4 steps forward and 3 steps right. Wall is in 3 steps forward and 3 steps right. Wall is in 2 steps forward and 3 steps right. Wall is in 1 step forward and 3 steps right. Wall is in 3 steps right.",
+  "> turn left",
+  "Your mission is \"pick up the ball\". You are facing east. Yellow ball is in 4 steps forward.",
+  "> go forward",
+  "Your mission is \"pick up the ball\". You are facing east. Yellow ball is in 3 steps forward.",
+  "> go forward",
+  "Your mission is \"pick up the ball\". You are facing east. Wall is in 6 steps forward and 3 steps left. Wall is in 6 steps forward and 2 steps left. Wall is in 6 steps forward and 1 step left. Wall is in 6 steps forward. Wall is in 6 steps forward and 1 step right. Wall is in 6 steps forward and 2 steps right. Wall is in 6 steps forward and 3 steps right. Yellow ball is in 2 steps forward.",
+  "> go forward",
+  "Your mission is \"pick up the ball\". You are facing east. Wall is in 5 steps forward and 3 steps left. Wall is in 5 steps forward and 2 steps left. Wall is in 5 steps forward and 1 step left. Wall is in 5 steps forward. Wall is in 5 steps forward and 1 step right. Wall is in 5 steps forward and 2 steps right. Wall is in 5 steps forward and 3 steps right. Yellow ball is in 1 step forward.",
+  "> pick up"
+ ]
+]

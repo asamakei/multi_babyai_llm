@@ -1,0 +1,14 @@
+{
+ "env_name": "BabyAI-1RoomS20-v0",
+ "agent_num": 1,
+ "max_step": 20,
+ "realtime_rendering": true,
+ "reflexion_memory_size": 3,
+ "trial_count": 100,
+ "env_fixed_seed": 0,
+ "policy_name": "simple_llm",
+ "llm_model": "meta-llama/Meta-Llama-3.1-70B-Instruct",
+ "free_mode": false,
+ "sight_include_agents": true,
+ "config_name": "RoomS20_simple"
+}

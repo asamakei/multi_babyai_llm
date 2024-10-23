@@ -25,7 +25,7 @@ class LLM:
         return [{"role": "system", "content": prompt}]
 
     # プロンプトをもとに応答を生成
-    def generate_text(prompt):
+    def generate_text(self, prompt):
         return "I don't know.", {}
 
 class Llama(LLM):
@@ -169,3 +169,5 @@ def load_llm(params):
         llm_api = Gpt(model_name)
     elif "flan" in model_name:
         llm_api = Flan(model_name)
+    else:
+        llm_api = LLM("free")
