@@ -1,0 +1,40 @@
+[
+ {
+  "env_name": "CliffWalking-v0",
+  "steps": [
+   {
+    "step": 0,
+    "obs": 36,
+    "reward": -100,
+    "is_success": false,
+    "reason": "falling to the cliff",
+    "info": {
+     "queries": [
+      "Interact with an grid world environment to solve a task.\n\nYour memory for the task below:\nTrial 0:\nBased on my past experience, I understand that I need to reach the goal in 11 steps to my east, but I failed because I went too far east and fell off the cliff. To avoid this mistake, my new plan is to move east in small increments, checking my surroundings after each move to ensure I'm not approaching the cliff.\n\nHere's my revised plan:\n\n1. Move east 1 step and check my surroundings to make sure I'm not approaching the cliff.\n2. If I'm not at the cliff, move east 1 step again and check my surroundings again.\n3. Continue moving east in small increments, checking my surroundings after each move, until I reach the goal.\n\nAdditionally, I will keep in mind that my north is Nothing, south is Wall, and west is Wall, to avoid getting stuck in a dead-end or moving into an obstacle. By taking a more cautious and incremental approach, I should be able to reach the goal without falling off the cliff.\nHere is the task:\nReach the goal as soon as possible.\nYour north is Nothing. Your south is Wall. Your east is Cliff. Your west is Wall. Goal is in 11 steps to your east. What is the best action to achieve your task in moving 'north', 'east', 'south' or 'west'? Output only result.\n>"
+     ],
+     "responses": [
+      [
+       {
+        "generated_text": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nInteract with an grid world environment to solve a task.\n\nYour memory for the task below:\nTrial 0:\nBased on my past experience, I understand that I need to reach the goal in 11 steps to my east, but I failed because I went too far east and fell off the cliff. To avoid this mistake, my new plan is to move east in small increments, checking my surroundings after each move to ensure I'm not approaching the cliff.\n\nHere's my revised plan:\n\n1. Move east 1 step and check my surroundings to make sure I'm not approaching the cliff.\n2. If I'm not at the cliff, move east 1 step again and check my surroundings again.\n3. Continue moving east in small increments, checking my surroundings after each move, until I reach the goal.\n\nAdditionally, I will keep in mind that my north is Nothing, south is Wall, and west is Wall, to avoid getting stuck in a dead-end or moving into an obstacle. By taking a more cautious and incremental approach, I should be able to reach the goal without falling off the cliff.\nHere is the task:\nReach the goal as soon as possible.\nYour north is Nothing. Your south is Wall. Your east is Cliff. Your west is Wall. Goal is in 11 steps to your east. What is the best action to achieve your task in moving 'north', 'east', 'south' or 'west'? Output only result.\n><|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\nMove east 1 step."
+       }
+      ]
+     ],
+     "actions": [
+      [
+       1,
+       "Move east 1 step."
+      ]
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "memory": [
+   [
+    "Based on my past experience, I understand that I need to reach the goal in 11 steps to my east, but I failed because I went too far east and fell off the cliff. To avoid this mistake, my new plan is to move east in small increments, checking my surroundings after each move to ensure I'm not approaching the cliff.\n\nHere's my revised plan:\n\n1. Move east 1 step and check my surroundings to make sure I'm not approaching the cliff.\n2. If I'm not at the cliff, move east 1 step again and check my surroundings again.\n3. Continue moving east in small increments, checking my surroundings after each move, until I reach the goal.\n\nAdditionally, I will keep in mind that my north is Nothing, south is Wall, and west is Wall, to avoid getting stuck in a dead-end or moving into an obstacle. By taking a more cautious and incremental approach, I should be able to reach the goal without falling off the cliff.",
+    "Based on my past experience, I will devise a new plan to reach the goal as soon as possible. Here is my revised plan:\n\n1. Move east 1 step and check my surroundings to make sure I'm not approaching the cliff.\n2. If I'm not at the cliff, move east 1 step again and check my surroundings again.\n3. Continue moving east in small increments, checking my surroundings after each move, until I reach the goal.\n\nI will also keep in mind that my north is Nothing, south is Wall, and west is Wall, to avoid getting stuck in a dead-end or moving into an obstacle.\n\nLet's start with the first step: moving east 1 step."
+   ]
+  ]
+ }
+]

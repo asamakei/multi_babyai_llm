@@ -1,19 +1,22 @@
 {
     "hyperparam": {
-        "env_name" : "BabyAI-BlockedUnlockPickup-v0",
-        "agent_num" : 2,
-        "max_step" : 3,
-        "realtime_rendering" : true
+        "env_name" : "CliffWalking-v0",
+        "agent_num" : 1,
+        "max_step" : 30,
+        "realtime_rendering" : true,
+        "reflexion_memory_size" : 3,
+        "trial_count" : 100
     },
 
     "policy_option":{
-        "policy_name" : "message_llm",
+        "policy_name" : "simple_llm",
 
-        "llm_model" : "meta-llama/Meta-Llama-3-70B-Instruct",
-        "free_mode" : true,
+        "llm_model" :  "meta-llama/Meta-Llama-3-8B-Instruct",
+        "free_mode" : false,
 
         "sight_include_agents": true,
-        "pre_action_count" : 5,
-        "message_graph" : [[1],[0]]
+        "pre_action_count" : 2,
+        "is_add_pre_plan" : false,
+        "is_add_reason" : false
     }
 }

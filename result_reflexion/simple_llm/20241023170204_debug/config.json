@@ -1,0 +1,16 @@
+{
+ "env_name": "CliffWalking-v0",
+ "agent_num": 1,
+ "max_step": 30,
+ "realtime_rendering": true,
+ "reflexion_memory_size": 3,
+ "trial_count": 100,
+ "policy_name": "simple_llm",
+ "llm_model": "meta-llama/Meta-Llama-3-8B-Instruct",
+ "free_mode": false,
+ "sight_include_agents": true,
+ "pre_action_count": 2,
+ "is_add_pre_plan": false,
+ "is_add_reason": false,
+ "config_name": "debug"
+}

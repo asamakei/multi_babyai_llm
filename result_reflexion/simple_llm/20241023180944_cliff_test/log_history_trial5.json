@@ -1,0 +1,23 @@
+[
+ [
+  "Interact with an grid world environment to solve a task.",
+  "",
+  "Your memory for the task below:",
+  "Trial 0:",
+  "To avoid falling off the cliff, I should have explored my surroundings more before moving east. A new plan of action would be:",
+  "",
+  "1. Move north to explore if there's a safe passage or an alternative route.",
+  "2. If the north is still blocked or not viable, try moving west to see if there's a way to bypass the cliff.",
+  "3. If the west is also blocked, try to find a way to safely navigate the cliff by moving east in smaller increments and checking the surroundings after each move.",
+  "",
+  "By taking these steps, I can gather more information about the environment and find a safer path to the goal.",
+  "Here is the task:",
+  "Reach the goal as soon as possible.",
+  "Your north is Nothing. Your south is Wall. Your east is Cliff. Your west is Wall. Goal is in 11 steps to your east.",
+  "> north",
+  "Your north is Nothing. Your south is Nothing. Your east is Nothing. Your west is Wall. Goal is in 11 steps to your east and 1 step to your south.",
+  "> east",
+  "Your north is Nothing. Your south is Cliff. Your east is Nothing. Your west is Nothing. Goal is in 10 steps to your east and 1 step to your south.",
+  "> east"
+ ]
+]

@@ -24,7 +24,7 @@ def get_gpu_info(nvidia_smi_path='nvidia-smi', keys=DEFAULT_ATTRIBUTES, no_units
     return [ { k: v for k, v in zip(keys, line.split(', ')) } for line in lines ]
 
 require = 42
-cmd = "python multi_babyai_text.py"
+cmd = "python main.py"
 
 print(str(datetime.now()) + " start checking", flush=True)
 while True:

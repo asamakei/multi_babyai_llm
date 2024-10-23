@@ -55,8 +55,9 @@ configs = [
 ] * 100
 
 configs = [
+     #"debug"
      "cliff_test",
-] * 100
+]
 
 #configs = [
 #    "flan_RoomS8_simple"

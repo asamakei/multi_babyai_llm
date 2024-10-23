@@ -1,0 +1,8 @@
+[
+ [
+  "Interact with an grid world environment to solve a task.",
+  "Here is the task:",
+  "Reach the goal as soon as possible.",
+  "Your north is Nothing. Your south is Wall. Your east is Cliff. Your west is Wall. Goal is in 11 steps to your east."
+ ]
+]
