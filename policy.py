@@ -28,7 +28,7 @@ def simple_llm_policy(env:gym.Env, reflexion:Reflexion, params:dict={}):
     actions = []
     for agent_id in range(env.agent_num):
         # 履歴をもとに状態(文字列)を生成
-        prompt = reflexion.get_action_prompt(agent_id)
+        prompt = reflexion.get_action_prompt(agent_id, params)
         action_str, response = llm_utils.llm(prompt)
         action = env_utils.str_to_action(action_str, params)
         actions.append(action)
@@ -59,8 +59,10 @@ def message_llm_policy(env:gym.Env, reflexion:Reflexion, params:dict={}):
         for target_id in tree[agent_id]:
             # メッセージを生成し履歴に追加
             target_name = env_utils.get_agent_name(target_id)
-            prompt = reflexion.get_message_prompt(agent_id, [target_name])
+            prompt = reflexion.get_message_prompt(agent_id, [target_name], params)
             text, response = llm_utils.llm(prompt)
+            if text[:len(agent_name)+1].lower() == f"{agent_name}:".lower():
+                text = text[len(agent_name)+1:]
             reflexion.add_message(target_id, agent_name, text)
 
             info["queries"].append(prompt)
@@ -69,14 +71,14 @@ def message_llm_policy(env:gym.Env, reflexion:Reflexion, params:dict={}):
 
     # 行動を生成
     actions, info_simple = simple_llm_policy(env, reflexion, params)
-    info["queries"].join(info_simple["queries"])
-    info["responses"].join(info_simple["responses"])
-    info["actions"].join(info_simple["actions"])
+    info["queries"].extend(info_simple["queries"])
+    info["responses"].extend(info_simple["responses"])
+    info["actions"].extend(info_simple["actions"])
 
     return actions, info
 
 # エージェントが互いに会話をしたあとに行動する方策
-def conversation_llm_policy(env:gym.Env, obs, reflexion:Reflexion, params:dict={}):
+def conversation_llm_policy(env:gym.Env, reflexion:Reflexion, params:dict={}):
     info = {
         "queries":[],
         "responses":[],
@@ -92,8 +94,10 @@ def conversation_llm_policy(env:gym.Env, obs, reflexion:Reflexion, params:dict={
             targets_str = [env_utils.get_agent_name(target_id) for target_id in targets_id]
 
             # メッセージを生成
-            prompt = reflexion.get_conversation_prompt(agent_id, targets_str)
+            prompt = reflexion.get_conversation_prompt(agent_id, targets_str, params)
             text, response = llm_utils.llm(prompt)
+            if text[:len(agent_name)+1].lower() == f"{agent_name}:".lower():
+                text = text[len(agent_name)+1:]
 
             # 会話に参加したエージェントの履歴にメッセージを追加
             for id in groups:
@@ -101,18 +105,18 @@ def conversation_llm_policy(env:gym.Env, obs, reflexion:Reflexion, params:dict={
 
             info["responses"].append(str(response))
             info["queries"].append(prompt)
-            info["sended_messages"].append(text)
+            info["messages"].append(text)
 
     # 全てのグループで指定ラウンドの会話を行う
     for pair in params["conversation_pairs"]:
-        for _ in params["conversation_count"]:
+        for _ in range(params["conversation_count"]):
             conversation_one_round(pair)
 
     # 行動を生成
     actions, info_simple = simple_llm_policy(env, reflexion, params)
-    info["queries"].join(info_simple["queries"])
-    info["responses"].join(info_simple["responses"])
-    info["actions"].join(info_simple["actions"])
+    info["queries"].extend(info_simple["queries"])
+    info["responses"].extend(info_simple["responses"])
+    info["actions"].extend(info_simple["actions"])
 
     return actions, info
 

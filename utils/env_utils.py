@@ -1,5 +1,6 @@
 import re
 import gym
+from utils.utils import get_value
 from gym_minigrid.minigrid import (
     IDX_TO_OBJECT,
     IDX_TO_COLOR,
@@ -14,48 +15,76 @@ def make(params:dict):
     if CLIFF in env_name:
         env = gym.make(env_name, render_mode="rgb_array")
     elif BABY in env_name:
-        env = gym.make(env_name)
+        env = gym.make(env_name, agent_num = params["agent_num"])
 
     env.agent_num = params["agent_num"]
     return env
 
 # エージェントの名前を返す
 def get_agent_name(agent_id:int, params = {}):
-    return f"agent{agent_id}"
+    return f"agent{agent_id}" if agent_id >= 0 else ""
+
+# 行動の名前の取得
+def get_actions_str(env_name):
+    if CLIFF in env_name:
+        return ["move north","move east","move south","move west"]
+    elif BABY in env_name:
+        return ["turn left","turn right","go forward","pick up the object in front","drop the carrying object to front","open the object in front"]
+
+def get_brief_actions_str(env_name):
+    if CLIFF in env_name:
+        return ["north","east","south","west"]
+    elif BABY in env_name:
+        return ["left","right","forward","pick up","drop","open"]
+    
+def get_actions_joined_str(env_name, last_word=""):
+    actions_str = get_actions_str(env_name)
+    actions_str = [f"'{action}'" for action in actions_str]
+    if last_word == "" or len(actions_str) <= 1:
+        actions_joined = ", ".join(actions_str)
+    else:
+        actions_joined = ", ".join(actions_str[:-1]) + f" {last_word} " + actions_str[-1]
+    return actions_joined
 
 # プロンプトに使用する問題とタスクの説明文を返す
 def get_base_task_prompt(params):
     env_name = params["env_name"]
+    actions_joined = get_actions_joined_str(env_name, "or")
+    action_prompt = f"Each step, You must select actions in {actions_joined}."
     if CLIFF in env_name:
-        base_prompt = "Interact with an grid world environment to solve a task."
+        base_prompt = f"Interact with an grid world environment to solve a task. {action_prompt}"
         task_prompt = "Reach the goal as soon as possible."
     elif BABY in env_name:
-        base_prompt = "Interact with an grid world environment to solve a task."
+        base_prompt = f"Interact with an grid world environment to solve a task. {action_prompt}"
         task_prompt = 'Achieve the "mission" as soon as possible.'
     return base_prompt, task_prompt
 
 # Reflexionを行う時のプロンプトに記述する指示文を返す
-def get_reflexion_prompt(reason:str, params = {}):
-    prompt = f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Give your plan briefly:"
-    #prompt = f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Output in 3 to 5 sentences. Give your plan:"
-    #prompt = f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Give your plan:"
+def get_reflexion_prompt(reason:str, agent_id:int, params = {}):
+    agent_name = get_agent_name(agent_id)
+    profile = f"You are {agent_name}. " if agent_id >= 0 else ""
+    prompt = profile + f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Output in 3 to 5 sentences. \nGive your plan:"
+    #prompt = profile + f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Give your plan:"
     return prompt
 
 # 行動を生成する時のプロンプトに記述する指示文を返す
-def get_action_prompt(env_name:str):
-    if CLIFF in env_name:
-        prompt = "What is the best action to achieve your task in moving 'north', 'east', 'south' or 'west'? Output only result."
-    elif BABY in env_name:
-        prompt = "What is the best action to achieve your task in 'turn right', 'turn left', 'go forward', 'pick up', 'drop', or 'toggle'? Output only result."
+def get_action_prompt(env_name:str, agent_id:int):
+    agent_name = get_agent_name(agent_id)
+    profile = f"You are {agent_name}. " if agent_id >= 0 else ""
+    actions_joined = get_actions_joined_str(env_name, "or")
+    prompt = profile + f"What is the best action to achieve your task in {actions_joined}? Output only result."
     return prompt
 
 # メッセージを生成する時のプロンプトに記述する指示文を返す
-def get_communication_prompt(label:str, targets:str):
+def get_communication_prompt(label:str, agent_id:int, targets:str):
     targets_str = " and ".join(targets)
+    agent_name = get_agent_name(agent_id)
     if label == "message":
-        prompt = f'You are in a cooperative relationship with {targets_str}. To achieve mission, Output only message to {targets_str}.'
+        prompt = f'You are {agent_name}. You are in a cooperative relationship with {targets_str}. To achieve mission, Output only message to {targets_str} in 2 to 5 sentences.'
+        #prompt = f'You are in a cooperative relationship with {targets_str}. To achieve mission, Output only message to {targets_str}.'
     elif label == "conversation":
-        prompt = f'You are in a cooperative relationship with {targets_str}, and discussing to decide next action. To achieve mission, output only reply message to them.'
+        prompt = f'You are {agent_name}. You are in a cooperative relationship with {targets_str}, and discussing to decide next action. To achieve mission, output only reply message to them in 1 to 3 sentences.'
+        #prompt = f'You are in a cooperative relationship with {targets_str}, and discussing to decide next action. To achieve mission, output only reply message to them.'
     return prompt
 
 # 終了判定や状態の評価を返す
@@ -93,7 +122,7 @@ def obs_to_str(env, observation, params) -> list[str]:
     env_name = params["env_name"]
     if CLIFF in env_name:
         return obs_to_str_cliff(observation)
-    elif "Baby" in env_name:
+    elif BABY in env_name:
         return obs_to_str_baby(env, observation, params)
 
 # CliffWalkingの変換処理
@@ -126,8 +155,9 @@ def obs_to_str_cliff(obs:int) -> list[str]:
 
 # BabyAIの変換処理
 def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
+    directions_str = ["east", "south", "west", "north"]
     def direction_to_str(direction:int):
-        return ["east", "south", "west", "north"][direction]
+        return directions_str[direction]
     def object_to_text(obj):
         obj_id = obj[0]
         obj_name = IDX_TO_OBJECT[obj[0]]
@@ -154,7 +184,7 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
         elif obj_id == 9: # Lava
             result = obj_name
         elif obj_id >= 10: # Agent_n
-            if "sight_include_agents" in options.keys(): result = ""
+            if get_value(options, "sight_include_agents", False): result = ""
             else:
                 target_agent_id = obj_id - 10
                 direction = observations[target_agent_id]["direction"]
@@ -162,19 +192,21 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
                 result = f"{obj_name} facing {direction_str}"
         return result
     
-    def position_to_text(p:tuple[int,int]):
+    def position_to_text(p:tuple[int,int], agent_dir:int):
+        dirs = directions_str[agent_dir:] + directions_str[:agent_dir]
+
         positions = []
         if p[0] != 0:
             is_one = p[0] == 1 or p[0] == -1
             is_forward = p[0] > 0
             s = "" if is_one else "s"
-            dir = "forward" if is_forward else "back"
+            dir = dirs[0] if is_forward else dirs[2]
             positions.append(f"{abs(p[0])} step{s} {dir}")
         if p[1] != 0:
             is_one = p[1] == 1 or p[1] == -1
             is_right = p[1] > 0
             s = "" if is_one else "s"
-            dir = "right" if is_right else "left"
+            dir = dirs[1] if is_right else dirs[3]
             positions.append(f"{abs(p[1])} step{s} {dir}")
         result = " and ".join(positions)
         return result
@@ -185,6 +217,7 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
         image = obs["image"]
         shape = image.shape
         height, width = shape[0], shape[1]
+        direction = obs['direction']
         for r in range(height):
             for c in range(width):
                 pos = (height - r - 1, c - width // 2)
@@ -199,11 +232,11 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
                     carrying_info = obj_name
                     continue
 
-                obj_pos = position_to_text(pos)
-                obj_info = f"{obj_name} is in {obj_pos}."
+                obj_pos = position_to_text(pos, direction)
+                obj_info = f"{obj_name} is at {obj_pos}."
                 obj_info = obj_info[:1].upper() + obj_info[1:]
                 obj_infos.append(obj_info)
-        if "sight_include_agents" in options.keys():
+        if get_value(options, "sight_include_agents", False):
             for target_id in range(env.agent_num):
                 if target_id == agent_id: continue
                 target_pos = env.agents_pos[target_id]
@@ -218,9 +251,9 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
                 target_dir = observations[target_id]["direction"]
                 target_dir_str = direction_to_str(target_dir)
 
-                obj_pos = position_to_text(diff)
+                obj_pos = position_to_text(diff, direction)
                 obj_name = f"agent{target_id} facing {target_dir_str}"
-                obj_info = f"{obj_name} is in {obj_pos}."
+                obj_info = f"{obj_name} is at {obj_pos}."
                 obj_info = obj_info[:1].upper() + obj_info[1:]
                 obj_infos.append(obj_info)
 
@@ -242,34 +275,24 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
 def str_to_action(text:str, params):
     env_name = params["env_name"]
 
-    if CLIFF in env_name:
-        action_to_idx = {
-            "north":0,
-            "east":1,
-            "south":2,
-            "west":3,
-        }
-    elif BABY in env_name:
-        action_to_idx = {
-            "turn left":0,
-            "turn right":1,
-            "go forward":2,
-            "pick up":3,
-            "drop":4,
-            "toggle":5,
-            "done":6
-        }
-
+    # 正式な行動名とマッチさせる
+    actions_str = get_actions_str(env_name)
+    action_to_idx = {actions_str[i]:i for i in range(len(actions_str))}
     for action, value in action_to_idx.items():
         match = re.compile(action).search(text)
         if match: return value
-    return 0
 
+    # 簡易的な行動名とマッチさせる
+    brief_actions_str = get_actions_str(env_name)
+    brief_action_to_idx = {actions_str[i]:i for i in range(len(brief_actions_str))}
+    for action, value in brief_action_to_idx.items():
+        match = re.compile(action).search(text)
+        if match: return value
+
+    return 0
+      
 # 行動IDを文字列に変換する
 def action_to_str(action_idx:int, params):
     env_name = params["env_name"]
-    if CLIFF in env_name:
-        actions = ["north","east","south","west"]
-    elif BABY in env_name:
-        actions = ["turn left","turn right","go forward","pick up","drop","toggle","done"]
+    actions = get_actions_str(env_name)
     return actions[action_idx]

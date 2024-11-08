@@ -1,0 +1,22 @@
+{
+ "env_name": "BabyAI-BlockedUnlockPickup-v0",
+ "agent_num": 2,
+ "max_step": 30,
+ "realtime_rendering": true,
+ "reflexion_memory_size": 5,
+ "trial_count": 100,
+ "env_fixed_seed": 0,
+ "policy_name": "message_llm",
+ "llm_model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+ "free_mode": false,
+ "sight_include_agents": true,
+ "message_graph": [
+  [
+   1
+  ],
+  [
+   0
+  ]
+ ],
+ "config_name": "BlockedUnlock_message"
+}

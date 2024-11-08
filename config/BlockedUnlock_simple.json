@@ -2,9 +2,10 @@
     "hyperparam": {
         "env_name" : "BabyAI-BlockedUnlockPickup-v0",
         "agent_num" : 1,
-        "max_step" : 50,
+        "max_step" : 30,
         "realtime_rendering" : true,
-        "reflexion_memory_size" : 3,
+        "reflexion_memory_size" : 5,
+        "reflexion_history_size" : 30,
         "trial_count" : 100,
         "env_fixed_seed" : 0 
     },

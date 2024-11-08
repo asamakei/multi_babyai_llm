@@ -28,6 +28,10 @@ class LLM:
     def generate_text(self, prompt):
         return "I don't know.", {}
 
+    # プロンプトと画像をもとに応答を生成
+    def generate_text_with_vision(self, prompt, image):
+        return self.generate_text(prompt)
+
 class Llama(LLM):
     def __init__(self, model_name):
         super().__init__(model_name)
@@ -67,7 +71,7 @@ class Llama(LLM):
         )
         response = self.pipeline(
             query,
-            max_new_tokens=256,
+            max_new_tokens=512,
             eos_token_id=self.terminators,
             pad_token_id=self.pipeline.tokenizer.eos_token_id,
             do_sample=True,
@@ -76,6 +80,14 @@ class Llama(LLM):
         )
         text = response[0]["generated_text"][len(query):]
         return text, response
+
+class LlamaVision(LLM):
+    def __init__(self, model_name):
+        super().__init__(model_name)
+    def generate_text(self, prompt):
+        return ""
+    def generate_text_with_vision(self, prompt, image):
+        return ""
 
 class Gpt(LLM):
     def __init__(self, model_name):
@@ -164,7 +176,10 @@ def load_llm(params):
 
     # モデル名によってそれぞれのロード処理を呼ぶ
     if "llama" in model_name:
-        llm_api = Llama(model_name)
+        if "Vision" in model_name:
+            llm_api = LlamaVision(model_name)            
+        else:
+            llm_api = Llama(model_name)
     elif "gpt" in model_name:
         llm_api = Gpt(model_name)
     elif "flan" in model_name:

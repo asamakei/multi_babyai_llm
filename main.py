@@ -36,9 +36,13 @@ def run(config:dict):
         capture.render()
         capture.make("capture_realtime")
 
+    def make_history_log(env, reflexion:Reflexion):
+        history = [str(reflexion.histories[i]).split('\n') for i in range(env.agent_num)]
+        history.append("length: " + str(step+1))
+        return history
+
     # Reflexionに関する色々を初期化
     reflexion = Reflexion(config)
-
     seed = None
     if "env_fixed_seed" in config.keys():
         seed = config["env_fixed_seed"]
@@ -65,6 +69,7 @@ def run(config:dict):
 
             # 現在の状態を履歴に追加
             obs_texts = env_utils.obs_to_str(env, obs, config)
+            reflexion.add_histories("observation", [f"step {step}:"] * config["agent_num"])
             reflexion.add_histories("observation", obs_texts)
 
             # 行動を行う
@@ -91,7 +96,8 @@ def run(config:dict):
             })
             logger.output(f"log_trial{trial}")
 
-            logger.output(f"log_history_trial{trial}", [str(reflexion.histories[i]).split('\n') for i in range(env.agent_num)])
+            history = make_history_log(env, reflexion)
+            logger.output(f"log_history_trial{trial}", history)
             
             movie_maker.make(f"capture_trial{trial}")
 
@@ -103,10 +109,14 @@ def run(config:dict):
         memory = reflexion.run(is_success, reason, config)
 
         # ログなどの処理
-        logger.append({
-            "memory" : memory,
-        })
+        history = make_history_log(env, reflexion)
+        logger.output(f"log_history_trial{trial}", history)
+        
+        logger.append({"memory" : memory})
         logger.output(f"log_trial{trial}")
+
+        logger.output(f"reflexion_backup", {"memory" : memory, "trial": trial})
+
         movie_maker.render()
         movie_maker.make(f"capture_trial{trial}")
 
