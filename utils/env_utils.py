@@ -31,12 +31,14 @@ def get_actions_str(env_name):
     elif BABY in env_name:
         return ["turn left","turn right","go forward","pick up the object in front","drop the carrying object to front","open the object in front"]
 
+# 行動の名前の略称を取得
 def get_brief_actions_str(env_name):
     if CLIFF in env_name:
         return ["north","east","south","west"]
     elif BABY in env_name:
         return ["left","right","forward","pick up","drop","open"]
-    
+
+# 行動の名前をカンマ区切りで連結したものを取得(プロンプト用)
 def get_actions_joined_str(env_name, last_word=""):
     actions_str = get_actions_str(env_name)
     actions_str = [f"'{action}'" for action in actions_str]
@@ -56,6 +58,7 @@ def get_base_task_prompt(params):
         task_prompt = "Reach the goal as soon as possible."
     elif BABY in env_name:
         base_prompt = f"Interact with an grid world environment to solve a task. {action_prompt}"
+        base_prompt = f"Interact with an grid world environment to solve a task. The position (0,0) is at the northwest end. {action_prompt}"
         task_prompt = 'Achieve the "mission" as soon as possible.'
     return base_prompt, task_prompt
 
@@ -192,6 +195,9 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
                 result = f"{obj_name} facing {direction_str}"
         return result
     
+    def position_to_text_euler(p:tuple[int,int]):
+        return f"({p[0]}, {p[1]})"
+    
     def position_to_text(p:tuple[int,int], agent_dir:int):
         dirs = directions_str[agent_dir:] + directions_str[:agent_dir]
 
@@ -211,6 +217,18 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
         result = " and ".join(positions)
         return result
     
+    def local_to_world_pos(pos, dir, pivot) -> tuple[int,int]:
+        pos = (-pos[1], pos[0])
+        if dir == 0: # east
+            pos = (pos[1], -pos[0])
+        elif dir == 1: # south
+            pos = (pos[0], pos[1])
+        elif dir == 2: # west
+            pos = (-pos[1], pos[0])
+        elif dir == 3: # north
+            pos = (-pos[0], -pos[1])
+        return (pos[0]+pivot[0], pos[1]+pivot[1])
+    
     def one_agent(obs, agent_id):
         obj_infos = []
         carrying_info = ""
@@ -218,51 +236,66 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
         shape = image.shape
         height, width = shape[0], shape[1]
         direction = obs['direction']
+        self_pos = env.agents_pos[agent_id]
+
         for r in range(height):
             for c in range(width):
-                pos = (height - r - 1, c - width // 2)
-                obj = image[c][r]
-                if obj[0] in (0,1,3): # 不可視, 通常床, 空白 の場合は飛ばす
-                    continue
-                obj_name = object_to_text(obj)
+                local_pos = (height - r - 1, c - width // 2)
 
-                if obj_name == "":
-                    continue
-                if pos == (0, 0) and len(obj_name) > 0:
+                obj = image[c][r]
+                if obj[0] in (0,1,3): continue # 不可視, 通常床, 空白 の場合は飛ばす
+                obj_name = object_to_text(obj)
+                if obj_name == "": continue
+
+                if local_pos == (0, 0) and len(obj_name) > 0:
                     carrying_info = obj_name
                     continue
 
-                obj_pos = position_to_text(pos, direction)
+                # 相対位置を返す
+                #obj_pos = position_to_text(local_pos, direction)
+
+                # 絶対位置を返す
+                world_pos = local_to_world_pos(local_pos, direction, self_pos)
+                obj_pos = position_to_text_euler(world_pos)
+
                 obj_info = f"{obj_name} is at {obj_pos}."
                 obj_info = obj_info[:1].upper() + obj_info[1:]
                 obj_infos.append(obj_info)
+
         if get_value(options, "sight_include_agents", False):
             for target_id in range(env.agent_num):
                 if target_id == agent_id: continue
                 target_pos = env.agents_pos[target_id]
-                self_pos = env.agents_pos[agent_id]
-                diff = self_pos[1] - target_pos[1], target_pos[0] - self_pos[0] # y, x
-                dir = obs['direction']
-                if dir == 0: diff = (diff[1], -diff[0]) # east
-                elif dir == 1: diff = (-diff[0], -diff[1]) # south
-                elif dir == 2: diff = (-diff[1], diff[0]) # west
-                elif dir == 3: diff = (diff[0], diff[1]) # north
+
+                # 相対位置
+                # diff = self_pos[1] - target_pos[1], target_pos[0] - self_pos[0] # y, x
+                # dir = obs['direction']
+                # if dir == 0: diff = (diff[1], -diff[0]) # east
+                # elif dir == 1: diff = (-diff[0], -diff[1]) # south
+                # elif dir == 2: diff = (-diff[1], diff[0]) # west
+                # elif dir == 3: diff = (diff[0], diff[1]) # north
+
+                # obj_pos = position_to_text(diff, direction)
+                
+                # 絶対位置
+                obj_pos = target_pos
 
                 target_dir = observations[target_id]["direction"]
                 target_dir_str = direction_to_str(target_dir)
 
-                obj_pos = position_to_text(diff, direction)
                 obj_name = f"agent{target_id} facing {target_dir_str}"
                 obj_info = f"{obj_name} is at {obj_pos}."
                 obj_info = obj_info[:1].upper() + obj_info[1:]
                 obj_infos.append(obj_info)
 
         direction = direction_to_str(obs['direction'])
+        self_pos_str = position_to_text_euler(self_pos)
         mission = obs['mission']
 
         sentences = []
-        sentences.append(f'Your mission is "{mission}".')
-        sentences.append(f'You are facing {direction}.')
+        sentences.append(f'Your mission is "{mission}".') # 目標
+        sentences.append(f'You are facing {direction}.') # 方角
+        sentences.append(f'You are at {self_pos_str}.') # 絶対位置
         if len(carrying_info) > 0:
             sentences.append(f'You are carrying {carrying_info}.')
         sentences.extend(obj_infos)

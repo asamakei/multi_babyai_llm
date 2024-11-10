@@ -675,14 +675,16 @@ class Grid:
 
     @classmethod
     def render_tile(
-        cls, obj, agent_dir=None, agent_id=None, highlights=False, tile_size=TILE_PIXELS, subdivs=3
+        cls, obj, agent_dir=None, agent_id=None, highlights=False, tile_size=TILE_PIXELS, subdivs=3, note_agent_id=-1
     ):
         """
         Render a tile and cache the result
         """
 
+        is_mask_mode = note_agent_id >= 0 and not highlights[note_agent_id]
+
         # Hash map lookup key for the cache
-        key = (agent_dir, highlights, tile_size, agent_id)
+        key = (agent_dir, highlights, tile_size, agent_id) if not is_mask_mode else (-1,-1,-1,-1)
         key = obj.encode() + key if obj else key
 
         if key in cls.tile_cache:
@@ -723,6 +725,10 @@ class Grid:
             color = color / count / 2
             highlight_img(img, color)
 
+        if is_mask_mode:
+            img = np.zeros(
+                shape=(tile_size * subdivs, tile_size * subdivs, 3), dtype=np.uint8
+            )
         # Downsample the image to perform supersampling/anti-aliasing
         img = downsample(img, subdivs)
 
@@ -731,7 +737,7 @@ class Grid:
 
         return img
 
-    def render(self, tile_size, agents_pos, agents_dir=None, highlight_masks=None):
+    def render(self, tile_size, agents_pos, agents_dir=None, highlight_masks=None, note_agent_id=-1):
         """
         Render this grid at a given scale
         :param r: target renderer object
@@ -766,6 +772,7 @@ class Grid:
                     agent_id=agent_id,
                     highlights=highlights,
                     tile_size=tile_size,
+                    note_agent_id=note_agent_id
                 )
 
                 ymin = j * tile_size
@@ -1518,7 +1525,7 @@ class MiniGridEnv(gym.Env):
 
         return img
 
-    def get_full_render(self, highlight, tile_size):
+    def get_full_render(self, highlight, tile_size, note_agent_id):
         """
         Render a non-paratial observation for visualization
         """
@@ -1565,6 +1572,7 @@ class MiniGridEnv(gym.Env):
             self.agents_pos,
             self.agents_dir,
             highlight_masks=highlight_masks if highlight else None,
+            note_agent_id=note_agent_id 
         )
 
         return img
@@ -1574,6 +1582,7 @@ class MiniGridEnv(gym.Env):
         highlight: bool = True,
         tile_size: int = TILE_PIXELS,
         agent_pov: bool = False,
+        agent_id: int = -1
     ):
         """Returns an RGB image corresponding to the whole environment or the agent's point of view.
 
@@ -1592,7 +1601,7 @@ class MiniGridEnv(gym.Env):
         if agent_pov:
             return self.get_pov_render(tile_size)
         else:
-            return self.get_full_render(highlight, tile_size)
+            return self.get_full_render(highlight, tile_size, agent_id)
 
     def render(self):
 
@@ -1606,6 +1615,13 @@ class MiniGridEnv(gym.Env):
             self.window.show_img(img)
         elif self.render_mode == "rgb_array":
             return img
+    
+    def render_masked(self):
+        imgs = []
+        for agent_id in range(self.agent_num):
+            img = self.get_frame(self.highlight, self.tile_size, self.agent_pov, agent_id)
+            imgs.append(img)
+        return imgs
 
     def close(self):
         if self.window:

@@ -13,6 +13,7 @@ class MovieMaker:
     def render(self):
         #rgb = self.env.render(mode='rgb_array')
         rgb = self.env.render()
+        rgb = self.env.render_masked()[0]
 
         img = Image.fromarray(np.array(rgb).astype(np.uint8))
         # if 'messages' in option:

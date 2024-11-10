@@ -1,3 +1,4 @@
 configs = [
-    "BlockedUnlock_conversation",
+    "debug",
+    #"BlockedUnlock_conversation",
 ]

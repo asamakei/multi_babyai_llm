@@ -69,7 +69,7 @@ def run(config:dict):
 
             # 現在の状態を履歴に追加
             obs_texts = env_utils.obs_to_str(env, obs, config)
-            reflexion.add_histories("observation", [f"step {step}:"] * config["agent_num"])
+            # reflexion.add_histories("observation", [f"step {step}:"] * config["agent_num"])
             reflexion.add_histories("observation", obs_texts)
 
             # 行動を行う
