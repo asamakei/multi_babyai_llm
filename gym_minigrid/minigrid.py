@@ -681,10 +681,11 @@ class Grid:
         Render a tile and cache the result
         """
 
-        is_mask_mode = note_agent_id >= 0 and not highlights[note_agent_id]
+        is_mask_mode = note_agent_id >= 0
+        is_mask = is_mask_mode and not highlights[note_agent_id]
 
         # Hash map lookup key for the cache
-        key = (agent_dir, highlights, tile_size, agent_id) if not is_mask_mode else (-1,-1,-1,-1)
+        key = (agent_dir, highlights, tile_size, agent_id, is_mask_mode) if not is_mask else (-1,-1,-1,-1,-1)
         key = obj.encode() + key if obj else key
 
         if key in cls.tile_cache:
@@ -714,7 +715,7 @@ class Grid:
             fill_coords(img, tri_fn, list(COLORS.values())[agent_id]) #(255, 0, 0)
 
         # Highlight the cell if needed
-        if any(highlights):
+        if (not is_mask_mode) and any(highlights):
             # Alpha Blend
             count = 0
             color = np.array([0,0,0])
@@ -725,7 +726,7 @@ class Grid:
             color = color / count / 2
             highlight_img(img, color)
 
-        if is_mask_mode:
+        if is_mask:
             img = np.zeros(
                 shape=(tile_size * subdivs, tile_size * subdivs, 3), dtype=np.uint8
             )
