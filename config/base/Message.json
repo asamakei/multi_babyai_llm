@@ -1,0 +1,9 @@
+{
+    "hyperparam": {
+        "agent_num" : 2
+    },
+    "policy_option":{
+        "policy_name" : "message_llm",
+        "message_graph" : [[1], [0]]
+    }
+}

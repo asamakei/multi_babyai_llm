@@ -1,0 +1,9 @@
+{
+    "extends": [
+        "base/General",
+        "base/Reflexion",
+        "base/Cliff",
+        "base/Simple",
+        "base/Llama3.1-70B"
+    ]
+}

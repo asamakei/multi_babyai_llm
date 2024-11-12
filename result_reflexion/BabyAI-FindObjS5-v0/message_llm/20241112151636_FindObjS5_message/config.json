@@ -1,0 +1,25 @@
+{
+ "agent_num": 2,
+ "realtime_rendering": true,
+ "policy_name": "message_llm",
+ "free_mode": false,
+ "sight_include_agents": true,
+ "without_past_messages": false,
+ "config_name": "FindObjS5_message",
+ "reflexion_memory_size": 3,
+ "reflexion_history_size": 10,
+ "trial_count": 100,
+ "env_name": "BabyAI-FindObjS5-v0",
+ "max_step": 30,
+ "env_fixed_seed": 2,
+ "message_graph": [
+  [
+   1
+  ],
+  [
+   0
+  ]
+ ],
+ "llm_model": "meta-llama/Meta-Llama-3.1-70B-Instruct",
+ "is_use_vision": false
+}

@@ -81,14 +81,15 @@ class History:
 # Reflexionに関する全般処理を行うクラス
 # エピソードを超えてメモリを保持する
 class Reflexion:
-    def __init__(self, params:dict):
+    def __init__(self, env, params:dict):
+        self.env = env
         self.env_name = params["env_name"]
         self.agent_num = params["agent_num"]
         self.memory_size = params["reflexion_memory_size"]
         self.memories = [[] for _ in range(self.agent_num)]
         history_size = utils.get_value(params, "reflexion_history_size", 0)
 
-        base, task = env_utils.get_base_task_prompt(params)
+        base, task = env_utils.get_base_task_prompt(env, params)
         
         self.histories = [History(
             base,
@@ -115,13 +116,19 @@ class Reflexion:
         # 達成していたらReflexionを行わない
         if is_success: return self.memories
 
+        is_use_vision = utils.get_value(params,"is_use_vision", False)
+        imgs = self.env.render_masked() if is_use_vision else []
+
         # エージェントの数だけ実行
         for agent_id in range(self.agent_num):
             # 指示文を取得
             instr = env_utils.get_reflexion_prompt(reason, agent_id, params)
             # 反省文を出力
             prompt = str(self.histories[agent_id]) + "\n" + instr
-            text, _ = llm_utils.llm(prompt)
+            if is_use_vision:
+                text, _ = llm_utils.vlm(prompt, imgs[agent_id])
+            else:
+                text, _ = llm_utils.llm(prompt)
 
             # メモリに追加
             self.memories[agent_id].append(text)
@@ -131,8 +138,9 @@ class Reflexion:
         return self.memories
     
     # エピソードが終わった時に反省文だけ引き継いで履歴をリセットする処理
-    def reset(self, params):
-        base, task = env_utils.get_base_task_prompt(params)
+    def reset(self, env, params):
+        self.env = env
+        base, task = env_utils.get_base_task_prompt(env, params)
         history_size = utils.get_value(params, "reflexion_history_size", 0)
         self.histories = [History(
             base,
@@ -155,9 +163,9 @@ class Reflexion:
             history = self.histories[agent_id].get_history_str(True)
         else:
             history = str(self.histories[agent_id])
-        instr = env_utils.get_communication_prompt(label, agent_id, targets)
+        instr = env_utils.get_communication_prompt(label, agent_id, targets, params)
         agent_name = env_utils.get_agent_name(agent_id)
-        prompt = f"{history} {instr}\n{agent_name}:"
+        prompt = f"{history}\n\n{instr}\n{agent_name}:"
         return prompt
     
     # 行動を生成する際のプロンプトを返す
@@ -166,6 +174,6 @@ class Reflexion:
             history = self.histories[agent_id].get_history_str(True)
         else:
             history = str(self.histories[agent_id])
-        instr = env_utils.get_action_prompt(self.env_name, agent_id)
-        prompt = history + " " + instr + "\n>"
+        instr = env_utils.get_action_prompt(self.env_name, agent_id, params)
+        prompt = f"{history}\n\n{instr}\n>"
         return prompt

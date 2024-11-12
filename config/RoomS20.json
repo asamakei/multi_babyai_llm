@@ -1,0 +1,8 @@
+{
+    "extends": [
+        "base/General",
+        "base/Reflexion",
+        "base/RoomS20",
+        "base/Llama3.1-70B"
+    ]
+}

@@ -1,0 +1,7 @@
+{
+    "hyperparam": {
+        "reflexion_memory_size" : 3,
+        "reflexion_history_size" : 10,
+        "trial_count" : 100
+    }
+}

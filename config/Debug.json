@@ -1,0 +1,16 @@
+{
+    "extends": [
+        "base/General",
+        "base/Reflexion",
+        "base/BlockedUnlockPickup",
+        "base/Simple",
+        "base/Llama3.2-11B"
+    ],
+
+    "hyperparam": {
+        "agent_num" : 1
+    },
+
+    "policy_option":{
+    }
+}

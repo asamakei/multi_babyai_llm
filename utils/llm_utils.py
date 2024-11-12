@@ -8,11 +8,19 @@ from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
     BitsAndBytesConfig,
-    T5Tokenizer
+    T5Tokenizer,
+    MllamaForConditionalGeneration,
+    LlavaNextForConditionalGeneration,
+    AutoProcessor,
+    LlavaNextProcessor
 )
 
 import torch
 import ENV
+
+image_token:str = ""
+def get_image_token():
+    return image_token
 
 # 初期化とテキスト生成の機能を持ったLLM
 class LLM:
@@ -83,11 +91,64 @@ class Llama(LLM):
 
 class LlamaVision(LLM):
     def __init__(self, model_name):
+        global image_token
         super().__init__(model_name)
+        quantization_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16
+        )
+        self.model = MllamaForConditionalGeneration.from_pretrained(
+            model_name,
+            quantization_config=quantization_config,
+            low_cpu_mem_usage=True,
+            device_map="auto"
+            #torch_dtype=torch.bfloat16,
+        )
+        self.processor = AutoProcessor.from_pretrained(model_name)
+        image_token = "<|image|>"
+
     def generate_text(self, prompt):
-        return ""
+        return "", {}
+    
     def generate_text_with_vision(self, prompt, image):
-        return ""
+        message = self.prompt_format(prompt)
+        input_text = self.processor.apply_chat_template(message, add_generation_prompt=True)
+        inputs = self.processor(image, input_text, return_tensors="pt").to(self.model.device)
+        response = self.model.generate(**inputs, max_new_tokens=512)
+        text = self.processor.decode(response[0][1:-1])[len(input_text):]
+        return text, {"output":self.processor.decode(response[0][1:-1])}
+
+class Llava(LLM):
+    def __init__(self, model_name):
+        global image_token
+        super().__init__(model_name)
+        quantization_config = BitsAndBytesConfig(
+            load_in_4bit=True, 
+            bnb_4bit_compute_dtype=torch.float16
+        )
+        self.model = LlavaNextForConditionalGeneration.from_pretrained(
+            model_name,
+            torch_dtype=torch.float16,
+            low_cpu_mem_usage=True,  # 消す?
+            quantization_config=quantization_config,
+        )
+        self.processor = LlavaNextProcessor.from_pretrained(model_name)
+        image_token = "<image>"
+
+    def prompt_format(self, prompt):
+        return f"[INST] {prompt} [/INST]"
+
+    def generate_text(self, prompt):
+        return "", {}
+    
+    def generate_text_with_vision(self, prompt, image):
+        input_text = self.prompt_format(prompt)
+        inputs = self.processor(input_text, image, return_tensors="pt").to(self.model.device)
+        response = self.model.generate(**inputs, max_new_tokens=512)
+        text = self.processor.decode(response[0], skip_special_tokens=True)[len(input_text):]
+        return text, {"output":self.processor.decode(response[0])}
 
 class Gpt(LLM):
     def __init__(self, model_name):
@@ -159,6 +220,11 @@ def llm(prompt:str):
     global llm_api
     return llm_api.generate_text(prompt)
 
+# 事前に読み込んだVLMを使用する関数
+def vlm(prompt:str, image):
+    global llm_api
+    return llm_api.generate_text_with_vision(prompt, image)
+
 # LLMを読み込む
 def load_llm(params):
     global llm_api
@@ -176,7 +242,9 @@ def load_llm(params):
 
     # モデル名によってそれぞれのロード処理を呼ぶ
     if "llama" in model_name:
-        if "Vision" in model_name:
+        if "llava" in model_name:
+            llm_api = Llava(model_name)
+        elif "Vision" in model_name:
             llm_api = LlamaVision(model_name)            
         else:
             llm_api = Llama(model_name)

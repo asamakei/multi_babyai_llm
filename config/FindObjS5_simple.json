@@ -1,0 +1,9 @@
+{
+    "extends": [
+        "FindObjS5",
+        "base/Simple"
+    ],
+    "hyperparam": {
+        "agent_num" : 1
+    }
+}

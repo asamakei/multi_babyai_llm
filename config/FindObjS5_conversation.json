@@ -1,0 +1,6 @@
+{
+    "extends": [
+        "FindObjS5",
+        "base/Conversation"
+    ]
+}

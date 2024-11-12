@@ -2,6 +2,7 @@ import gym
 from utils.reflexion_utils import Reflexion
 import utils.env_utils as env_utils
 import utils.llm_utils as llm_utils
+import utils.utils as utils
 
 # 行動を取得
 def get_action(env:gym.Env, reflexion:Reflexion, params:dict={}) -> tuple[list[int], dict]:
@@ -24,12 +25,18 @@ def simple_llm_policy(env:gym.Env, reflexion:Reflexion, params:dict={}):
         "actions":[],
     }
 
+    is_use_vision = utils.get_value(params,"is_use_vision",False)
+    imgs = env.render_masked() if is_use_vision else []
+
     # 各エージェントが行動を決定する
     actions = []
     for agent_id in range(env.agent_num):
         # 履歴をもとに状態(文字列)を生成
         prompt = reflexion.get_action_prompt(agent_id, params)
-        action_str, response = llm_utils.llm(prompt)
+        if is_use_vision:
+            action_str, response = llm_utils.vlm(prompt, imgs[agent_id])
+        else:
+            action_str, response = llm_utils.llm(prompt)
         action = env_utils.str_to_action(action_str, params)
         actions.append(action)
 
@@ -52,6 +59,9 @@ def message_llm_policy(env:gym.Env, reflexion:Reflexion, params:dict={}):
         "actions":[],
     }
 
+    is_use_vision = utils.get_value(params,"is_use_vision",False)
+    imgs = env.render_masked() if is_use_vision else []
+
     # エージェント間のメッセージの生成
     tree:list[list[int]] = params["message_graph"]
     for agent_id in range(env.agent_num):
@@ -60,7 +70,10 @@ def message_llm_policy(env:gym.Env, reflexion:Reflexion, params:dict={}):
             # メッセージを生成し履歴に追加
             target_name = env_utils.get_agent_name(target_id)
             prompt = reflexion.get_message_prompt(agent_id, [target_name], params)
-            text, response = llm_utils.llm(prompt)
+            if is_use_vision:
+                text, response = llm_utils.vlm(prompt, imgs[agent_id])
+            else:
+                text, response = llm_utils.llm(prompt)
             if text[:len(agent_name)+1].lower() == f"{agent_name}:".lower():
                 text = text[len(agent_name)+1:]
             reflexion.add_message(target_id, agent_name, text)
@@ -86,6 +99,9 @@ def conversation_llm_policy(env:gym.Env, reflexion:Reflexion, params:dict={}):
         "actions":[],
     }
 
+    is_use_vision = utils.get_value(params,"is_use_vision",False)
+    imgs = env.render_masked() if is_use_vision else []
+
     # エージェントのグループで一周会話を行う処理
     def conversation_one_round(groups):
         for agent_id in groups:
@@ -95,7 +111,10 @@ def conversation_llm_policy(env:gym.Env, reflexion:Reflexion, params:dict={}):
 
             # メッセージを生成
             prompt = reflexion.get_conversation_prompt(agent_id, targets_str, params)
-            text, response = llm_utils.llm(prompt)
+            if is_use_vision:
+                text, response = llm_utils.vlm(prompt, imgs[agent_id])
+            else:
+                text, response = llm_utils.llm(prompt)
             if text[:len(agent_name)+1].lower() == f"{agent_name}:".lower():
                 text = text[len(agent_name)+1:]
 

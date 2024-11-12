@@ -1,0 +1,6 @@
+{
+    "extends": [
+        "RoomS12",
+        "base/Conversation"
+    ]
+}

@@ -1,4 +1,5 @@
 configs = [
-    "debug",
-    #"BlockedUnlock_conversation",
+    #"debug",
+    #"RoomS20_simple",
+    "FindObjS5_message",
 ]

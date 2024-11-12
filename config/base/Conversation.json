@@ -1,0 +1,11 @@
+{
+    "hyperparam": {
+        "agent_num" : 2
+    },
+    "policy_option":{
+        "policy_name" : "conversation_llm",
+
+        "conversation_pairs" : [[0, 1]],
+        "conversation_count" : 2
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "policy_option":{
+        "llm_model" : "meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "is_use_vision" : false
+    }
+}

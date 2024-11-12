@@ -5,6 +5,7 @@ from gym_minigrid.minigrid import (
     IDX_TO_OBJECT,
     IDX_TO_COLOR,
 )
+from utils.llm_utils import get_image_token
 
 CLIFF = "Cliff"
 BABY = "Baby"
@@ -29,7 +30,7 @@ def get_actions_str(env_name):
     if CLIFF in env_name:
         return ["move north","move east","move south","move west"]
     elif BABY in env_name:
-        return ["turn left","turn right","go forward","pick up the object in front","drop the carrying object to front","open the object in front"]
+        return ["turn left","turn right","go forward","pick up the item in forward","drop the carrying item to forward","open the door in forward"]
 
 # 行動の名前の略称を取得
 def get_brief_actions_str(env_name):
@@ -49,44 +50,73 @@ def get_actions_joined_str(env_name, last_word=""):
     return actions_joined
 
 # プロンプトに使用する問題とタスクの説明文を返す
-def get_base_task_prompt(params):
+def get_base_task_prompt(env, params):
     env_name = params["env_name"]
     actions_joined = get_actions_joined_str(env_name, "or")
     action_prompt = f"Each step, You must select actions in {actions_joined}."
     if CLIFF in env_name:
-        base_prompt = f"Interact with an grid world environment to solve a task. {action_prompt}"
+        sentences = []
+        sentences.append("Interact with an grid world environment to solve a task.")
+        sentences.append(action_prompt)
+        base_prompt = " ".join(sentences)
         task_prompt = "Reach the goal as soon as possible."
     elif BABY in env_name:
-        base_prompt = f"Interact with an grid world environment to solve a task. {action_prompt}"
-        base_prompt = f"Interact with an grid world environment to solve a task. The position (0,0) is at the northwest end. {action_prompt}"
+        right = env.width - 1
+        bottom = env.height - 1
+        sentences = []
+        sentences.append("Interact with an grid world environment to solve a task.")
+
+        # additional
+        sentences.append(f"The grid (0,0) is at the northwest end, ({right}, 0) is northeast, (0, {bottom}) is southwest, ({right}, {bottom}) is southeast.")
+        sentences.append(f"You cannot go through objects.")
+
+        sentences.append(action_prompt)
+        base_prompt = " ".join(sentences)
         task_prompt = 'Achieve the "mission" as soon as possible.'
     return base_prompt, task_prompt
+
+def get_image_explain(agent_id:int, params):
+    is_use_vision = get_value(params,"is_use_vision",False)
+    if not is_use_vision: return ""
+
+    image_token = get_image_token()
+    env_name = params["env_name"]
+    if CLIFF in env_name:
+        return f"{image_token} This image is your view of grid world. You are the character with the hat."
+    elif BABY in env_name:
+        color = IDX_TO_COLOR[agent_id]
+        return f"{image_token} This image is your view of grid world. You can observe only your forward. You are {color} triangle. "
+    return f"{image_token}"
 
 # Reflexionを行う時のプロンプトに記述する指示文を返す
 def get_reflexion_prompt(reason:str, agent_id:int, params = {}):
     agent_name = get_agent_name(agent_id)
     profile = f"You are {agent_name}. " if agent_id >= 0 else ""
-    prompt = profile + f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Output in 3 to 5 sentences. \nGive your plan:"
-    #prompt = profile + f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Give your plan:"
+    image_explain = get_image_explain(agent_id, params)
+    prompt = profile + image_explain + f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Output only your plan in 3 to 5 sentences. \nGive your plan:"
+    #prompt = profile + image_explain + f"You will be given the history of a past experience in which you were placed in an environment and given a task to complete. You were unsuccessful in completing the task because of {reason}. Do not summarize your environment, but rather think about the strategy and path you took to attempt to complete the task. Devise a concise, new plan of action that accounts for your mistake with reference to specific actions that you should have taken. For example, if you tried A and B but forgot C, then devise a plan to achieve C with environment-specific actions. You will need this later when you are solving the same task. Give your plan:"
     return prompt
 
 # 行動を生成する時のプロンプトに記述する指示文を返す
-def get_action_prompt(env_name:str, agent_id:int):
+def get_action_prompt(env_name:str, agent_id:int, params = {}):
     agent_name = get_agent_name(agent_id)
     profile = f"You are {agent_name}. " if agent_id >= 0 else ""
+    image_explain = get_image_explain(agent_id, params)
     actions_joined = get_actions_joined_str(env_name, "or")
-    prompt = profile + f"What is the best action to achieve your task in {actions_joined}? Output only result."
+    prompt = profile + image_explain + f"What is the best action to achieve your task in {actions_joined}? Output only result."
     return prompt
 
 # メッセージを生成する時のプロンプトに記述する指示文を返す
-def get_communication_prompt(label:str, agent_id:int, targets:str):
+def get_communication_prompt(label:str, agent_id:int, targets:str, params={}):
     targets_str = " and ".join(targets)
     agent_name = get_agent_name(agent_id)
+    profile = f"You are {agent_name}. " if agent_id >= 0 else ""
+    image_explain = get_image_explain(agent_id, params)
     if label == "message":
-        prompt = f'You are {agent_name}. You are in a cooperative relationship with {targets_str}. To achieve mission, Output only message to {targets_str} in 2 to 5 sentences.'
+        prompt = profile + image_explain + f'You are in a cooperative relationship with {targets_str}. The mission has not yet been accomplished. To achieve mission, Output only message to {targets_str} in 2 to 5 sentences.'
         #prompt = f'You are in a cooperative relationship with {targets_str}. To achieve mission, Output only message to {targets_str}.'
     elif label == "conversation":
-        prompt = f'You are {agent_name}. You are in a cooperative relationship with {targets_str}, and discussing to decide next action. To achieve mission, output only reply message to them in 1 to 3 sentences.'
+        prompt = profile + image_explain + f'You are in a cooperative relationship with {targets_str}, and discussing to decide next action. The mission has not yet been accomplished. To achieve mission, output only reply message to them in 1 to 3 sentences.'
         #prompt = f'You are in a cooperative relationship with {targets_str}, and discussing to decide next action. To achieve mission, output only reply message to them.'
     return prompt
 
@@ -171,9 +201,9 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
             result = obj_name
         elif obj_id == 4: # Door
             if state == 0:
-                result = f"opened {obj_name}"
+                result = f"{obj_color} open {obj_name}"
             elif state == 1:
-                result = f"locked {obj_name}"
+                result = f"{obj_color} closed {obj_name}"
             elif state == 2:
                 result = f"{obj_color} locked {obj_name}"
         elif obj_id == 5: # Key
@@ -258,7 +288,10 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
                 world_pos = local_to_world_pos(local_pos, direction, self_pos)
                 obj_pos = position_to_text_euler(world_pos)
 
-                obj_info = f"{obj_name} is at {obj_pos}."
+                if local_pos == (1, 0):# 正面の時の例外
+                    obj_info = f"{obj_name} is in your forward, at {obj_pos}."
+                else:
+                    obj_info = f"{obj_name} is at {obj_pos}."
                 obj_info = obj_info[:1].upper() + obj_info[1:]
                 obj_infos.append(obj_info)
 
@@ -298,6 +331,8 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
         sentences.append(f'You are at {self_pos_str}.') # 絶対位置
         if len(carrying_info) > 0:
             sentences.append(f'You are carrying {carrying_info}.')
+        else:
+            sentences.append(f'You have no item.')
         sentences.extend(obj_infos)
         result = ' '.join(sentences)
         return result
@@ -307,19 +342,19 @@ def obs_to_str_baby(env, observations, options:dict={}) -> list[str]:
 # 文字列を行動IDに変換する
 def str_to_action(text:str, params):
     env_name = params["env_name"]
-
+    text = text.lower()
     # 正式な行動名とマッチさせる
     actions_str = get_actions_str(env_name)
     action_to_idx = {actions_str[i]:i for i in range(len(actions_str))}
     for action, value in action_to_idx.items():
-        match = re.compile(action).search(text)
+        match = re.compile(action.lower()).search(text)
         if match: return value
 
     # 簡易的な行動名とマッチさせる
     brief_actions_str = get_actions_str(env_name)
     brief_action_to_idx = {actions_str[i]:i for i in range(len(brief_actions_str))}
     for action, value in brief_action_to_idx.items():
-        match = re.compile(action).search(text)
+        match = re.compile(action.lower()).search(text)
         if match: return value
 
     return 0

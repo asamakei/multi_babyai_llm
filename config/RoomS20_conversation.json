@@ -1,24 +1,6 @@
 {
-    "hyperparam": {
-        "env_name" : "BabyAI-1RoomS20-v0",
-        "agent_num" : 2,
-        "max_step" : 30,
-        "realtime_rendering" : true,
-        "reflexion_memory_size" : 5,
-        "reflexion_history_size" : 10,
-        "trial_count" : 100,
-        "env_fixed_seed" : 0 
-    },
-
-    "policy_option":{
-        "policy_name" : "conversation_llm",
-
-        "llm_model" : "meta-llama/Meta-Llama-3.1-70B-Instruct",
-        "free_mode" : false,
-        "sight_include_agents": true,
-
-        "conversation_pairs" : [[0, 1]],
-        "conversation_count" : 2,
-        "without_past_messages" : false
-    }
+    "extends": [
+        "RoomS20",
+        "base/Conversation"
+    ]
 }

@@ -1,0 +1,7 @@
+{
+    "hyperparam": {
+        "env_name" : "BabyAI-1RoomS20-v0",
+        "max_step" : 30,
+        "env_fixed_seed" : 0
+    }
+}

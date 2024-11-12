@@ -1,0 +1,6 @@
+{
+    "extends": [
+        "RoomS20",
+        "base/Message"
+    ]
+}

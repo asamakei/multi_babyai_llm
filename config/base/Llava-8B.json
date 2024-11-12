@@ -1,0 +1,6 @@
+{
+    "policy_option":{
+        "llm_model" : "llava-hf/llama3-llava-next-8b-hf",
+        "is_use_vision" : true
+    }
+}

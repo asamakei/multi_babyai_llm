@@ -1,0 +1,13 @@
+{
+    "hyperparam": {
+        "agent_num" : 2,
+        "realtime_rendering" : true
+    },
+
+    "policy_option":{
+        "policy_name" : "conversation_llm",
+        "free_mode" : false,
+        "sight_include_agents": true,
+        "without_past_messages" : false
+    }
+}

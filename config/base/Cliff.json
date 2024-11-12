@@ -1,0 +1,8 @@
+{
+    "hyperparam": {
+        "env_name" : "CliffWalking-v0",
+        "max_step" : 20,
+        "env_fixed_seed" : 0,
+        "agent_num" : 1
+    }
+}
