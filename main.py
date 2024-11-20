@@ -80,6 +80,9 @@ def run(config:dict):
 
             # 行動を決定し実行する
             actions, response = policy.get_action(env, reflexion, config)
+            if utils.get_value(config, "is_use_feedback", False):
+                feedbacks = env_utils.get_feedbacks(env, obs, actions, config)
+                reflexion.add_histories("observation", feedbacks)
             obs, reward, done, truncated, info =  env.step(actions)
 
             # 終了状態と状態の評価を取得
@@ -108,13 +111,13 @@ def run(config:dict):
 
         # reflexionを実行
         print("\n[info] running reflexion...")
-        memory = reflexion.run(is_success, reason, config)
+        memory, queries = reflexion.run(is_success, reason, config)
 
         # ログなどの処理
         history = make_history_log(env, reflexion)
         logger.output(f"log_history_trial{trial}", history)
         
-        logger.append({"memory" : memory})
+        logger.append({"reflexion_queries":queries, "memory" : memory})
         logger.output(f"log_trial{trial}")
 
         logger.output(f"reflexion_backup", {"memory" : memory, "trial": trial})

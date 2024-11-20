@@ -1,0 +1,19 @@
+{
+ "agent_num": 1,
+ "realtime_rendering": true,
+ "policy_name": "subgoal_llm",
+ "free_mode": false,
+ "sight_include_agents": true,
+ "history_message_count": 2,
+ "is_use_consideration": false,
+ "config_name": "Debug",
+ "reflexion_memory_size": 3,
+ "reflexion_history_size": 10,
+ "trial_count": 100,
+ "env_name": "BabyAI-UnlockPickup-v0",
+ "max_step": 30,
+ "env_fixed_seed": 0,
+ "subgoal_max_generation": 8,
+ "llm_model": "gpt-4o-mini",
+ "is_use_vision": false
+}

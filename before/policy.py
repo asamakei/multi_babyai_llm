@@ -72,7 +72,7 @@ def init(params, options):
         load_flan(model_name)
 
 def run_reflexion(is_success: bool, reason: str, options):
-    history = reflexion["history"]
+    history:EnvironmentHistory = reflexion["history"]
     result_str = "SUCCESS" if is_success else f"FALIED"
     history.add("result", result_str)
     if is_success: return reflexion["memory"]

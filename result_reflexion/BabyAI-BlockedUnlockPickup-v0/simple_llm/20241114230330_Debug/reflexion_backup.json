@@ -1,0 +1,9 @@
+{
+ "memory": [
+  [
+   "1. From your current position at (4, 1) facing east, turn left to face north.\n2. Go forward to (4, 0), but since there\u2019s a wall, go back to (4, 1) and then turn right to face south.\n3. Go forward to (4, 2) and then go forward again to (4, 3). \n4. Finally, move forward to (4, 4) where the blue ball is located, and pick it up. \n5. Use the blue ball to complete the mission as soon as possible.",
+   "1. From (4, 4), turn right to face west.\n2. Go forward to (3, 4) and confirm that I am carrying the blue ball, as I did previously.\n3. Turn left to face south.\n4. Go forward to (4, 4), then turn left to face east and go to (4, 5).\n5. Pick up the box at (4, 5) to successfully complete the mission."
+  ]
+ ],
+ "trial": 1
+}

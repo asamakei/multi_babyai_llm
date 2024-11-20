@@ -44,8 +44,8 @@ class History:
     def __str__(self) -> str:
         return self.get_history_str()
     
-    def get_history_str(self, is_without_past_messages=False):
-        s: str = self.base_query + '\n'
+    def get_history_str(self, message_count=0):
+        s: str = self.base_query + '\n' + 'The following is your history.' + '\n'
         last_step = self.history[-1]['step']
         for i, item in enumerate(self.history):
             label = item['label']
@@ -56,7 +56,7 @@ class History:
             elif label == 'observation':
                 s += value
             elif label == 'message':
-                if is_without_past_messages and step < last_step:
+                if message_count > 0 and step + message_count <= last_step:
                     continue
                 s += value
             elif label == 'result':
@@ -78,6 +78,57 @@ class History:
         query += f"\nHere is the task:\n{task_info}"
         return query
 
+class SubgoalTree:
+    def __init__(self):
+        self.reset()
+    
+    def reset(self):
+        self.node_count = 0
+        self.content = []
+        self.parent = []
+        self.childrens = []
+        self.now_node = -1
+        self.failed_node = -1
+    
+    def append(self, content, is_move=True):
+        new_node_id = self.node_count
+        self.node_count += 1
+        self.content.append(content)
+        self.parent.append(self.now_node)
+        self.childrens.append([])
+        self.childrens[self.now_node].append(new_node_id)
+        if is_move:
+            self.now_node = new_node_id
+        return new_node_id
+
+    def append_failed_node(self):
+        self.failed_node = self.append("")
+
+    def move_up(self):
+        parent = self.parent[self.now_node]
+        if parent >= 0:
+            self.now_node = parent
+        return self.now_node
+    
+    def get_now_subgoal(self):
+        return self.content[self.now_node]
+
+    def get_all_sequence(self, node=0, is_ignore_failed=False):
+        nodes = self.dfs(node)
+        result = []
+        for n in nodes:
+            if n == self.failed_node and not is_ignore_failed:
+                break
+            result.append(self.content[n])
+        return result
+
+    def dfs(self, node):
+        result = []
+        for next in self.childrens[node]:
+            result.extend(self.dfs(next))
+        result.append(node)
+        return result
+
 # Reflexionに関する全般処理を行うクラス
 # エピソードを超えてメモリを保持する
 class Reflexion:
@@ -97,6 +148,8 @@ class Reflexion:
             [],
             history_size
         ) for _ in range(self.agent_num)]
+
+        self.subgoal_tree = SubgoalTree()
     
     # 履歴を追加
     def add_histories(self, label:str, contents:list[str]):
@@ -114,28 +167,28 @@ class Reflexion:
         self.add_histories("result", [result] * self.agent_num)
 
         # 達成していたらReflexionを行わない
-        if is_success: return self.memories
+        if is_success: return self.memories, []
 
         is_use_vision = utils.get_value(params,"is_use_vision", False)
         imgs = self.env.render_masked() if is_use_vision else []
 
+        queries = []
         # エージェントの数だけ実行
         for agent_id in range(self.agent_num):
             # 指示文を取得
             instr = env_utils.get_reflexion_prompt(reason, agent_id, params)
             # 反省文を出力
             prompt = str(self.histories[agent_id]) + "\n" + instr
-            if is_use_vision:
-                text, _ = llm_utils.vlm(prompt, imgs[agent_id])
-            else:
-                text, _ = llm_utils.llm(prompt)
+            image = imgs[agent_id] if is_use_vision else None
+            text, _ = llm_utils.llm(prompt, image)
+            queries.append(prompt)
 
             # メモリに追加
             self.memories[agent_id].append(text)
             if len(self.memories[agent_id]) > self.memory_size:
                 self.memories[agent_id] = self.memories[agent_id][-self.memory_size:]
 
-        return self.memories
+        return self.memories, queries
     
     # エピソードが終わった時に反省文だけ引き継いで履歴をリセットする処理
     def reset(self, env, params):
@@ -148,6 +201,7 @@ class Reflexion:
             self.memories[i],
             history_size
         ) for i in range(self.agent_num)]
+        self.subgoal_tree.reset()
 
     # メッセージを生成する時のプロンプトを返す
     def get_message_prompt(self, agent_id:int, targets:list[str], params:dict):
@@ -159,21 +213,41 @@ class Reflexion:
     
     # 会話文またはメッセージを生成する時のプロンプトを返す
     def get_communication_prompt(self, agent_id:int, targets:list[str], label:str, params:dict):
-        if utils.get_value(params, "without_past_messages", False):
-            history = self.histories[agent_id].get_history_str(True)
-        else:
-            history = str(self.histories[agent_id])
+        message_count = utils.get_value(params, "history_message_count", 0)
+        history = self.histories[agent_id].get_history_str(message_count)
         instr = env_utils.get_communication_prompt(label, agent_id, targets, params)
-        agent_name = env_utils.get_agent_name(agent_id)
+        agent_name = env_utils.get_agent_name(agent_id, params)
         prompt = f"{history}\n\n{instr}\n{agent_name}:"
         return prompt
     
     # 行動を生成する際のプロンプトを返す
     def get_action_prompt(self, agent_id:int, params:dict):
-        if utils.get_value(params, "without_past_messages", False):
-            history = self.histories[agent_id].get_history_str(True)
-        else:
-            history = str(self.histories[agent_id])
+        message_count = utils.get_value(params, "history_message_count", 0)
+        history = self.histories[agent_id].get_history_str(message_count)
         instr = env_utils.get_action_prompt(self.env_name, agent_id, params)
         prompt = f"{history}\n\n{instr}\n>"
+        return prompt
+    
+    # 思考を生成する際のプロンプトを返す
+    def get_consideration_prompt(self, agent_id:int, params:dict):
+        message_count = utils.get_value(params, "history_message_count", 0)
+        history = self.histories[agent_id].get_history_str(message_count)
+        instr = env_utils.get_consideration_prompt(self.env_name, agent_id, params)
+        prompt = f"{history}\n\n{instr}\nYour think:"
+        return prompt
+    
+    # サブゴールを生成する際のプロンプトを返す
+    def get_subgoal_prompt(self, agent_id:int, subgoals:list[str], params:dict):
+        message_count = utils.get_value(params, "history_message_count", 0)
+        history = self.histories[agent_id].get_history_str(message_count)
+        instr = env_utils.get_subgoal_prompt(self.env_name, agent_id, subgoals, params)
+        prompt = f"{history}\n\n{instr}\nYour subgoal:"
+        return prompt
+    
+    # サブゴールを行動に変換する際のプロンプトを返す
+    def get_subgoal_to_action_prompt(self, agent_id:int, subgoals:list[str], params:dict):
+        message_count = utils.get_value(params, "history_message_count", 0)
+        history = self.histories[agent_id].get_history_str(message_count)
+        instr = env_utils.get_subgoal_to_action_prompt(self.env_name, agent_id, subgoals, params)
+        prompt = f"{history}\n\n{instr}\nYour action:"
         return prompt

@@ -1,0 +1,9 @@
+{
+    "hyperparam": {
+        "agent_num" : 1
+    },
+    "policy_option":{
+        "policy_name" : "subgoal_llm",
+        "subgoal_max_generation" : 6
+    }
+}

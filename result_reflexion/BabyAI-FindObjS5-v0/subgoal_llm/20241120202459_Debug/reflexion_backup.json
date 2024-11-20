@@ -1,0 +1,10 @@
+{
+ "memory": [
+  [
+   "To complete the task, I should have turned left at time 45 and gone through the yellow closed door at (10, 4) instead of turning left and right multiple times. I should have also explored the area more thoroughly to find the box and pick it up. Additionally, I should have avoided going towards the wall at (12, 5) and focused on finding the box.",
+   "To complete the task, I should have turned left at time 45 and gone through the yellow closed door at (6, 8) instead of turning left and right multiple times. I should have also explored the area more thoroughly to find the box and pick it up. Additionally, I should have avoided going towards the wall at (4, 5) and focused on finding the box, possibly by going forward at time 45 instead of turning left.",
+   "To complete the task, I should have turned left at time 45 and gone through the yellow closed door at (6, 8) instead of turning left and right multiple times. I should have also explored the area more thoroughly to find the box and pick it up. Additionally, I should have avoided going towards the wall at (8, 4) and focused on finding the box, possibly by going forward at time 45 instead of turning left."
+  ]
+ ],
+ "trial": 2
+}

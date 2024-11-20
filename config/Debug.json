@@ -2,9 +2,9 @@
     "extends": [
         "base/General",
         "base/Reflexion",
-        "base/BlockedUnlockPickup",
-        "base/Simple",
-        "base/Llama3.2-11B"
+        "base/FindObjS5",
+        "base/Subgoal",
+        "base/Llama3.1-70B"
     ],
 
     "hyperparam": {
@@ -12,5 +12,6 @@
     },
 
     "policy_option":{
+        "free_mode" : false
     }
 }

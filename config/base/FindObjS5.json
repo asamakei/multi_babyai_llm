@@ -1,7 +1,7 @@
 {
     "hyperparam": {
         "env_name" : "BabyAI-FindObjS5-v0",
-        "max_step" : 30,
+        "max_step" : 50,
         "env_fixed_seed" : 2
     }
 }

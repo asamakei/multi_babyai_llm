@@ -1,0 +1,26 @@
+{
+ "agent_num": 2,
+ "realtime_rendering": true,
+ "policy_name": "conversation_llm",
+ "free_mode": false,
+ "sight_include_agents": true,
+ "history_message_count": 2,
+ "is_use_consideration": false,
+ "is_use_feedback": true,
+ "config_name": "BlockedUnlock_conversation",
+ "reflexion_memory_size": 3,
+ "reflexion_history_size": 10,
+ "trial_count": 100,
+ "env_name": "BabyAI-BlockedUnlockPickup-v0",
+ "max_step": 30,
+ "env_fixed_seed": 0,
+ "llm_model": "meta-llama/Meta-Llama-3.1-70B-Instruct",
+ "is_use_vision": false,
+ "conversation_pairs": [
+  [
+   0,
+   1
+  ]
+ ],
+ "conversation_count": 2
+}

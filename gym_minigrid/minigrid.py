@@ -1624,6 +1624,10 @@ class MiniGridEnv(gym.Env):
             imgs.append(img)
         return imgs
 
+    def render_no_highlight(self):
+        img = self.get_frame(False, self.tile_size, self.agent_pov)
+        return img
+
     def close(self):
         if self.window:
             self.window.close()

@@ -1,4 +1,5 @@
 import os
+import utils.utils as utils
 
 from openai import OpenAI
 
@@ -30,6 +31,10 @@ class LLM:
 
     # プロンプトをChat形式に変換
     def prompt_format(self, prompt):
+        return [{"role": "system", "content": prompt}]
+
+    # 画像付きプロンプトをChat形式に変換
+    def prompt_format_vision(self, prompt, image):
         return [{"role": "system", "content": prompt}]
 
     # プロンプトをもとに応答を生成
@@ -138,35 +143,60 @@ class Llava(LLM):
         image_token = "<image>"
 
     def prompt_format(self, prompt):
-        return f"[INST] {prompt} [/INST]"
+        #return f"[INST] {prompt} [/INST]"
+        return [
+            {"role": "user","content": [{"type": "text", "text": prompt},],},
+        ]
 
     def generate_text(self, prompt):
         return "", {}
     
     def generate_text_with_vision(self, prompt, image):
-        input_text = self.prompt_format(prompt)
+        message = self.prompt_format(prompt)
+        input_text = self.processor.apply_chat_template(message, add_generation_prompt=True)
         inputs = self.processor(input_text, image, return_tensors="pt").to(self.model.device)
-        response = self.model.generate(**inputs, max_new_tokens=512)
-        text = self.processor.decode(response[0], skip_special_tokens=True)[len(input_text):]
+        response = self.model.generate(
+            **inputs,
+            max_new_tokens=512
+        )
+        text = self.processor.decode(response[0][1:-1])[len(input_text):]
         return text, {"output":self.processor.decode(response[0])}
 
 class Gpt(LLM):
     def __init__(self, model_name):
-        super.__init__(model_name)
+        super().__init__(model_name)
         self.client = OpenAI(api_key = ENV.openai_api_key)
     
-    def generate_text(self, prompt):
-        message = self.prompt_format(prompt)
+    def prompt_format(self, prompt, image = None):
+        if image is None: return super().prompt_format(prompt)
+
+        image_base64 = utils.np_image_to_base64(image)
+        return [{
+            "role": "user",
+            "content": [
+                {"type": "text", "text": prompt},
+                {"type": "image_url", "image_url": {"url":  f"data:image/jpeg;base64,{image_base64}"}}
+            ]
+        }]
+
+    def call_api(self, prompt, image = None):
+        messages = self.prompt_format(prompt, image)
         response = self.client.chat.completions.create(
             model = self.model_name,
-            messages = message
+            messages = messages
         )
         text = response.choices[0].message.content
-        return text, response
+        return text, {}        
+
+    def generate_text(self, prompt):
+        return self.call_api(prompt)
+
+    def generate_text_with_vision(self, prompt, image):
+        return self.call_api(prompt, image)
 
 class Flan(LLM):
     def __init__(self, model_name):
-        super.__init__(model_name)
+        super().__init__(model_name)
         hyperparams = {
             "model_name": model_name,
             "env": "Blackjack-v1",
@@ -216,14 +246,11 @@ class Flan(LLM):
 llm_api:LLM = None
 
 # 事前に読み込んだLLMを使用する関数
-def llm(prompt:str):
+def llm(prompt:str, image = None):
     global llm_api
+    if image is not None:
+        return llm_api.generate_text_with_vision(prompt, image)
     return llm_api.generate_text(prompt)
-
-# 事前に読み込んだVLMを使用する関数
-def vlm(prompt:str, image):
-    global llm_api
-    return llm_api.generate_text_with_vision(prompt, image)
 
 # LLMを読み込む
 def load_llm(params):
