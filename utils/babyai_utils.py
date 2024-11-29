@@ -48,10 +48,8 @@ def local_to_obj(obs, pos):
 def obs_to_str_baby(env, observations, params:dict={}) -> list[str]:
     
     def object_to_detail_text(obj, params):
-        result = ""
         if obj[0] >= 10:
-            if not utils.get_value(params, "sight_include_agents", False):
-                result = get_agent_info_str(id - 10)
+            result = get_agent_info_str(obj[0] - 10)
         else:
             result = object_to_text(obj, params)
         return result
@@ -69,37 +67,46 @@ def obs_to_str_baby(env, observations, params:dict={}) -> list[str]:
 
         self_dir = obs['direction']
         self_pos = env.agents_pos[agent_id]
-        is_carrying = False
-        carrying_info = "no item"
+        carrying_obj_name = "no item"
         forward_obj_name = "no object"
+        right_obj_name = "no object"
+        left_obj_name = "no object"
         obj_texts = []
+        agent_texts = []
+        is_agent_observable = utils.get_value(params, "sight_include_agents", False)
 
         for y in range(height):
             for x in range(width):
                 obj_name = object_to_detail_text(grid[x][y], params)
+                if obj_name == "": continue
+
                 local_pos = (width // 2 - x, height - y - 1)
-                world_pos = local_to_world_pos(local_pos, self_dir, self_pos)
-                
-                if obj_name == "":
+                if local_pos == (0, 0): # 運んでいるオブジェクト名
+                    carrying_obj_name = obj_name
                     continue
-                elif local_pos == (0, 0):
-                    is_carrying = True
-                    carrying_info = obj_name
-                    continue
-
-                if local_pos == (0, 1):# 正面の時の例外
+                if local_pos == (0, 1): # 正面にあるオブジェクト名
                     forward_obj_name = obj_name
+                elif local_pos == (-1, 0): # 右にあるオブジェクト名
+                    right_obj_name = obj_name
+                elif local_pos == (1, 0): # 左にあるオブジェクト名
+                    left_obj_name = obj_name
 
-                obj_text = f"{obj_name} is at {world_pos}."
+                # ここではエージェント情報は飛ばす
+                obj_id = grid[x][y][0]
+                if is_agent_observable and obj_id >= 10:
+                    continue
+
+                world_pos = local_to_world_pos(local_pos, self_dir, self_pos)
+                obj_text = f"There is {obj_name} at {world_pos}."
                 obj_texts.append(obj_text)
 
-        if utils.get_value(params, "sight_include_agents", False):
+        if is_agent_observable:
             for target_id in range(env.agent_num):
                 if target_id == agent_id: continue
-                obj_name = get_agent_info_str(target_id)
+                agent_name = get_agent_info_str(target_id)
                 target_pos = env.agents_pos[target_id]
-                obj_text = f"{obj_name} is at {target_pos}."
-                obj_texts.append(obj_text)
+                agent_text = f"{agent_name} is at {target_pos}."
+                agent_texts.append(agent_text)
 
         forward_pos = local_to_world_pos((0, 1), self_dir, self_pos)
         right_pos = local_to_world_pos((-1, 0), self_dir, self_pos)
@@ -110,15 +117,18 @@ def obs_to_str_baby(env, observations, params:dict={}) -> list[str]:
 
         sentences = []
         sentences.append(f'Your mission is "{mission}".') # 目標
-        #sentences.append(f'You are looking at {self_dir_str}.') # 方角
+        sentences.append(f'You are looking at {self_dir_str}.') # 方角
         sentences.append(f'You are at {self_pos}.') # 絶対位置
         sentences.append(f'Your forward is {forward_pos}.') # 正面
         sentences.append(f'Your right is {right_pos}') # 右
         sentences.append(f'Your left is {left_pos}.') # 左
-        sentences.append(f'You have {carrying_info}.') # 所持品
-        if is_carrying: sentences.append(f'So you cannot pick up any more.')
+        sentences.append(f'You have {carrying_obj_name}.') # 所持品
+        sentences.append(f"There is a passable floor in the area.") # 通行可能であることを説明
         sentences.extend(obj_texts) # 視界にあるオブジェクト
-        sentences.append(f"There is {forward_obj_name} in your forward.") # 目の前のオブジェクト
+        sentences.extend(agent_texts) # 他エージェントの位置情報
+        sentences.append(f"There is {forward_obj_name} in your forward coordinate {forward_pos}.") # 目の前のオブジェクト
+        sentences.append(f"There is {right_obj_name} in your right coordinate {right_pos}.") # 右のオブジェクト
+        sentences.append(f"There is {left_obj_name} in your left coordinate {left_pos}.") # 左のオブジェクト
         result = utils.join_sentences(sentences)
         return result
 
@@ -145,27 +155,31 @@ def get_feedbacks(env, observations, actions:list[int], params:dict={}):
             if is_forward_empty:
                 return "You took a step forward."
             else:
-                return "You couldn't took a step forward."
+                return "You couldn't took a step forward because there is an object in your forward."
         elif action == 3:
+            if forward_id not in (5, 6, 7):
+                return f"You failed to picked up because there are no item."                
             if is_carrying:
-                return f"You failed to picked up."
-            elif forward_id in (5, 6, 7):
-                return f"You picked up {forward_name}."
+                return f"You failed to picked up because you already have other item."
             else:
-                return f"You failed to picked up."
+                return f"You picked up {forward_name}."
         elif action == 4:
             if is_carrying and is_forward_empty:
                 return f"You dropped {carrying_name}."
-            else:
+            elif is_forward_empty:
                 return f"You failed to drop."
+            else:
+                return f"You failed to drop item because there is an object in your forward."
         elif action == 5:
             if forward_id == 4 and forward_state == 1:
-                return f"You opened {forward_name}"
+                return f"You opened {forward_name}."
             elif forward_id == 4 and forward_state == 2 and carrying_id == 5 and forward_color == carrying_color:
-                return f"You opened {forward_name}"
+                return f"You opened {forward_name} using the key."
+            elif forward_id == 4 and forward_state == 2 and not (carrying_id == 5 and forward_color == carrying_color):
+                color = IDX_TO_COLOR[forward_color]
+                return f"You failed to open because you don't have {color} key."
             else:
                 return f"You failed to open."
         return f"Nothing happened."
-    
 
     return [one_agent(agent_id) for agent_id in range(env.agent_num)]

@@ -1,0 +1,26 @@
+[
+ [
+  "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. You cannot go through objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'.",
+  "",
+  "Your memory for the task below:",
+  "Trial 0:",
+  "To achieve the \"mission\" as soon as possible, ",
+  "Finding a path to the purple box is necessary. ",
+  "Navigating around the walls to the north or finding a way to move south is necessary to achieve finding a path to the purple box. ",
+  "Going forward to move towards the purple box and try to find a path to reach it is necessary to achieve navigating around the walls to the north or finding a way to move south.",
+  "Here is the task:",
+  "achieve the \"mission\" as soon as possible",
+  "The following is your history:",
+  "time 0:",
+  "Your mission is \"pick up the purple box\". You are looking at north. You are at (3, 3). Your forward is (3, 2). Your right is (4, 3) Your left is (2, 3). You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (2, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). There is wall at (0, 2). There is wall at (5, 2). There is wall at (0, 3). There is green key at (4, 3). There is wall at (5, 3). There is no object in your forward coordinate (3, 2).",
+  "Your think:To achieve the mission, I think I should go forward to move towards the purple box and try to find a path to reach it. Since my forward is (3, 2) and there is no object in that coordinate, I should go forward first.",
+  "> go forward",
+  "You took a step forward.",
+  "time 1:",
+  "Your mission is \"pick up the purple box\". You are looking at north. You are at (3, 2). Your forward is (3, 1). Your right is (4, 2) Your left is (2, 2). You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (2, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). There is wall at (0, 2). There is wall at (5, 2). There is no object in your forward coordinate (3, 1).",
+  "Your think:Since my forward is (3, 1) and there is no object in that coordinate, I should go forward to move closer to the purple box and try to find a path to reach it. This action will allow me to navigate around the walls to the north or find a way to move south, which is necessary to achieve the mission.",
+  "> go forward",
+  "You took a step forward."
+ ],
+ "length: 2"
+]

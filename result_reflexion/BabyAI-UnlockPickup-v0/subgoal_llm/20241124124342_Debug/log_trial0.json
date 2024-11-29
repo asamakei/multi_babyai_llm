@@ -1,0 +1,77 @@
+[
+ {
+  "steps": [
+   {
+    "step": 0,
+    "is_success": false,
+    "reason": "",
+    "info": {
+     "queries": [
+      "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. You cannot go through objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'.\nHere is the task:\nachieve the \"mission\" as soon as possible\nThe following is your history:\ntime 0:\nYour mission is \"pick up the purple box\". You are looking at north. You are at (3, 3). Your forward is (3, 2). Your right is (4, 3) Your left is (2, 3). You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (2, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). There is wall at (0, 2). There is wall at (5, 2). There is wall at (0, 3). There is green key at (4, 3). There is wall at (5, 3). There is no object in your forward coordinate (3, 2).\n\nYou are agent0. You think you should achieve subgoals ['achieve the \"mission\" as soon as possible']. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. The most concrete subgoal is 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward', 'open the door in forward'. Do not output with the same meaning.\nYour subgoal:",
+      "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. You cannot go through objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'.\nHere is the task:\nachieve the \"mission\" as soon as possible\nThe following is your history:\ntime 0:\nYour mission is \"pick up the purple box\". You are looking at north. You are at (3, 3). Your forward is (3, 2). Your right is (4, 3) Your left is (2, 3). You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (2, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). There is wall at (0, 2). There is wall at (5, 2). There is wall at (0, 3). There is green key at (4, 3). There is wall at (5, 3). There is no object in your forward coordinate (3, 2).\n\nYou are agent0. You think you should achieve subgoals ['go to green key', 'achieve the \"mission\" as soon as possible']. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. The most concrete subgoal is 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward', 'open the door in forward'. Do not output with the same meaning.\nYour subgoal:",
+      "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. You cannot go through objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'.\nHere is the task:\nachieve the \"mission\" as soon as possible\nThe following is your history:\ntime 0:\nYour mission is \"pick up the purple box\". You are looking at north. You are at (3, 3). Your forward is (3, 2). Your right is (4, 3) Your left is (2, 3). You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (2, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). There is wall at (0, 2). There is wall at (5, 2). There is wall at (0, 3). There is green key at (4, 3). There is wall at (5, 3). There is no object in your forward coordinate (3, 2).\n\nYou are agent0. You think you should achieve ['go to green key', 'achieve the \"mission\" as soon as possible']. To achieve 'go to green key', what is the best action in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'? Output only action name.\nYour action:"
+     ],
+     "responses": [],
+     "achieved": [
+      [
+       [
+        "achieve the \"mission\" as soon as possible",
+        "No"
+       ]
+      ]
+     ],
+     "subgoals": [
+      [
+       "go to green key",
+       "achieve the \"mission\" as soon as possible"
+      ]
+     ],
+     "actions": [
+      [
+       1,
+       "turn right"
+      ]
+     ]
+    }
+   },
+   {
+    "step": 1,
+    "is_success": false,
+    "reason": "",
+    "info": {
+     "queries": [
+      "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. You cannot go through objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'.\nHere is the task:\nachieve the \"mission\" as soon as possible\nThe following is your history:\ntime 0:\nYour mission is \"pick up the purple box\". You are looking at north. You are at (3, 3). Your forward is (3, 2). Your right is (4, 3) Your left is (2, 3). You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (2, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). There is wall at (0, 2). There is wall at (5, 2). There is wall at (0, 3). There is green key at (4, 3). There is wall at (5, 3). There is no object in your forward coordinate (3, 2).\nSubgoals you planned: ['go to green key', 'achieve the \"mission\" as soon as possible']\n> turn right\nYou turned right.\ntime 1:\nYour mission is \"pick up the purple box\". You are looking at east. You are at (3, 3). Your forward is (4, 3). Your right is (3, 4) Your left is (3, 2). You have no item. There is a passable floor in the area. There is wall at (5, 0). There is wall at (5, 1). There is wall at (5, 2). There is wall at (5, 3). There is green locked door at (5, 4). There is wall at (5, 5). There is wall at (4, 0). There is green key at (4, 3). There is wall at (4, 5). There is wall at (3, 0). There is wall at (3, 5). There is green key in your forward coordinate (4, 3).\n\nYou are agent0. In the previous step, you thought you should achieve ['go to green key', 'achieve the \"mission\" as soon as possible']. Was the subgoal 'go to green key' achieved? Output only 'Yes' or 'No'.\nYes or No:",
+      "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. You cannot go through objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'.\nHere is the task:\nachieve the \"mission\" as soon as possible\nThe following is your history:\ntime 0:\nYour mission is \"pick up the purple box\". You are looking at north. You are at (3, 3). Your forward is (3, 2). Your right is (4, 3) Your left is (2, 3). You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (2, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). There is wall at (0, 2). There is wall at (5, 2). There is wall at (0, 3). There is green key at (4, 3). There is wall at (5, 3). There is no object in your forward coordinate (3, 2).\nSubgoals you planned: ['go to green key', 'achieve the \"mission\" as soon as possible']\n> turn right\nYou turned right.\ntime 1:\nYour mission is \"pick up the purple box\". You are looking at east. You are at (3, 3). Your forward is (4, 3). Your right is (3, 4) Your left is (3, 2). You have no item. There is a passable floor in the area. There is wall at (5, 0). There is wall at (5, 1). There is wall at (5, 2). There is wall at (5, 3). There is green locked door at (5, 4). There is wall at (5, 5). There is wall at (4, 0). There is green key at (4, 3). There is wall at (4, 5). There is wall at (3, 0). There is wall at (3, 5). There is green key in your forward coordinate (4, 3).\n\nYou are agent0. You think you should achieve subgoals ['achieve the \"mission\" as soon as possible']. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. The most concrete subgoal is 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward', 'open the door in forward'. Do not output with the same meaning.\nYour subgoal:",
+      "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. You cannot go through objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'.\nHere is the task:\nachieve the \"mission\" as soon as possible\nThe following is your history:\ntime 0:\nYour mission is \"pick up the purple box\". You are looking at north. You are at (3, 3). Your forward is (3, 2). Your right is (4, 3) Your left is (2, 3). You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (2, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). There is wall at (0, 2). There is wall at (5, 2). There is wall at (0, 3). There is green key at (4, 3). There is wall at (5, 3). There is no object in your forward coordinate (3, 2).\nSubgoals you planned: ['go to green key', 'achieve the \"mission\" as soon as possible']\n> turn right\nYou turned right.\ntime 1:\nYour mission is \"pick up the purple box\". You are looking at east. You are at (3, 3). Your forward is (4, 3). Your right is (3, 4) Your left is (3, 2). You have no item. There is a passable floor in the area. There is wall at (5, 0). There is wall at (5, 1). There is wall at (5, 2). There is wall at (5, 3). There is green locked door at (5, 4). There is wall at (5, 5). There is wall at (4, 0). There is green key at (4, 3). There is wall at (4, 5). There is wall at (3, 0). There is wall at (3, 5). There is green key in your forward coordinate (4, 3).\n\nYou are agent0. You think you should achieve subgoals ['pick up green key', 'achieve the \"mission\" as soon as possible']. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. The most concrete subgoal is 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward', 'open the door in forward'. Do not output with the same meaning.\nYour subgoal:",
+      "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. You cannot go through objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'.\nHere is the task:\nachieve the \"mission\" as soon as possible\nThe following is your history:\ntime 0:\nYour mission is \"pick up the purple box\". You are looking at north. You are at (3, 3). Your forward is (3, 2). Your right is (4, 3) Your left is (2, 3). You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (2, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). There is wall at (0, 2). There is wall at (5, 2). There is wall at (0, 3). There is green key at (4, 3). There is wall at (5, 3). There is no object in your forward coordinate (3, 2).\nSubgoals you planned: ['go to green key', 'achieve the \"mission\" as soon as possible']\n> turn right\nYou turned right.\ntime 1:\nYour mission is \"pick up the purple box\". You are looking at east. You are at (3, 3). Your forward is (4, 3). Your right is (3, 4) Your left is (3, 2). You have no item. There is a passable floor in the area. There is wall at (5, 0). There is wall at (5, 1). There is wall at (5, 2). There is wall at (5, 3). There is green locked door at (5, 4). There is wall at (5, 5). There is wall at (4, 0). There is green key at (4, 3). There is wall at (4, 5). There is wall at (3, 0). There is wall at (3, 5). There is green key in your forward coordinate (4, 3).\n\nYou are agent0. You think you should achieve ['pick up green key', 'achieve the \"mission\" as soon as possible']. To achieve 'pick up green key', what is the best action in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'? Output only action name.\nYour action:"
+     ],
+     "responses": [],
+     "achieved": [
+      [
+       [
+        "go to green key",
+        "Yes"
+       ],
+       [
+        "achieve the \"mission\" as soon as possible",
+        "No"
+       ]
+      ]
+     ],
+     "subgoals": [
+      [
+       "pick up green key",
+       "achieve the \"mission\" as soon as possible"
+      ]
+     ],
+     "actions": [
+      [
+       3,
+       "pick up the item in forward"
+      ]
+     ]
+    }
+   }
+  ]
+ }
+]

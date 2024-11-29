@@ -1,0 +1,10 @@
+{
+ "memory": [
+  [
+   "To complete the task of picking up the purple box, I should have gone through the green open door at (5, 4) and then turned left to head west towards the purple box. Instead of turning left at time 29, I should have gone forward one more step to reach (7, 4) and then turned left to reach the purple box at (8, 1). I should have also kept track of my surroundings to avoid going too far east and missing the box.",
+   "To complete the task of picking up the purple box, I should have gone through the green open door at (5, 4) and then turned left to head west towards the purple box. Instead of turning left at time 29, I should have gone forward one more step to reach (3, 4) and then turned left to reach the purple box at (8, 1). I should have also kept track of my surroundings to avoid going too far east and missing the box.",
+   "To complete the task of picking up the purple box, I should have gone through the green open door at (5, 4) and then turned left to head west towards the purple box. Instead of turning left at time 29, I should have gone forward one more step to reach (3, 2) or (7, 4) and then turned left to reach the purple box at (8, 1). I should have also kept track of my surroundings to avoid going too far east and missing the box."
+  ]
+ ],
+ "trial": 20
+}

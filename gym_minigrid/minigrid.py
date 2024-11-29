@@ -1408,10 +1408,10 @@ class MiniGridEnv(gym.Env):
                     self.grid.set(*self.agents_pos[agent_id], pre_obj)
                     self.grid.set(*fwd_pos, Agent(agent_id, fwd_cell))
                     self.agents_pos[agent_id] = tuple(fwd_pos)
-                if fwd_cell is not None and fwd_cell.type == "goal": # TODO! ゴール条件を検討する
+                if fwd_cell is not None and fwd_cell.type == "goal":
                     terminated = True
                     rewards[agent_id] = self._reward(agent_id)
-                if fwd_cell is not None and fwd_cell.type == "lava": # TODO! 終了条件を検討する 必要？
+                if fwd_cell is not None and fwd_cell.type == "lava":
                     terminated = True
 
             # Pick up an object

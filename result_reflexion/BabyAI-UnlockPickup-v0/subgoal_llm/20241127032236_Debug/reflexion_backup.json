@@ -1,0 +1,11 @@
+{
+ "memory": [
+  {
+   "size": 3,
+   "contents": [
+    "'drop green key' is necessary to achieve 'pick up purple box'.'move left' is necessary to achieve 'drop green key'.'move right' is necessary to achieve'move left'."
+   ]
+  }
+ ],
+ "trial": 0
+}

@@ -1,0 +1,11 @@
+{
+ "memory": [
+  {
+   "size": 3,
+   "contents": [
+    "To achieve the \"mission\" as soon as possible, \nFinding a path to the purple box is necessary. \nNavigating around the walls to the north or finding a way to move south is necessary to achieve finding a path to the purple box. \nGoing forward to move towards the purple box and try to find a path to reach it is necessary to achieve navigating around the walls to the north or finding a way to move south."
+   ]
+  }
+ ],
+ "trial": 2
+}

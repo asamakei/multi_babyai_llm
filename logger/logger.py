@@ -17,10 +17,18 @@ class NumpyJSONEncoder(json.JSONEncoder):
             return list(o)
         return JSONEncoder.default(self, o)
 
+def output(content, path):
+    with open(path, 'w') as f:
+        json.dump(content, f, indent=1, cls=NumpyJSONEncoder)
+
 class Logger:
-    def __init__(self, path, name = ""):
+    def __init__(self, path, name = "", is_create = True):
         self.log = []
         self.path = path
+
+        if not is_create:
+            self.path = self.path + "/"
+            return
 
         if not os.path.exists(self.path):
             os.makedirs(self.path)
@@ -28,8 +36,12 @@ class Logger:
         if self.path[-1] != '/': self.path += '/'
         dt_now = datetime.datetime.now()
         dt_str = dt_now.strftime('%Y%m%d%H%M%S')
-        self.path = self.path + dt_str + name + "/"
-        os.mkdir(self.path[:-1])
+        self.path = self.path + dt_str + name
+
+        if not os.path.exists(self.path):
+            os.mkdir(self.path)
+
+        self.path = self.path + "/"
 
     def append(self, obj):
         self.log.append(obj)
@@ -40,8 +52,8 @@ class Logger:
     def output(self, name, content = None):
         if content == None:
             content = self.log
-        with open(f"{self.path}{name}.json", 'w') as f:
-            json.dump(content, f, indent=1, cls=NumpyJSONEncoder)
+        path = f"{self.path}{name}.json"
+        output(content, path)
     
     def make_path(self, filename):
         return self.path + filename

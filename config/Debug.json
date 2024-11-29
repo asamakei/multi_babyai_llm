@@ -2,16 +2,20 @@
     "extends": [
         "base/General",
         "base/Reflexion",
-        "base/FindObjS5",
-        "base/Subgoal",
+        "base/UnlockPickup",
+        "base/Simple",
         "base/Llama3.1-70B"
     ],
 
     "hyperparam": {
-        "agent_num" : 1
+        "agent_num" : 2,
+        "max_step" : 50,
+        "reflexion_type" : "general"
     },
 
     "policy_option":{
-        "free_mode" : false
+        "free_mode" : false,
+        "is_use_consideration" : true,
+        "history_size" : 5
     }
 }

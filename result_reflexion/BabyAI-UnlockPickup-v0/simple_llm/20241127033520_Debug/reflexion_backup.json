@@ -1,0 +1,12 @@
+{
+ "memory": [
+  {
+   "size": 3,
+   "contents": [
+    "'drop the carrying item' is necessary to achieve 'pick up the purple box'.'move to a location where the forward is passable floor' is necessary to achieve 'drop the carrying item'.'move to the left' is necessary to achieve'move to a location where the forward is passable floor'.",
+    "'move to the left' is necessary to achieve'move to a location where the forward is passable floor'. 'drop the carrying item' is necessary to achieve 'pick up the purple box'."
+   ]
+  }
+ ],
+ "trial": 1
+}

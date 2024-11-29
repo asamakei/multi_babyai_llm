@@ -1,9 +1,11 @@
 {
     "hyperparam": {
-        "agent_num" : 1
+        "agent_num" : 1,
+        "reflexion_type" : "subgoal",
+        "reflexion_history_labels" : ["action", "observation", "feedback", "message", "count", "result"]
     },
     "policy_option":{
         "policy_name" : "subgoal_llm",
-        "subgoal_max_generation" : 6
+        "subgoal_max_generation" : 8
     }
 }

@@ -16,6 +16,7 @@ from transformers import (
     LlavaNextProcessor
 )
 
+import numpy as np
 import torch
 import ENV
 
@@ -28,6 +29,7 @@ class LLM:
     # LLMの初期化処理
     def __init__(self, model_name):
         self.model_name = model_name
+        self.internal_representations = {}
 
     # プロンプトをChat形式に変換
     def prompt_format(self, prompt):
@@ -44,6 +46,15 @@ class LLM:
     # プロンプトと画像をもとに応答を生成
     def generate_text_with_vision(self, prompt, image):
         return self.generate_text(prompt)
+    
+    # 入力の潜在表現を取得
+    def generate_internal_representation(self, prompt):
+        return np.array([0])
+    
+    def get_similarity(self, text1, text2) -> float:
+        v1 = self.generate_internal_representation(text1)
+        v2 = self.generate_internal_representation(text2)
+        return utils.get_cos_similarity(v1, v2)
 
 class Llama(LLM):
     def __init__(self, model_name):
@@ -84,7 +95,7 @@ class Llama(LLM):
         )
         response = self.pipeline(
             query,
-            max_new_tokens=512,
+            max_new_tokens=256,
             eos_token_id=self.terminators,
             pad_token_id=self.pipeline.tokenizer.eos_token_id,
             do_sample=True,
@@ -92,7 +103,36 @@ class Llama(LLM):
             top_p=0.9,
         )
         text = response[0]["generated_text"][len(query):]
+        text = response[0]["generated_text"][len(query):]
         return text, response
+    
+    def generate_internal_representation(self, prompt):
+        if prompt in self.internal_representations.keys():
+            return self.internal_representations[prompt]
+        message = self.prompt_format(prompt)
+        query = self.pipeline.tokenizer.apply_chat_template(
+            message,
+            tokenize=False,
+            add_generation_prompt=True
+        )
+        inputs = self.tokenizer(query, return_tensors="pt")["input_ids"].to("cuda")
+        eos_token_id = self.tokenizer.eos_token_id
+        output = self.model.generate(
+            input_ids=inputs,
+            do_sample=True,
+            temperature=0.6, # 0.6
+            top_p=0.9, # 0.9
+            max_new_tokens=1,
+            eos_token_id=eos_token_id,
+            pad_token_id=eos_token_id,
+            return_dict_in_generate=True,
+            output_logits=True,
+            output_hidden_states=True,
+        )
+        result_tensor = output.hidden_states[0][-1][0][-1]
+        internal_representation = result_tensor.to('cpu').detach().numpy().copy()
+        self.internal_representations[prompt] = internal_representation
+        return internal_representation
 
 class LlamaVision(LLM):
     def __init__(self, model_name):
@@ -251,6 +291,16 @@ def llm(prompt:str, image = None):
     if image is not None:
         return llm_api.generate_text_with_vision(prompt, image)
     return llm_api.generate_text(prompt)
+
+# テキストの潜在表現を取得する
+def get_internal_representation(text:str):
+    global llm_api
+    return llm_api.generate_internal_representation(text)
+
+# テキスト同士の類似度を取得する
+def get_similarity(text1:str, text2:str) -> float:
+    global llm_api
+    return llm_api.get_similarity(text1, text2)
 
 # LLMを読み込む
 def load_llm(params):

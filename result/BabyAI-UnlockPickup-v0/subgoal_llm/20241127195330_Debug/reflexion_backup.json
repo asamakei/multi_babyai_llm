@@ -1,0 +1,13 @@
+{
+ "memory": [
+  {
+   "size": 3,
+   "contents": [
+    "To accomplish the task efficiently, I will start by turning left to face the green key and then pick it up. After obtaining the key, I will turn right to face the green locked door and move forward to it, then open the green locked door using the green key. Next, I will move forward until I reach the column with the purple box, then turn left to face the purple box and move left to get closer to the purple box, drop the green key, and finally pick up the purple box in front of me to complete the mission.",
+    "To accomplish the task efficiently, I will start by turning left to face the green key and then pick it up. After obtaining the key, I will turn right to face the green locked door and move forward to it, then open the green locked door using the green key. Next, I will move forward until I reach the column with the purple box, then turn left to face the purple box and move left to get closer to the wall, then drop the green key. Finally, I will move right to pick up the purple box in front of me to complete the mission.",
+    "To accomplish the task efficiently, I will start by turning left to face the green key and then pick it up. After obtaining the key, I will turn right to face the green locked door and move forward to it, then open the green locked door using the green key. Next, I will move forward until I reach the column with the purple box, then turn right to face the wall, move forward to get closer to the wall, drop the green key, then move left to pick up the purple box in front of me to complete the mission."
+   ]
+  }
+ ],
+ "trial": 50
+}

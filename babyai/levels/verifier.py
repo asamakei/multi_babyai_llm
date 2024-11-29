@@ -322,15 +322,15 @@ class PickupInstr(ActionInstr):
         super().reset_verifier(env)
 
         # Object previously being carried
-        self.preCarrying = None
+        self.preCarrying = [None] * env.agent_num
 
         # Identify set of possible matching objects in the environment
         self.desc.find_matching_objs(env)
 
     def verify_action(self, action, agent_id):
         # To keep track of what was carried at the last time step
-        preCarrying = self.preCarrying
-        self.preCarrying = self.env.carrying[agent_id]
+        preCarrying = self.preCarrying[agent_id]
+        self.preCarrying[agent_id] = self.env.carrying[agent_id]
 
         # Only verify when the pickup action is performed
         if action != self.env.actions.pickup:
@@ -344,8 +344,6 @@ class PickupInstr(ActionInstr):
         if self.strict:
             if self.env.carrying[agent_id]:
                 return 'failure'
-
-        self.preCarrying = self.env.carrying[agent_id]
 
         return 'continue'
 
@@ -370,7 +368,7 @@ class PutNextInstr(ActionInstr):
         super().reset_verifier(env)
 
         # Object previously being carried
-        self.preCarrying = None
+        self.preCarrying = [None] * env.agent_num
 
         # Identify set of possible matching objects in the environment
         self.desc_move.find_matching_objs(env)
@@ -392,8 +390,8 @@ class PutNextInstr(ActionInstr):
 
     def verify_action(self, action, agent_id):
         # To keep track of what was carried at the last time step
-        preCarrying = self.preCarrying
-        self.preCarrying = self.env.carrying[agent_id]
+        preCarrying = self.preCarrying[agent_id]
+        self.preCarrying[agent_id] = self.env.carrying[agent_id]
 
         # In strict mode, picking up the wrong object fails
         if self.strict:

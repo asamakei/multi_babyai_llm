@@ -1,0 +1,29 @@
+{
+ "agent_num": 1,
+ "realtime_rendering": true,
+ "policy_name": "subgoal_llm",
+ "free_mode": false,
+ "sight_include_agents": true,
+ "history_message_count": 2,
+ "is_use_consideration": false,
+ "is_use_feedback": true,
+ "config_name": "Debug",
+ "reflexion_memory_size": 3,
+ "reflexion_history_size": 10,
+ "trial_count": 100,
+ "reflexion_type": "subgoal",
+ "reflexion_history_labels": [
+  "action",
+  "observation",
+  "feedback",
+  "message",
+  "count",
+  "result"
+ ],
+ "env_name": "BabyAI-UnlockPickup-v0",
+ "max_step": 30,
+ "env_fixed_seed": 0,
+ "subgoal_max_generation": 8,
+ "llm_model": "meta-llama/Meta-Llama-3.1-70B-Instruct",
+ "is_use_vision": false
+}
