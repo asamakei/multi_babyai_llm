@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 import utils.utils as utils
 from utils.reflexion_utils import SubgoalTree
+import utils.embedding_utils as embeding_utils
 
 def save_image(directory_path:str, trial:int, image:Image.Image):
     image_dir_path = f"{directory_path}/subgoal_tree"
@@ -111,12 +112,13 @@ def main(directory_name:str, trials:list[int]):
         if tree is None:
             print(f"[WARNING] Trial{trial} log don't exists or isn't valid.")
             break
+        tree.reduction()
         image = draw_subgoaltree(tree)
         save_image(directory_path, trial, image)
     return
 
 if __name__ == "__main__":
-    directory_name = "20241126005841_Debug"
+    directory_name = "20241203225239_Debug"
     trials = list(range(100))
     main(directory_name, trials)
     print(f"[INFO] The process is terminated.")

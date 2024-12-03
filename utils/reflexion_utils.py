@@ -158,7 +158,7 @@ class Reflexion:
     
     # サブゴールを生成する際のプロンプトを返す
     def get_subgoal_prompt(self, agent_id:int, achieved:list[str], not_achieved:list[str], params:dict):
-        instr = env_utils.get_subgoal_instr(self.env_name, agent_id, achieved, not_achieved, params)
+        instr = env_utils.get_subgoal_instr(agent_id, achieved, not_achieved, params)
         prompt = self.get_prompt(agent_id, instr, params)
         return prompt
     

@@ -194,17 +194,28 @@ def get_consideration_instr(env_name:str, agent_id:int, subgoals:list[str], para
     return prompt
 
 # サブゴールを生成する時のプロンプトに記述する指示文を返す
-def get_subgoal_instr(env_name:str, agent_id:int, achieved:list[str], not_achieved:list[str], params = {}):
+def get_subgoal_instr(agent_id:int, achieved:list[str], not_achieved:list[str], params = {}):
     agent_name = get_agent_name(agent_id, params)
-    profile = f"You are {agent_name}. " if agent_id >= 0 else ""
     image_explain = get_image_explain(agent_id, params)
-    actions = get_actions_joined_str(params["env_name"])
-    # prompt = profile + image_explain + f"You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving '{subgoal}' in a few words, abstractly at first, then gradually more concretely. The most concrete subgoal is your action. Do not output subgoals with the same meaning.\nYour subgoal:"
-    # prompt = profile + image_explain + f"You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving it in a few words, abstractly. Do not output with the same meaning.\nYour subgoal:"
-    # prompt = profile + image_explain + f"You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. Do not output with the same meaning.\nYour subgoal:"
-    # prompt = profile + image_explain + f"You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. The most concrete subgoal is {actions}. Do not output with the same meaning.\nYour subgoal:"
-    # prompt = profile + image_explain + f"You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. Do not output with the same meaning.\nYour subgoal:"
-    prompt = profile + image_explain + f"You achieved subgoals {achieved}. You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving {not_achieved[0]} in a few words, concretely. Do not output same meaning subgoal and relative subgoal.\nYour subgoal:"# abstractly at first, then gradually more
+    next = not_achieved[0]
+    # actions = get_actions_joined_str(params["env_name"])
+    sentences = []
+
+    if agent_id >= 0: sentences.append(f"You are {agent_name}. ")
+    if len(image_explain) > 0: sentences.append(image_explain)
+    
+    sentences.append(f"You achieved subgoals {achieved}.")
+    sentences.append(f"You think you should achieve subgoals {not_achieved} in order.")
+    
+    sentences.append(f"Output more concrete subgoal to achieve '{next}'.")
+    sentences.append(f"Don't output same meaning subgoal and don't use relative expressions and time-dependent expressions for agent.")
+    sentences.append(f"If it is concrete enough, the output may be taken from in your action names.")
+    sentences.append(f"Output very appropriate subgoal in a few words.")
+    
+    # sentences.append(f"Output only one subgoal for achieving {not_achieved[0]} in a few words, concretely.")
+    # sentences.append(f"Do not output same meaning subgoal and relative subgoal.")
+    prompt = " ".join(sentences)
+    prompt += f"\nYour subgoal:"
     return prompt
 
 # サブゴールを行動に変換する時のプロンプトに記述する指示文を返す

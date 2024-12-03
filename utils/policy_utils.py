@@ -3,6 +3,7 @@ from utils.reflexion_utils import Reflexion
 import utils.env_utils as env_utils
 import utils.llm_utils as llm_utils
 import utils.utils as utils
+import utils.embedding_utils as embedding_utils
 
 # LLMで行動を決定する
 def act_by_llm(env:gym.Env, reflexion:Reflexion, pre_info:dict, params:dict={}):
@@ -59,7 +60,8 @@ def act_by_hierarchical_subgoal(env:gym.Env, reflexion:Reflexion, pre_info:dict,
         text_format = subgoal_format(text)
         for i, target in enumerate(targets):
             target_format = subgoal_format(target)
-            similarity = llm_utils.get_similarity(text_format, target_format)
+            #similarity = llm_utils.get_similarity(text_format, target_format)
+            similarity = embedding_utils.get_similarity(text_format, target_format)
             if similarity > max_similarity:
                 max_index = i
                 max_similarity = similarity
@@ -68,6 +70,9 @@ def act_by_hierarchical_subgoal(env:gym.Env, reflexion:Reflexion, pre_info:dict,
     actions = []
     actions_str = env_utils.get_actions_str(params["env_name"])
     subgoal_max_generation = params["subgoal_max_generation"]
+    threshold_subgoal = utils.get_value(params, "subgoal_equal_threshold", 0.9)
+    threshold_action = utils.get_value(params, "action_equal_threshold", 0.9)
+
     for agent_id in range(env.agent_num):
 
         subgoal_tree = reflexion.subgoal_trees[agent_id]
@@ -80,18 +85,19 @@ def act_by_hierarchical_subgoal(env:gym.Env, reflexion:Reflexion, pre_info:dict,
             subgoal, _ = llm_utils.llm(prompt, imgs[agent_id])
             subgoal = subgoal_format(subgoal)
             info["queries"].append(prompt)
+            info["responses"].append(subgoal)
 
             # 行動に相当するサブゴールかどうかをチェックする
             index, similarity = get_max_similarity(subgoal, actions_str)
-            if similarity > 0.925:
+            if similarity > threshold_action:
                 subgoal = actions_str[index]
                 is_subgoal_atomic = True
                 break
 
             # すでに存在するサブゴールかどうかをチェックする
             _, similarity = get_max_similarity(subgoal, subgoals)
-            if similarity > 0.9:#0.85?
-                break # continue?
+            if similarity > threshold_subgoal:#0.85?
+                continue # break?
 
             subgoals = [subgoal] + subgoals
             subgoal_tree.append(subgoal)
@@ -101,6 +107,7 @@ def act_by_hierarchical_subgoal(env:gym.Env, reflexion:Reflexion, pre_info:dict,
             prompt = reflexion.get_subgoal_to_action_prompt(agent_id, subgoals, params)
             subgoal, _ = llm_utils.llm(prompt, imgs[agent_id])
             info["queries"].append(prompt)
+            info["responses"].append(subgoal)
             action, _ = get_max_similarity(subgoal, actions_str)
         else:
             action = env_utils.str_to_action(subgoal, params)
@@ -213,7 +220,7 @@ def conversation(env:gym.Env, reflexion:Reflexion, pre_info:dict, params:dict={}
 
     utils.dict_of_lists_extend(pre_info, info)
 
-def judge_subgoal_achievement(env:gym.Env, reflexion:Reflexion, pre_info:dict, params:dict={}):
+def judge_subgoal_achievement(env:gym.Env, reflexion:Reflexion, pre_info:dict, is_clear:bool, params:dict={}):
     info = {
         "queries":[],
         "responses":[],
@@ -226,6 +233,9 @@ def judge_subgoal_achievement(env:gym.Env, reflexion:Reflexion, pre_info:dict, p
         subgoals = subgoal_tree.get_subgoals()
         is_achieved = [False] * len(subgoals)
         log_outputs = ["No"] * len(subgoals)
+        if is_clear:
+            is_achieved[-1] = True
+            log_outputs[-1] = "Yes"
         for i in range(len(subgoals)-1):
             prompt = reflexion.get_subgoal_achieved_prompt(agent_id, subgoals[i:], params)
             judge, _ = llm_utils.llm(prompt, imgs[agent_id])

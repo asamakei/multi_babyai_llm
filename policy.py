@@ -40,7 +40,7 @@ def conversation_policy(env:gym.Env, reflexion:Reflexion, info:dict, params:dict
 # サブゴールを階層的に生成して行動を決定する方策
 def subgoal_policy(env:gym.Env, reflexion:Reflexion, info:dict, params:dict={}):
     if env.now_step > 0:
-        judge_subgoal_achievement(env, reflexion, info, params)
+        judge_subgoal_achievement(env, reflexion, info, False, params)
     consideration(env, reflexion, info, params)
     actions = act_by_hierarchical_subgoal(env, reflexion, info, params)
     return actions
@@ -49,7 +49,7 @@ def subgoal_policy(env:gym.Env, reflexion:Reflexion, info:dict, params:dict={}):
 def simple_subgoal_policy(env:gym.Env, reflexion:Reflexion, info:dict, params:dict={}):
     # サブゴールを履歴に一時的に載せる 処理が汚いので直したい
     if env.now_step > 0:
-        judge_subgoal_achievement(env, reflexion, info, params)
+        judge_subgoal_achievement(env, reflexion, info, False, params)
     reflexion.remove_label("subgoal")
     reflexion.add_now_subgoal()
     

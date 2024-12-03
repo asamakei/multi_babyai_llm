@@ -1,0 +1,8 @@
+{
+    "hyperparam": {
+        "is_use_embedding_model" : true,
+        "embedding_model" : "paraphrase-MiniLM-L6-v2",
+        "subgoal_equal_threshold" : 0.9,
+        "action_equal_threshold" : 0.9
+    }
+}

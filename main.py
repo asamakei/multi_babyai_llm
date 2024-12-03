@@ -15,6 +15,7 @@ import utils.llm_utils as llm_utils
 from utils.reflexion_utils import Reflexion
 import utils.utils as utils
 from subgoal_visualizer import main as subgoal_visualize
+import utils.embedding_utils as embedding_utils
 
 # ファイル名から設定を読み込む
 def load_config(config_name:str):
@@ -39,6 +40,8 @@ def init_and_run(config_name:str):
     logger.output("config", config)
 
     llm_utils.load_llm(config) # 先にLLMをロードしておく
+    if utils.get_value(config, "is_use_embedding_model", False):
+        embedding_utils.load(config)
 
     print(f"------ execute {config_name} ------")
     run(logger, None, 0, config)
@@ -57,8 +60,8 @@ def run(logger:Logger, reflexion:Reflexion, trial_start:int, config:dict):
             info = reflexion.init_subgoal(config)
             log_init["subgoals"] = info
 
-    def finalize_subgoal(env, log_final):
-        policy_utils.judge_subgoal_achievement(env, reflexion, log_final, config)
+    def finalize_subgoal(env, is_success, log_final):
+        policy_utils.judge_subgoal_achievement(env, reflexion, log_final, is_success, config)
 
     # 乱数に関する初期化
     seed = utils.get_value(config, "env_fixed_seed", None)
@@ -132,7 +135,7 @@ def run(logger:Logger, reflexion:Reflexion, trial_start:int, config:dict):
 
         # サブゴールの達成判定
         log_finalize = {}
-        finalize_subgoal(env, log_finalize)
+        finalize_subgoal(env, is_success, log_finalize)
 
         # 結果を履歴に追加
         reflexion.add_result(is_success)

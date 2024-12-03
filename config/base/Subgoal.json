@@ -1,5 +1,6 @@
 {
     "extends": [
+        "base/Embedding",
         "base/Gpt-4o-Sub"
     ],
     "hyperparam": {
