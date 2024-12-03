@@ -1,0 +1,46 @@
+{
+ "agent_num": 1,
+ "realtime_rendering": true,
+ "free_mode": false,
+ "sight_include_agents": true,
+ "is_use_consideration": true,
+ "is_use_feedback": true,
+ "history_labels": [
+  "action",
+  "observation",
+  "feedback",
+  "message",
+  "consideration",
+  "count",
+  "result"
+ ],
+ "history_labels_len": {
+  "subgoal": 1,
+  "consideration": 2
+ },
+ "history_size": 5,
+ "config_name": "Debug",
+ "reflexion_memory_size": 3,
+ "reflexion_history_size": 100,
+ "reflexion_type": "none",
+ "trial_count": 100,
+ "reflexion_history_labels": [
+  "observation",
+  "message",
+  "consideration",
+  "feedback",
+  "result"
+ ],
+ "reflexion_history_labels_len": {
+  "observation": 3,
+  "message": 3,
+  "consideration": 3
+ },
+ "env_name": "BabyAI-UnlockPickup-v0",
+ "max_step": 50,
+ "env_fixed_seed": 0,
+ "policy_name": "simple_llm",
+ "llm_model": "meta-llama/Meta-Llama-3.1-70B-Instruct",
+ "is_use_vision": false,
+ "is_use_init_subgoal": true
+}

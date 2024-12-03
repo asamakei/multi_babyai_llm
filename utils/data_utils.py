@@ -27,6 +27,10 @@ class History(utils.Jsonable):
         self.history = []
         self.indexes = {}
 
+    # 履歴から特定ラベルの内容を消去
+    def remove(self, label) -> None:
+        self.history = [h for h in self.history if h['label'] != label]
+
     def __str__(self) -> str:
         return self.get_str()
 
@@ -49,7 +53,7 @@ class History(utils.Jsonable):
             if len(select) > 0 and label not in select: continue
 
             if label == 'action':
-                contents.append(f'> {value}')
+                contents.append(f'Your action: {value}')
             elif label == 'result':
                 contents.append(f'result: {value}')
             elif label == 'subgoal':

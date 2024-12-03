@@ -1,0 +1,23 @@
+[
+ [
+  "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. It is not possible to overlap objects. Each step, You must select actions in 'turn left', 'turn right', 'go the forward coordinate', 'pick up item that in the forward coordinate', 'drop carrying item to the forward coordinate' or 'open the door at the forward coordinate'.",
+  "",
+  "Here is the task:",
+  "pick up the box",
+  "",
+  "The following is your history:",
+  "time 0:",
+  "You are at (4, 4). Your forward is (4, 5), south. Your right is (3, 4), west. Your left is (5, 4), east. You have no item. There is a passable floor in the area. There is wall at (5, 5). There is wall at (3, 5). There is wall at (2, 5). There is wall at (1, 5). There is wall in your forward coordinate (4, 5). There is no object in your right coordinate (3, 4). There is wall in your left coordinate (5, 4).",
+  "Your think:To pick up the box, I need to navigate around the walls and find the box first. Since my current forward direction is blocked by a wall, I should turn and move in a different direction to explore the area.",
+  "subgoals: ['navigate to key', 'pick up key', 'navigate to door', 'open door', 'navigate to box', 'pick up the box']",
+  "> turn left",
+  "You turned left.",
+  "time 1:",
+  "You are at (4, 4). Your forward is (5, 4), east. Your right is (4, 5), south. Your left is (4, 3), north. You have no item. There is a passable floor in the area. There is blue locked door at (5, 1). There is wall at (5, 2). There is wall at (5, 3). There is wall at (5, 5). There is red ball at (4, 1). There is wall in your forward coordinate (5, 4). There is wall in your right coordinate (4, 5). There is no object in your left coordinate (4, 3).",
+  "Your think:To accomplish the task of picking up the box, I need to navigate around the walls and find the box. Since my current forward direction is blocked by a wall, I should turn and move in a different direction to explore the area, and then I can make a plan to navigate to the box.",
+  "subgoals: ['navigate to key', 'pick up key', 'navigate to door', 'open door', 'navigate to box', 'pick up the box']",
+  "> turn left",
+  "You turned left."
+ ],
+ "length: 2"
+]

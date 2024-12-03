@@ -2,6 +2,6 @@
     "hyperparam": {
         "env_name" : "BabyAI-UnlockPickup-v0",
         "max_step" : 50,
-        "env_fixed_seed" : 0
+        "env_fixed_seed" : 22
     }
 }

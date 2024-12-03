@@ -1,7 +1,7 @@
 {
     "hyperparam": {
         "env_name" : "BabyAI-UnlockToUnlock-v0",
-        "max_step" : 40,
-        "env_fixed_seed" : 0
+        "max_step" : 75,
+        "env_fixed_seed" : 44
     }
 }

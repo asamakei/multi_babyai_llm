@@ -10,7 +10,7 @@ DIRECTIONS_STR = ["east", "south", "west", "north"]
 def get_agent_name(agent_id:int):
     return f"agent{agent_id}" if agent_id >= 0 else ""
 
-def object_to_text(obj, params):
+def object_to_text(obj):
     id, color_id, state = obj 
     name = IDX_TO_OBJECT[id]
     color = IDX_TO_COLOR[color_id]
@@ -20,8 +20,8 @@ def object_to_text(obj, params):
     elif id in (2, 8, 9): # Wall, Goal, Lava
         result = name
     elif id == 4: # Door
-        state_str = ["open", "closed", "locked"][state]
-        result = f"{color} {state_str} {name}"
+        state_str = ["open ", "", "locked "][state]
+        result = f"{color} {state_str}{name}"
     elif id in (5, 6, 7): # Key, Ball, Box
         result = f"{color} {name}"
     return result
@@ -51,7 +51,7 @@ def obs_to_str_baby(env, observations, params:dict={}) -> list[str]:
         if obj[0] >= 10:
             result = get_agent_info_str(obj[0] - 10)
         else:
-            result = object_to_text(obj, params)
+            result = object_to_text(obj)
         return result
 
     def get_agent_info_str(target_id:str):
@@ -86,10 +86,13 @@ def obs_to_str_baby(env, observations, params:dict={}) -> list[str]:
                     continue
                 if local_pos == (0, 1): # 正面にあるオブジェクト名
                     forward_obj_name = obj_name
+                    continue
                 elif local_pos == (-1, 0): # 右にあるオブジェクト名
                     right_obj_name = obj_name
+                    continue
                 elif local_pos == (1, 0): # 左にあるオブジェクト名
                     left_obj_name = obj_name
+                    continue
 
                 # ここではエージェント情報は飛ばす
                 obj_id = grid[x][y][0]
@@ -112,16 +115,19 @@ def obs_to_str_baby(env, observations, params:dict={}) -> list[str]:
         right_pos = local_to_world_pos((-1, 0), self_dir, self_pos)
         left_pos = local_to_world_pos((1, 0), self_dir, self_pos)
 
-        self_dir_str = DIRECTIONS_STR[self_dir]
-        mission = obs['mission']
+        #self_dir_str = DIRECTIONS_STR[self_dir]
+        forward_dir = DIRECTIONS_STR[self_dir]
+        right_dir = DIRECTIONS_STR[(self_dir+1)%len(DIRECTIONS_STR)]
+        left_dir = DIRECTIONS_STR[self_dir-1]
+        #mission = obs['mission']
 
         sentences = []
-        sentences.append(f'Your mission is "{mission}".') # 目標
-        sentences.append(f'You are looking at {self_dir_str}.') # 方角
+        #sentences.append(f'Your mission is "{mission}".') # 目標
+        #sentences.append(f'You are facing {self_dir_str}.') # 方角
         sentences.append(f'You are at {self_pos}.') # 絶対位置
-        sentences.append(f'Your forward is {forward_pos}.') # 正面
-        sentences.append(f'Your right is {right_pos}') # 右
-        sentences.append(f'Your left is {left_pos}.') # 左
+        sentences.append(f'Your forward is {forward_pos}, {forward_dir}.') # 正面
+        sentences.append(f'Your right is {right_pos}, {right_dir}.') # 右
+        sentences.append(f'Your left is {left_pos}, {left_dir}.') # 左
         sentences.append(f'You have {carrying_obj_name}.') # 所持品
         sentences.append(f"There is a passable floor in the area.") # 通行可能であることを説明
         sentences.extend(obj_texts) # 視界にあるオブジェクト
@@ -134,6 +140,24 @@ def obs_to_str_baby(env, observations, params:dict={}) -> list[str]:
 
     return [one_agent(obs, agent_id) for agent_id, obs in enumerate(observations)]
 
+def world_to_str_baby(env, is_add_position:bool, params:dict={}) -> str:
+    grid = env.grid.encode()
+    width = env.width
+    height = env.height
+    obj_texts = []
+    for y in range(height):
+        for x in range(width):
+            obj = grid[x][y]
+            if obj[0] not in (4, 5, 6, 7): continue
+            obj_name = object_to_text(grid[x][y])
+            world_pos = (x, y)
+            if is_add_position:
+                obj_name += f" at {world_pos}"
+            obj_text = f"There is {obj_name}."
+            obj_texts.append(obj_text)
+    return " ".join(obj_texts)
+
+
 def get_feedbacks(env, observations, actions:list[int], params:dict={}):
 
     def one_agent(agent_id) -> str:
@@ -141,11 +165,11 @@ def get_feedbacks(env, observations, actions:list[int], params:dict={}):
         action = actions[agent_id]
         forward_obj = local_to_obj(observation, (0, 1))
         forward_id, forward_color, forward_state = forward_obj
-        forward_name = object_to_text(forward_obj, params)
+        forward_name = object_to_text(forward_obj)
         is_forward_empty = forward_id in (1, 3) or (forward_id == 4 and forward_state == 0) # Floor, None, Open door
         carrying_obj = local_to_obj(observation, (0, 0))
         carrying_id, carrying_color, _ = carrying_obj
-        carrying_name = object_to_text(carrying_obj, params)
+        carrying_name = object_to_text(carrying_obj)
         is_carrying = carrying_id in (5, 6, 7)
         if action == 0:
             return "You turned left."
@@ -169,7 +193,7 @@ def get_feedbacks(env, observations, actions:list[int], params:dict={}):
             elif is_forward_empty:
                 return f"You failed to drop."
             else:
-                return f"You failed to drop item because there is an object in your forward."
+                return f"You failed to drop item because there is an object in your forward coordinate."
         elif action == 5:
             if forward_id == 4 and forward_state == 1:
                 return f"You opened {forward_name}."

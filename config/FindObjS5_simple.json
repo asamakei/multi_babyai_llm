@@ -4,6 +4,6 @@
         "base/Simple"
     ],
     "hyperparam": {
-        "agent_num" : 1
+        "agent_num" : 2
     }
 }

@@ -4,6 +4,7 @@ from tqdm import tqdm
 from babyai.levels import * # 各環境を登録するためにimportがが必要
 
 import policy
+import utils.policy_utils as policy_utils
 
 from executed_configs import configs
 from logger.movie_maker import MovieMaker
@@ -45,10 +46,19 @@ def init_and_run(config_name:str):
 # Reflexionを指定Trial分実行する
 def run(logger:Logger, reflexion:Reflexion, trial_start:int, config:dict):
 
-    def make_history_log(env, reflexion:Reflexion):
+    def make_history_log(env):
         history = [str(reflexion.histories[i]).split('\n') for i in range(env.agent_num)]
         history.append("length: " + str(step+1))
         return history
+    
+    def initialize_subgoal(log_init):
+        is_init_subgoal = utils.get_value(config, "is_use_init_subgoal", False)
+        if is_init_subgoal:
+            info = reflexion.init_subgoal(config)
+            log_init["subgoals"] = info
+
+    def finalize_subgoal(env, log_final):
+        policy_utils.judge_subgoal_achievement(env, reflexion, log_final, config)
 
     # 乱数に関する初期化
     seed = utils.get_value(config, "env_fixed_seed", None)
@@ -60,15 +70,18 @@ def run(logger:Logger, reflexion:Reflexion, trial_start:int, config:dict):
         env = env_utils.make(config)
         obs, _ = env.reset(seed=seed)
         if reflexion is None:
-            reflexion = Reflexion(env, config)
+            reflexion = Reflexion(env, obs, config)
         else:
-            reflexion.reset(env, config)
+            reflexion.reset(env, obs, config)
 
         movie_maker = MovieMaker(env, logger.path)
         log_steps = []
+        log_init = {}
 
         is_success = False
         reason = ""
+
+        initialize_subgoal(log_init)
 
         # 指定ステップ数まで繰り返す
         for step in tqdm(range(config["max_step"])):
@@ -82,6 +95,8 @@ def run(logger:Logger, reflexion:Reflexion, trial_start:int, config:dict):
             obs_texts = env_utils.obs_to_str(env, obs, config)
             reflexion.add_histories("count", step)
             reflexion.add_histories("observation", obs_texts)
+
+            env.now_step = step
 
             # 行動を決定し実行する
             actions, response = policy.get_action(env, reflexion, config)
@@ -102,38 +117,39 @@ def run(logger:Logger, reflexion:Reflexion, trial_start:int, config:dict):
             })
 
             logger.clear()
-            logger.append({"steps" : log_steps,})
+            logger.append({"init" : log_init, "steps" : log_steps,})
             logger.output(f"log_trial{trial}")
 
-            histories = make_history_log(env, reflexion)
+            histories = make_history_log(env)
             logger.output(f"log_history_trial{trial}", histories)
 
             # 終了していたら打ち切る
             if done: break
 
+        # 最終状態の描画
+        movie_maker.render()
+        movie_maker.make(f"capture_trial{trial}")
+
+        # サブゴールの達成判定
+        log_finalize = {}
+        finalize_subgoal(env, log_finalize)
+
         # 結果を履歴に追加
         reflexion.add_result(is_success)
+        histories = make_history_log(env)
+        logger.output(f"log_history_trial{trial}", histories)
 
         # reflexionを実行
         print("\n[info] running reflexion...")
         queries = reflexion.run(is_success, reason, config)
 
         # ログなどの処理
-        histories = make_history_log(env, reflexion)
-        logger.output(f"log_history_trial{trial}", histories)
-        
         subgoals_dict = [tree.get_dict() for tree in reflexion.subgoal_trees]
         history_dict = [history.get_dict() for history in reflexion.histories]
         memory_dict = [memory.get_dict() for memory in reflexion.memories]
-
-        logger.append({"history":history_dict, "subgoal_tree": subgoals_dict, "reflexion_queries":queries, "memory": memory_dict})
+        logger.append({"history":history_dict, "finallize_subgoal":log_finalize, "subgoal_tree": subgoals_dict, "reflexion_queries":queries, "memory": memory_dict})
         logger.output(f"log_trial{trial}")
-
         logger.output(f"reflexion_backup", {"memory" : memory_dict, "trial": trial})
-
-        movie_maker.render()
-        movie_maker.make(f"capture_trial{trial}")
-
         subgoal_visualize(logger.path, [trial])
 
 def main():

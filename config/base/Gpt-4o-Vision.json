@@ -1,0 +1,6 @@
+{
+    "policy_option":{
+        "llm_model" : "gpt-4o",
+        "is_use_vision" : true
+    }
+}

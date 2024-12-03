@@ -1,0 +1,39 @@
+[
+ [
+  "Interact with an grid world environment to solve a task. The position in grid is (column, row). Column 0 is west. Column 12 is east. Row 0 is north. Row 12 is south. You cannot go through objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'. Work with other agents to accomplish tasks.",
+  "",
+  "Here is the task:",
+  "pick up the box",
+  "",
+  "The following is your history:",
+  "time 0:",
+  "You are facing south. You are at (5, 7). Your forward is (5, 8). Your right is (4, 7) Your left is (6, 7). You have no item. There is a passable floor in the area. There is wall at (8, 8). There is wall at (7, 8). There is yellow door at (6, 8). There is wall at (5, 8). There is wall at (4, 8). There is wall at (8, 7). There is red door at (4, 7). Agent1 facing east is at (6, 5). There is wall in your forward. There is red door in your right. There is floor in your left.",
+  "Your think:I think I should turn left to face east, then go forward to move to the location (6, 7), and then check if the box is in that location or if I need to continue moving forward to find it.",
+  "> turn left",
+  "You turned left.",
+  "time 1:",
+  "You are facing east. You are at (5, 7). Your forward is (6, 7). Your right is (5, 8) Your left is (5, 6). You have no item. There is a passable floor in the area. There is wall at (8, 4). There is red door at (8, 5). There is wall at (8, 6). There is wall at (8, 7). There is wall at (8, 8). There is wall at (7, 4). There is wall at (7, 8). There is wall at (6, 4). There is yellow door at (6, 8). There is wall at (5, 4). There is wall at (5, 8). Agent1 facing south is at (6, 5). There is floor in your forward. There is wall in your right. There is floor in your left.",
+  "Your think:I think I should go forward to move to the location (6, 7) and check if the box is in that location. If the box is not there, I will continue moving forward to find it.",
+  "> go forward",
+  "You took a step forward."
+ ],
+ [
+  "Interact with an grid world environment to solve a task. The position in grid is (column, row). Column 0 is west. Column 12 is east. Row 0 is north. Row 12 is south. You cannot go through objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward', 'drop the carrying item forward' or 'open the door in forward'. Work with other agents to accomplish tasks.",
+  "",
+  "Here is the task:",
+  "pick up the box",
+  "",
+  "The following is your history:",
+  "time 0:",
+  "You are facing east. You are at (6, 5). Your forward is (7, 5). Your right is (6, 6) Your left is (6, 4). You have no item. There is a passable floor in the area. There is wall at (8, 4). There is red door at (8, 5). There is wall at (8, 6). There is wall at (8, 7). There is wall at (8, 8). There is wall at (7, 4). There is wall at (7, 8). There is wall at (6, 4). There is yellow door at (6, 8). Agent0 facing south is at (5, 7). There is floor in your forward. There is floor in your right. There is wall in your left.",
+  "Your think:To accomplish the task of picking up the box, I would first need to move towards the location of the box, but since I don't see the box in my surroundings, I would need to explore the area. I would start by turning right to face south and then go forward to explore the area and hopefully find the box.",
+  "> turn right",
+  "You turned right.",
+  "time 1:",
+  "You are facing south. You are at (6, 5). Your forward is (6, 6). Your right is (5, 5) Your left is (7, 5). You have no item. There is a passable floor in the area. There is wall at (8, 8). There is wall at (7, 8). There is yellow door at (6, 8). There is wall at (5, 8). There is wall at (4, 8). There is wall at (8, 7). There is red door at (4, 7). There is wall at (8, 6). There is wall at (4, 6). There is red door at (8, 5). There is wall at (4, 5). Agent0 facing east is at (5, 7). There is floor in your forward. There is floor in your right. There is floor in your left.",
+  "Your think:To accomplish the task of picking up the box, I would continue to explore the area by going forward to see what's in front of me, and then assess the situation again. If I still don't see the box, I would consider turning left or right to explore other directions.",
+  "> go forward",
+  "You took a step forward."
+ ],
+ "length: 2"
+]

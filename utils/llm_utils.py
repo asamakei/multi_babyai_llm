@@ -284,13 +284,15 @@ class Flan(LLM):
 
 # 何度もロードしなくて良いようにグローバル変数に保持
 llm_api:LLM = None
+llm_high_api:LLM = None
 
 # 事前に読み込んだLLMを使用する関数
-def llm(prompt:str, image = None):
-    global llm_api
+def llm(prompt:str, image = None, is_use_high_level:bool = False):
+    global llm_api, llm_high_api
+    api = llm_api if not is_use_high_level else llm_high_api
     if image is not None:
-        return llm_api.generate_text_with_vision(prompt, image)
-    return llm_api.generate_text(prompt)
+        return api.generate_text_with_vision(prompt, image)
+    return api.generate_text(prompt)
 
 # テキストの潜在表現を取得する
 def get_internal_representation(text:str):
@@ -302,32 +304,39 @@ def get_similarity(text1:str, text2:str) -> float:
     global llm_api
     return llm_api.get_similarity(text1, text2)
 
-# LLMを読み込む
-def load_llm(params):
-    global llm_api
-
-    model_name = params["llm_model"]
-
-    # すでにロードされていたら読み込まない
-    if llm_api is not None and model_name == llm_api.model_name:
-        return
-
-    # ミスしてGPTを沢山使うと嫌なので念の為
-    if params["free_mode"]:
-        llm_api = LLM("free")
-        return
-
-    # モデル名によってそれぞれのロード処理を呼ぶ
+# LLMのインスタンスを生成
+def make_llm(model_name):
     if "llama" in model_name:
         if "llava" in model_name:
-            llm_api = Llava(model_name)
+            llm_instance = Llava(model_name)
         elif "Vision" in model_name:
-            llm_api = LlamaVision(model_name)            
+            llm_instance = LlamaVision(model_name)            
         else:
-            llm_api = Llama(model_name)
+            llm_instance = Llama(model_name)
     elif "gpt" in model_name:
-        llm_api = Gpt(model_name)
+        llm_instance = Gpt(model_name)
     elif "flan" in model_name:
-        llm_api = Flan(model_name)
+        llm_instance = Flan(model_name)
     else:
-        llm_api = LLM("free")
+        llm_instance = LLM("free")
+    return llm_instance
+
+# LLMを読み込む
+def load_llm(params):
+    global llm_api, llm_high_api
+
+    is_free_mode = utils.get_value(params, "free_mode", False)
+
+    # 通常のモデルを読み込み
+    model_name = params["llm_model"] if not is_free_mode else "free"
+    if llm_api is None or model_name != llm_api.model_name:
+        llm_api = make_llm(model_name)
+
+    # よりハイレベルなモデル(通常はGPTを想定)を読み込み
+    high_model_name = utils.get_value(params, "llm_high_model", "none")
+    if high_model_name == "none":
+        llm_high_api = llm_api
+    else:
+        high_model_name = high_model_name if not is_free_mode else "free"
+        if llm_high_api is None or high_model_name != llm_high_api.model_name:
+            llm_high_api = make_llm(high_model_name)

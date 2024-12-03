@@ -1,0 +1,52 @@
+{
+ "agent_num": 2,
+ "realtime_rendering": true,
+ "free_mode": false,
+ "sight_include_agents": true,
+ "is_use_consideration": true,
+ "is_use_feedback": true,
+ "history_labels": [
+  "action",
+  "observation",
+  "feedback",
+  "message",
+  "consideration",
+  "count",
+  "result"
+ ],
+ "history_labels_len": {
+  "message": 1,
+  "consideration": 2
+ },
+ "history_size": 5,
+ "config_name": "BlockedUnlock_conversation",
+ "reflexion_memory_size": 3,
+ "reflexion_history_size": 100,
+ "reflexion_type": "none",
+ "trial_count": 100,
+ "reflexion_history_labels": [
+  "observation",
+  "message",
+  "consideration",
+  "feedback",
+  "result"
+ ],
+ "reflexion_history_labels_len": {
+  "observation": 3,
+  "message": 3,
+  "consideration": 3
+ },
+ "env_name": "BabyAI-BlockedUnlockPickup-v0",
+ "max_step": 50,
+ "env_fixed_seed": 58,
+ "llm_model": "gpt-4o-mini",
+ "is_use_vision": false,
+ "policy_name": "conversation_llm",
+ "conversation_pairs": [
+  [
+   0,
+   1
+  ]
+ ],
+ "conversation_count": 2
+}

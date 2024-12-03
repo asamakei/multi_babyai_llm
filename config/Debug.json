@@ -3,14 +3,13 @@
         "base/General",
         "base/Reflexion",
         "base/UnlockPickup",
-        "base/Simple",
+        "base/Subgoal",
         "base/Llama3.1-70B"
     ],
 
     "hyperparam": {
-        "agent_num" : 2,
-        "max_step" : 50,
-        "reflexion_type" : "general"
+        "agent_num" : 1,
+        "reflexion_type" : "none"
     },
 
     "policy_option":{

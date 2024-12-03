@@ -1,0 +1,9 @@
+{
+    "extends": [
+        "base/Gpt-4o-Sub"
+    ],
+    "policy_option":{
+        "policy_name" : "simple_subgoal",
+        "is_use_init_subgoal" : true
+    }
+}

@@ -3,7 +3,7 @@
         "agent_num" : 2
     },
     "policy_option":{
-        "policy_name" : "message_llm",
+        "policy_name" : "message",
         "message_graph" : [[1], [0]]
     }
 }

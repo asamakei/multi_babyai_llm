@@ -37,7 +37,7 @@ def get_actions_str(env_name):
     if CLIFF in env_name:
         return ["move north","move east","move south","move west"]
     elif BABY in env_name:
-        return ["turn left","turn right","go forward","pick up the item in forward","drop the carrying item forward","open the door in forward"]
+        return ["turn left","turn right","go to the forward coordinate","pick up item that in the forward coordinate","drop carrying item to the forward coordinate","open the door at the forward coordinate"]
 
 # 行動の名前の略称を取得
 def get_brief_actions_str(env_name):
@@ -57,7 +57,7 @@ def get_actions_joined_str(env_name, last_word=""):
     return actions_joined
 
 # プロンプトに使用する問題とタスクの説明文を返す
-def get_explain(env, params):
+def get_explain(env, obs, params):
     env_name = params["env_name"]
     actions_joined = get_actions_joined_str(env_name, "or")
     action_prompt = f"Each step, You must select actions in {actions_joined}."
@@ -66,7 +66,7 @@ def get_explain(env, params):
         sentences.append("Interact with an grid world environment to solve a task.")
         sentences.append(action_prompt)
         base_prompt = " ".join(sentences)
-        task_prompt = "Reach the goal as soon as possible."
+        task_prompts = ["Reach the goal as soon as possible."] * env.agent_num
     elif BABY in env_name:
         right = env.width - 1
         bottom = env.height - 1
@@ -75,16 +75,18 @@ def get_explain(env, params):
 
         # additional
         sentences.append(f"The grid (0,0) is at the northwest end, ({right}, 0) is northeast, (0, {bottom}) is southwest, ({right}, {bottom}) is southeast.")
-        sentences.append(f"You cannot go through objects.")
+        #sentences.append(f"The position in grid is (column, row). Column 0 is west. Column {right} is east. Row 0 is north. Row {bottom} is south.")
+        sentences.append("It is not possible to overlap objects.")
+        #sentences.append(f"You cannot go through objects.")
         sentences.append(action_prompt)
         
         if env.agent_num >= 2:
             sentences.append(f"Work with other agents to accomplish tasks.")
 
         base_prompt = utils.join_sentences(sentences)
-        task_prompt = 'achieve the "mission" as soon as possible'
+        task_prompts =  [obs[i]['mission'] for i in range(env.agent_num)]
 
-    return base_prompt, task_prompt
+    return base_prompt, task_prompts
 
 def get_image_explain(agent_id:int, params):
     is_use_vision = get_value(params,"is_use_vision",False)
@@ -139,31 +141,56 @@ def get_action_instr(env_name:str, agent_id:int, params = {}):
     profile = f"You are {agent_name}. " if agent_id >= 0 else ""
     image_explain = get_image_explain(agent_id, params)
     actions_joined = get_actions_joined_str(env_name, "or")
-    prompt = profile + image_explain + f"What is the best action to achieve your task in {actions_joined}? Output only result.\n>"
+    prompt = profile + image_explain + f"What is the best action to achieve your task in {actions_joined}? Output only result.\nYour action:"
     return prompt
 
 # メッセージを生成する時のプロンプトに記述する指示文を返す
-def get_communication_instr(label:str, agent_id:int, targets:str, is_last:bool, params={}):
+def get_message_instr(agent_id:int, targets:str, params={}):
     targets_str = " and ".join(targets)
     agent_name = get_agent_name(agent_id, params)
-    profile = f"You are {agent_name}. " if agent_id >= 0 else ""
+    
+    sentences = []
     image_explain = get_image_explain(agent_id, params)
-    if label == "message":
-        prompt = profile + image_explain + f'You are in a cooperative relationship with {targets_str}. The mission has not yet been accomplished. To two agents split up and accomplish tasks efficiently, Output only message to {targets_str} in 2 to 5 sentences, do not give instructions.'
-        #prompt = f'You are in a cooperative relationship with {targets_str}. To achieve mission, Output only message to {targets_str}.'
-    elif label == "conversation":
-        last_message = "This is the last turn in the conversation." if is_last else ""
-        prompt = profile + image_explain + f'You are in a cooperative relationship with {targets_str}, and discussing to decide next action. The mission has not yet been accomplished.{last_message} To two agents split up and accomplish tasks efficiently, output only reply message to them in 1 to 3 sentences, do not give instructions.'
-        #prompt = f'You are in a cooperative relationship with {targets_str}, and discussing to decide next action. To achieve mission, output only reply message to them.'
+    if len(image_explain) > 0: sentences.append(image_explain)
+    sentences.append(f"You are {agent_name}.")
+
+    sentences.append(f'You are in a cooperative relationship with {targets_str}.')
+    sentences.append(f'To agents split up and accomplish task efficiently, output only message to {targets_str} in 2 to 5 sentences.')
+    sentences.append(f"\nYour reply to {targets_str}:")
+    prompt = " ".join(sentences)
+    return prompt
+
+# メッセージを生成する時のプロンプトに記述する指示文を返す
+def get_conversation_instr(agent_id:int, targets:str, messages, is_last:bool, params={}):
+    targets_str = " and ".join(targets)
+    agent_name = get_agent_name(agent_id, params)
+    actions_str = get_actions_joined_str(params["env_name"], "or")
+
+    sentences = []
+    image_explain = get_image_explain(agent_id, params)
+    if len(image_explain) > 0: sentences.append(image_explain)
+    sentences.append(f"You are {agent_name}.")
+    sentences.append(f'You are in a cooperative relationship with {targets_str}, and discussing to decide next action.')
+    sentences.append(f'The mission has not yet been accomplished.')
+    sentences.append(f'Either one of them should accomplish the task.')
+    if is_last: sentences.append(f'This is the last turn in the conversation.')
+    sentences.append(f'To accomplish tasks efficiently, output message to them in 1 to 3 sentences. Exchanging your information of sight and your plan. At the end of the conversation, reach a consensus on a plan.')
+    sentences.append(f'Note that you can act only after conversation, and only in {actions_str}. Act separately from other agents for efficiency.')
+    prompt = " ".join(sentences)
+    for name, text in messages:
+        prompt += f'\n{name}:{text}'
     prompt += f"\n{agent_name}:"
     return prompt
 
 # 思考を生成する時のプロンプトに記述する指示文を返す
-def get_consideration_instr(env_name:str, agent_id:int, params = {}):
+def get_consideration_instr(env_name:str, agent_id:int, subgoals:list[str], params = {}):
     agent_name = get_agent_name(agent_id, params)
     profile = f"You are {agent_name}. " if agent_id >= 0 else ""
     image_explain = get_image_explain(agent_id, params)
-    prompt = profile + image_explain + f"Output what you think would accomplish the task in the current situation in 2 to 3 sentences.\nYour think:"
+    subgoal_prompt = ""
+    if len(subgoals) > 1:
+        subgoal_prompt = f"You think you should achieve subgoals {subgoals}. "
+    prompt = profile + image_explain + subgoal_prompt + f"Output abstract plan, what you think would accomplish the task in the current situation in 2 to 3 sentences.\nYour think:"
     return prompt
 
 # サブゴールを生成する時のプロンプトに記述する指示文を返す
@@ -171,14 +198,13 @@ def get_subgoal_instr(env_name:str, agent_id:int, achieved:list[str], not_achiev
     agent_name = get_agent_name(agent_id, params)
     profile = f"You are {agent_name}. " if agent_id >= 0 else ""
     image_explain = get_image_explain(agent_id, params)
-    subgoal = not_achieved[0]
     actions = get_actions_joined_str(params["env_name"])
     # prompt = profile + image_explain + f"You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving '{subgoal}' in a few words, abstractly at first, then gradually more concretely. The most concrete subgoal is your action. Do not output subgoals with the same meaning.\nYour subgoal:"
     # prompt = profile + image_explain + f"You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving it in a few words, abstractly. Do not output with the same meaning.\nYour subgoal:"
     # prompt = profile + image_explain + f"You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. Do not output with the same meaning.\nYour subgoal:"
     # prompt = profile + image_explain + f"You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. The most concrete subgoal is {actions}. Do not output with the same meaning.\nYour subgoal:"
     # prompt = profile + image_explain + f"You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. Do not output with the same meaning.\nYour subgoal:"
-    prompt = profile + image_explain + f"You achieved subgoals {achieved}. You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving it in a few words, abstractly at first, then gradually more concretely. Do not output with the same meaning.\nYour subgoal:"
+    prompt = profile + image_explain + f"You achieved subgoals {achieved}. You think you should achieve subgoals {not_achieved}. Output only one subgoal for achieving {not_achieved[0]} in a few words, concretely. Do not output same meaning subgoal and relative subgoal.\nYour subgoal:"# abstractly at first, then gradually more
     return prompt
 
 # サブゴールを行動に変換する時のプロンプトに記述する指示文を返す
@@ -197,6 +223,21 @@ def get_subgoal_achieved_instr(env_name:str, agent_id:int, subgoals:list[str], p
     image_explain = get_image_explain(agent_id, params)
     prompt = profile + image_explain + f"In the previous step, you thought you should achieve {subgoals}. Was the subgoal '{subgoals[0]}' achieved? Output only 'Yes' or 'No'.\nYes or No:" #  by the previous your action も要るかと思ったがマルチエージェントを考慮して一旦消す
     return prompt
+
+def get_init_subgoal_instr(env:gym.Env, mission:str, agent_id:int, params:dict):
+    
+    env_name = params["env_name"]
+    if CLIFF in env_name:
+        return ""
+    elif BABY in env_name:
+        width = env.width
+        height = env.height
+        actions_str = get_actions_joined_str(env_name, "or")
+        color = IDX_TO_COLOR[agent_id]
+        obs = babyai_utils.world_to_str_baby(env, False, params)
+        #return f"You interact with an grid world environment to solve a task. Grid size is {width} x {height}. Position is represented by (Column, Row). The top-left most square is (0, 0). {obs} It is not possible to overlap objects. Your mission is '{mission}'. You are {color} triangle. Each step, you can act in {actions_str}. Output subgoal list to achieve your task in the format ['A', 'B', 'C', ...]. Output abstract but detail subgoals list. The last subgoal of the list is your mission. Output only result. \nsubgoal list:"
+        return f"You interact with an grid world environment to solve a task. {obs} It is not possible to overlap objects. Your mission is '{mission}'. You are red triangle. Each step, you can act in {actions_str}. Output subgoal list to achieve your task in the format ['A', 'B', 'C', 'D', ... '{mission}']. Output abstract but detail subgoals list. The last subgoal of the list is your mission. Output only result.\nsubgoal list:"
+    return f""
 
 # 終了判定や状態の評価を返す
 def get_achievement_status(reward, done, step, params):

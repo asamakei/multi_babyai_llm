@@ -6,26 +6,27 @@ from utils.data_utils import History, SubgoalTree, Memory
 # Reflexionに関する全般処理を行うクラス
 # エピソードを超えてメモリを保持する
 class Reflexion:
-    def __init__(self, env, params:dict):
+    def __init__(self, env, obs, params:dict):
         self.env_name = params["env_name"]
         self.agent_num = params["agent_num"]
         self.histories: list[History] = []
         self.subgoal_trees: list[SubgoalTree] = []
+        self.tasks:list[str] = []
 
         memory_size = utils.get_value(params, "reflexion_memory_size", 0)
         self.memories: list[Memory] = [Memory(memory_size) for _ in range(self.agent_num)]
-        
-        self.reset(env, params)
-    
+        self.reset(env, obs, params)
+
     # エピソードが終わった時に反省文だけ引き継いで履歴をリセットする処理
-    def reset(self, env, params):
+    def reset(self, env, obs, params):
         self.env = env
-        base, task = env_utils.get_explain(env, params)
+        base, tasks = env_utils.get_explain(env, obs, params)
+        self.tasks = tasks
         self.histories.clear()
         self.subgoal_trees.clear()
         for i in range(self.agent_num):
-            self.histories.append(History(base, task, self.memories[i].contents))
-            self.subgoal_trees.append(SubgoalTree(task))
+            self.histories.append(History(base, tasks[i], self.memories[i].contents))
+            self.subgoal_trees.append(SubgoalTree(tasks[i]))
 
     # 履歴を追加
     def add_histories(self, label:str, contents):
@@ -46,6 +47,17 @@ class Reflexion:
         for tree in self.subgoal_trees:
             tree.append_failed_node()
 
+    def add_now_subgoal(self):
+        subgoals_list = []
+        for agent_id in range(self.agent_num):
+            subgoals = self.subgoal_trees[agent_id].get_subgoals()
+            subgoals_list.append(subgoals)
+        self.add_histories("subgoal", subgoals_list)
+    
+    def remove_label(self, label):
+        for agent_id in range(self.agent_num):
+            self.histories[agent_id].remove(label)
+
     # Reflexionのメイン処理
     def run(self, is_success: bool, reason: str, params:dict):
         queries = []
@@ -61,6 +73,30 @@ class Reflexion:
             queries.append(prompt)
 
         return queries
+    
+    def init_subgoal(self, params:dict):
+        img = self.env.render_no_highlight()
+        info = {
+            "queries":[],
+            "responses":[],
+            "lists":[]
+        }
+
+        for agent_id in range(self.agent_num):
+            prompt = self.get_init_subgoal_prompt(agent_id, params)
+            #text, _ = llm_utils.llm(prompt, img, True)
+            text = "['move to yellow key', 'pick up yellow key', 'move to yellow locked door', 'open yellow locked door', 'move to grey box', 'pick up the grey box']"
+            #text = "['Move to the green key', 'Pick up the green key', 'Move to the green locked door', 'Open the green locked door', 'Move to the red key', 'Pick up the red key', 'Move to the red locked door', 'Open the red locked door', 'Move to the red ball', 'Pick up the ball']"
+            subgoals = utils.text_to_str_list(text)
+            if len(subgoals) >= 1:
+                subgoals = subgoals[:-1]
+                subgoals.reverse()
+                for subgoal in subgoals:
+                    self.subgoal_trees[agent_id].append(subgoal.lower())
+            info["queries"].append(prompt)
+            info["responses"].append(text)
+            info["lists"].append(subgoals)
+        return info
 
     # 簡易的に履歴の文字列を取得する
     def get_history_str(self, agent_id:int, is_reflexion:bool, params:dict):
@@ -96,17 +132,15 @@ class Reflexion:
 
     # メッセージを生成する時のプロンプトを返す
     def get_message_prompt(self, agent_id:int, targets:list[str], params:dict):
-        return self.get_communication_prompt(agent_id, targets, "message", False, params)
-
-    # 会話文を生成する時のプロンプトを返す
-    def get_conversation_prompt(self, agent_id:int, targets:list[str], is_last:bool, params:dict):
-        return self.get_communication_prompt(agent_id, targets, "conversation", is_last, params)
-    
-    # 会話文またはメッセージを生成する時のプロンプトを返す
-    def get_communication_prompt(self, agent_id:int, targets:list[str], label:str, is_last:bool, params:dict):
-        instr = env_utils.get_communication_instr(label, agent_id, targets, is_last, params)
+        instr = env_utils.get_message_instr(agent_id, targets, params)
         prompt = self.get_prompt(agent_id, instr, params)
         return prompt
+    
+    # 会話文を生成する時のプロンプトを返す
+    def get_conversation_prompt(self, agent_id:int, targets:list[str], messages:list[tuple[str,str]], is_last:bool, params:dict):
+        instr = env_utils.get_conversation_instr(agent_id, targets, messages, is_last, params)
+        prompt = self.get_prompt(agent_id, instr, params)
+        return prompt    
     
     # 行動を生成する際のプロンプトを返す
     def get_action_prompt(self, agent_id:int, params:dict):
@@ -116,7 +150,9 @@ class Reflexion:
     
     # 思考を生成する際のプロンプトを返す
     def get_consideration_prompt(self, agent_id:int, params:dict):
-        instr = env_utils.get_consideration_instr(self.env_name, agent_id, params)
+        subgoal_tree = self.subgoal_trees[agent_id]
+        _, subgoals = subgoal_tree.get_separated_sequence(subgoal_tree.now_node)
+        instr = env_utils.get_consideration_instr(self.env_name, agent_id, subgoals, params)
         prompt = self.get_prompt(agent_id, instr, params)
         return prompt
     
@@ -136,4 +172,9 @@ class Reflexion:
     def get_subgoal_achieved_prompt(self, agent_id:int, subgoals:list[str], params:dict):
         instr = env_utils.get_subgoal_achieved_instr(self.env_name, agent_id, subgoals, params)
         prompt = self.get_prompt(agent_id, instr, params)
+        return prompt
+
+    # エピソードの初めにサブゴールをまとめて生成する際のプロンプトを返す
+    def get_init_subgoal_prompt(self, agent_id:int, params:dict):
+        prompt = env_utils.get_init_subgoal_instr(self.env, self.tasks[agent_id], agent_id, params)
         return prompt

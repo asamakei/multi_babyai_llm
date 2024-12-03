@@ -2,7 +2,7 @@
     "hyperparam": {
         "reflexion_memory_size" : 3,
         "reflexion_history_size" : 100,
-        "reflexion_type" : "general",
+        "reflexion_type" : "none",
         "trial_count" : 100,
         "reflexion_history_labels" : ["observation", "message", "consideration", "feedback", "result"],
         "reflexion_history_labels_len" : {

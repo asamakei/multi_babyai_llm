@@ -3,6 +3,8 @@ from io import BytesIO
 from PIL import Image
 import numpy as np
 import glob
+import re
+import json
 
 class Jsonable:
     def get_dict(self) -> dict:
@@ -28,6 +30,9 @@ def get_value(dict:dict, key:str, default):
 
 def np_image_to_base64(img, format="jpeg") -> str:
     pil_image = Image.fromarray(img)
+    width, height = pil_image.size
+    pil_image = pil_image.resize((width // 2, height // 2))
+
     buffer = BytesIO()
     pil_image.save(buffer, format)
     img_str = base64.b64encode(buffer.getvalue()).decode("ascii")
@@ -60,4 +65,17 @@ def search_directory_path(directory_name:str) -> str:
         print(f"[ERROR] There is more than one directory '{directory_name}'")
     else:
         result = path_list[0]
+    return result
+
+def text_to_str_list(text:str) -> list[str]:
+    # 再帰的でなく最大をとってくるのでfor文は今のところ無意味
+    lists_str = re.findall(r'\[.*\]', text)
+    result = []
+    for list_str in lists_str:
+        try:
+            list_obj = eval(list_str)
+            if len(list_obj) > len(result):
+                result = list_obj
+        except Exception as e:
+            continue
     return result

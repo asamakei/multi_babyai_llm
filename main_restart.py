@@ -15,9 +15,9 @@ def main(directory:str, trial:int=-1, is_run_reflexion:bool=False):
 
     seed = utils.get_value(config, "env_fixed_seed", None)
     env = env_utils.make(config)
-    env.reset(seed=seed)
+    obs, _ = env.reset(seed=seed)
 
-    reflexion = Reflexion(env, config)
+    reflexion = Reflexion(env, obs, config)
 
     print(f"------ execute {config_name} ------")
 

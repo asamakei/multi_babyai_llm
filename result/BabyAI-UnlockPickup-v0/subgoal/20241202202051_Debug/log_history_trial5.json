@@ -1,0 +1,23 @@
+[
+ [
+  "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. It is not possible to overlap objects. Each step, You must select actions in 'turn left', 'turn right', 'go forward', 'pick up the item in forward coordinate', 'drop the carrying item forward coordinate' or 'open the door in forward coordinate'.",
+  "",
+  "Here is the task:",
+  "pick up the purple box",
+  "",
+  "The following is your history:",
+  "time 0:",
+  "You are at (3, 3). Your forward is (3, 2), north. Your right is (4, 3), east. Your left is (2, 3), west. You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (2, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). There is wall at (0, 2). There is wall at (5, 2). There is wall at (0, 3). There is wall at (5, 3). There is no object in your forward coordinate (3, 2). There is green key in your right coordinate (4, 3). There is no object in your left coordinate (2, 3).",
+  "Your think:To accomplish the task of picking up the purple box, I need to first pick up the green key, then move to the door and open it, and finally move to the purple box and pick it up.",
+  "subgoals: ['pick up the key', 'move to the door', 'open the door', 'move to the purple box', 'pick up the purple box']",
+  "> turn right",
+  "You turned right.",
+  "time 1:",
+  "You are at (3, 3). Your forward is (4, 3), east. Your right is (3, 4), south. Your left is (3, 2), north. You have no item. There is a passable floor in the area. There is wall at (5, 0). There is wall at (5, 1). There is wall at (5, 2). There is wall at (5, 3). There is green locked door at (5, 4). There is wall at (5, 5). There is wall at (4, 0). There is wall at (4, 5). There is wall at (3, 0). There is wall at (3, 5). There is green key in your forward coordinate (4, 3). There is no object in your right coordinate (3, 4). There is no object in your left coordinate (3, 2).",
+  "Your think:To accomplish the task of picking up the purple box, I need to first pick up the green key in my forward coordinate, then move to the green locked door and open it, and finally move to the purple box and pick it up. I should pick up the green key first since it is in my forward coordinate and can be used to open the green locked door.",
+  "subgoals: ['pick up the key', 'move to the door', 'open the door', 'move to the purple box', 'pick up the purple box']",
+  "> pick up the item in forward coordinate",
+  "You picked up green key."
+ ],
+ "length: 2"
+]

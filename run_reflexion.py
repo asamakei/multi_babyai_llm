@@ -17,9 +17,9 @@ def run_reflexion(directory:str, trial:int, is_rewrite:bool):
     llm_utils.load_llm(config)
     seed = utils.get_value(config, "env_fixed_seed", None)
     env = env_utils.make(config)
-    env.reset(seed=seed)
+    obs, _ = env.reset(seed=seed)
 
-    reflexion = Reflexion(env, config)
+    reflexion = Reflexion(env, obs, config)
     memory = None
     if trial >= 1:
         pre_trial = trial-1

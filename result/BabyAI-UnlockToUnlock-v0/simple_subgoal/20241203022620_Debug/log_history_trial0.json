@@ -1,0 +1,22 @@
+[
+ [
+  "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (15, 0) is northeast, (0, 5) is southwest, (15, 5) is southeast. It is not possible to overlap objects. Each step, You must select actions in 'turn left', 'turn right', 'go to the forward coordinate', 'pick up item that in the forward coordinate', 'drop carrying item to the forward coordinate' or 'open the door at the forward coordinate'.",
+  "",
+  "Here is the task:",
+  "pick up the ball",
+  "",
+  "The following is your history:",
+  "time 0:",
+  "You are at (6, 1). Your forward is (7, 1), east. Your right is (6, 2), south. Your left is (6, 0), north. You have no item. There is a passable floor in the area. There is wall at (10, 0). There is wall at (10, 1). There is blue locked door at (10, 2). There is wall at (10, 3). There is wall at (10, 4). There is wall at (9, 0). There is wall at (8, 0). There is wall at (7, 0). There is blue key at (6, 3). There is no object in your forward coordinate (7, 1). There is no object in your right coordinate (6, 2). There is wall in your left coordinate (6, 0).",
+  "Your think:To accomplish the task, I plan to move to the blue key at (6, 3), pick it up, then move to the blue locked door at (10, 2) and open it, and finally move to the ball at (3, 3) and pick it up.",
+  "Your action: turn right",
+  "You turned right.",
+  "time 1:",
+  "You are at (6, 1). Your forward is (6, 2), south. Your right is (5, 1), west. Your left is (7, 1), east. You have no item. There is a passable floor in the area. There is wall at (9, 5). There is wall at (8, 5). There is wall at (7, 5). There is wall at (6, 5). There is wall at (5, 5). There is purple locked door at (5, 4). There is blue key at (6, 3). There is wall at (5, 3). There is wall at (5, 2). There is no object in your forward coordinate (6, 2). There is wall in your right coordinate (5, 1). There is no object in your left coordinate (7, 1).",
+  "subgoals: ['move to (6, 3)', 'pick up blue key', 'move to (10, 2)', 'open blue door', 'move to (3, 3)', 'pick up the ball']",
+  "Your think:To accomplish the task, I plan to move to the blue key at (6, 3), pick it up, then move to the blue locked door at (10, 2) and open it, and finally move to the ball at (3, 3) and pick it up.",
+  "Your action: go to the forward coordinate",
+  "You took a step forward."
+ ],
+ "length: 2"
+]
