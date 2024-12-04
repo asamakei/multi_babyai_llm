@@ -1,6 +1,7 @@
 import os
 from main import *
 import utils.utils as utils
+from utils.llm_utils import LLM
 from run_reflexion import main as run_reflexion
 
 def main(directory:str, trial:int=-1, is_run_reflexion:bool=False):
@@ -9,7 +10,10 @@ def main(directory:str, trial:int=-1, is_run_reflexion:bool=False):
     with open(f'{path}/config.json') as f:
         config = json.load(f)
 
-    llm_utils.load_llm(config) # 先にLLMをロードしておく
+    LLM.load(config) # 先にLLMをロードしておく
+    if utils.get_value(config, "is_use_embedding_model", False):
+        Embedder.load(config)
+        
     config_name = config["config_name"]
     logger = Logger(path, config_name, False)
 
@@ -45,7 +49,7 @@ def main(directory:str, trial:int=-1, is_run_reflexion:bool=False):
 
 # 処理を再開する
 if __name__ == "__main__":
-    directory = "20241129001019_BlockedUnlock_simple"
+    directory = "20241204000001_Failed"
     trial = 1
-    is_run_reflexion = True
+    is_run_reflexion = False
     main(directory, trial, is_run_reflexion)

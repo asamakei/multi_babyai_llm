@@ -124,7 +124,8 @@ def obs_to_str_baby(env, observations, params:dict={}) -> list[str]:
         sentences = []
         #sentences.append(f'Your mission is "{mission}".') # 目標
         #sentences.append(f'You are facing {self_dir_str}.') # 方角
-        sentences.append(f'You are at {self_pos}.') # 絶対位置
+        #sentences.append(f'You are at {self_pos}.') # 絶対位置
+        sentences.append(f'Your position is coordinate {self_pos}.') # 絶対位置
         sentences.append(f'Your forward is {forward_pos}, {forward_dir}.') # 正面
         sentences.append(f'Your right is {right_pos}, {right_dir}.') # 右
         sentences.append(f'Your left is {left_pos}, {left_dir}.') # 左
@@ -179,10 +180,10 @@ def get_feedbacks(env, observations, actions:list[int], params:dict={}):
             if is_forward_empty:
                 return "You took a step forward."
             else:
-                return "You couldn't took a step forward because there is an object in your forward."
+                return "You couldn't took a step forward because there is an object in your forward coordinate."
         elif action == 3:
             if forward_id not in (5, 6, 7):
-                return f"You failed to picked up because there are no item."                
+                return f"You failed to picked up because there is no item in your forward coordinate."                
             if is_carrying:
                 return f"You failed to picked up because you already have other item."
             else:
@@ -191,7 +192,7 @@ def get_feedbacks(env, observations, actions:list[int], params:dict={}):
             if is_carrying and is_forward_empty:
                 return f"You dropped {carrying_name}."
             elif is_forward_empty:
-                return f"You failed to drop."
+                return f"You failed to drop item because you have no item."
             else:
                 return f"You failed to drop item because there is an object in your forward coordinate."
         elif action == 5:

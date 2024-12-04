@@ -2,7 +2,7 @@ import re
 import gym
 from utils.utils import get_value
 
-from utils.llm_utils import get_image_token
+from utils.llm_utils import LLM
 import utils.utils as utils
 import utils.babyai_utils as babyai_utils
 
@@ -75,11 +75,9 @@ def get_explain(env, obs, params):
 
         # additional
         sentences.append(f"The grid (0,0) is at the northwest end, ({right}, 0) is northeast, (0, {bottom}) is southwest, ({right}, {bottom}) is southeast.")
-        #sentences.append(f"The position in grid is (column, row). Column 0 is west. Column {right} is east. Row 0 is north. Row {bottom} is south.")
         sentences.append("It is not possible to overlap objects.")
-        #sentences.append(f"You cannot go through objects.")
+        sentences.append("You cannot pick up any item if you have already item.")
         sentences.append(action_prompt)
-        
         if env.agent_num >= 2:
             sentences.append(f"Work with other agents to accomplish tasks.")
 
@@ -92,7 +90,7 @@ def get_image_explain(agent_id:int, params):
     is_use_vision = get_value(params,"is_use_vision",False)
     if not is_use_vision: return ""
 
-    image_token = get_image_token()
+    image_token = LLM.image_token
     env_name = params["env_name"]
     if CLIFF in env_name:
         return f"{image_token} This image is your view of grid world. You are the character with the hat."
@@ -185,12 +183,15 @@ def get_conversation_instr(agent_id:int, targets:str, messages, is_last:bool, pa
 # 思考を生成する時のプロンプトに記述する指示文を返す
 def get_consideration_instr(env_name:str, agent_id:int, subgoals:list[str], params = {}):
     agent_name = get_agent_name(agent_id, params)
-    profile = f"You are {agent_name}. " if agent_id >= 0 else ""
     image_explain = get_image_explain(agent_id, params)
-    subgoal_prompt = ""
+    sentences = []
+    if agent_id >= 0: sentences.append(f"You are {agent_name}.")
+    if len(image_explain) > 0: sentences.append(image_explain)                        
     if len(subgoals) > 1:
-        subgoal_prompt = f"You think you should achieve subgoals {subgoals}. "
-    prompt = profile + image_explain + subgoal_prompt + f"Output abstract plan, what you think would accomplish the task in the current situation in 2 to 3 sentences.\nYour think:"
+        sentences.append(f"You think you should achieve subgoals {subgoals} in order.")
+    sentences.append(f"Output abstract plan, what you think would accomplish the task in the current situation in 2 to 3 sentences.")
+    prompt = " ".join(sentences)
+    prompt += "\nYour think:"
     return prompt
 
 # サブゴールを生成する時のプロンプトに記述する指示文を返す
@@ -209,8 +210,9 @@ def get_subgoal_instr(agent_id:int, achieved:list[str], not_achieved:list[str], 
     
     sentences.append(f"Output more concrete subgoal to achieve '{next}'.")
     sentences.append(f"Don't output same meaning subgoal and don't use relative expressions and time-dependent expressions for agent.")
+    sentences.append(f"Considering other subgoals that you should achieve, don't output wasteful subgoal.")
     sentences.append(f"If it is concrete enough, the output may be taken from in your action names.")
-    sentences.append(f"Output very appropriate subgoal in a few words.")
+    sentences.append(f"Output very appropriate subgoal to achieve your task as soon as possible in a few words.")
     
     # sentences.append(f"Output only one subgoal for achieving {not_achieved[0]} in a few words, concretely.")
     # sentences.append(f"Do not output same meaning subgoal and relative subgoal.")
@@ -232,7 +234,7 @@ def get_subgoal_achieved_instr(env_name:str, agent_id:int, subgoals:list[str], p
     agent_name = get_agent_name(agent_id, params)
     profile = f"You are {agent_name}. " if agent_id >= 0 else ""
     image_explain = get_image_explain(agent_id, params)
-    prompt = profile + image_explain + f"In the previous step, you thought you should achieve {subgoals}. Was the subgoal '{subgoals[0]}' achieved? Output only 'Yes' or 'No'.\nYes or No:" #  by the previous your action も要るかと思ったがマルチエージェントを考慮して一旦消す
+    prompt = profile + image_explain + f"In the previous step, you thought you should achieve {subgoals}. Is the subgoal '{subgoals[0]}' achieved? Output only 'Yes' or 'No'.\nYes or No:" #  by the previous your action も要るかと思ったがマルチエージェントを考慮して一旦消す
     return prompt
 
 def get_init_subgoal_instr(env:gym.Env, mission:str, agent_id:int, params:dict):
@@ -247,7 +249,7 @@ def get_init_subgoal_instr(env:gym.Env, mission:str, agent_id:int, params:dict):
         color = IDX_TO_COLOR[agent_id]
         obs = babyai_utils.world_to_str_baby(env, False, params)
         #return f"You interact with an grid world environment to solve a task. Grid size is {width} x {height}. Position is represented by (Column, Row). The top-left most square is (0, 0). {obs} It is not possible to overlap objects. Your mission is '{mission}'. You are {color} triangle. Each step, you can act in {actions_str}. Output subgoal list to achieve your task in the format ['A', 'B', 'C', ...]. Output abstract but detail subgoals list. The last subgoal of the list is your mission. Output only result. \nsubgoal list:"
-        return f"You interact with an grid world environment to solve a task. {obs} It is not possible to overlap objects. Your mission is '{mission}'. You are red triangle. Each step, you can act in {actions_str}. Output subgoal list to achieve your task in the format ['A', 'B', 'C', 'D', ... '{mission}']. Output abstract but detail subgoals list. The last subgoal of the list is your mission. Output only result.\nsubgoal list:"
+        return f"You interact with an grid world environment to solve a task. {obs} It is not possible to overlap objects. You cannot pick up any item if you have already item. Your mission is '{mission}'. You are red triangle. Each step, you can act in {actions_str}. Output subgoal list to achieve your task in the format ['A', 'B', 'C', 'D', ... '{mission}']. Output abstract but detail subgoals list. The last subgoal of the list is your mission. Output only result.\nsubgoal list:"
     return f""
 
 # 終了判定や状態の評価を返す

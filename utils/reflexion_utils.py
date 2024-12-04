@@ -1,5 +1,5 @@
 import utils.env_utils as env_utils
-import utils.llm_utils as llm_utils
+from utils.llm_utils import LLM
 import utils.utils as utils
 from utils.data_utils import History, SubgoalTree, Memory
 
@@ -68,13 +68,19 @@ class Reflexion:
 
         for agent_id in range(self.agent_num):
             prompt = self.get_reflexion_prompt(agent_id, reflexion_type, reason, params)
-            text, _ = llm_utils.llm(prompt, imgs[agent_id])
+            text, _ = LLM.generate(prompt, imgs[agent_id])
             self.memories[agent_id].add_memory(text)
             queries.append(prompt)
 
         return queries
     
-    def init_subgoal(self, params:dict):
+    def init_subgoal(self, log:dict, params:dict):
+        if log == None:
+            return self.get_initial_subgoals_from_llm(params)
+        else:
+            return self.get_initial_subgoals_from_log(log, params)
+    
+    def get_initial_subgoals_from_llm(self, params:dict):
         img = self.env.render_no_highlight()
         info = {
             "queries":[],
@@ -84,7 +90,7 @@ class Reflexion:
 
         for agent_id in range(self.agent_num):
             prompt = self.get_init_subgoal_prompt(agent_id, params)
-            #text, _ = llm_utils.llm(prompt, img, True)
+            text, _ = LLM.generate_high(prompt, img)
             text = "['move to yellow key', 'pick up yellow key', 'move to yellow locked door', 'open yellow locked door', 'move to grey box', 'pick up the grey box']"
             #text = "['Move to the green key', 'Pick up the green key', 'Move to the green locked door', 'Open the green locked door', 'Move to the red key', 'Pick up the red key', 'Move to the red locked door', 'Open the red locked door', 'Move to the red ball', 'Pick up the ball']"
             subgoals = utils.text_to_str_list(text)
@@ -97,6 +103,20 @@ class Reflexion:
             info["responses"].append(text)
             info["lists"].append(subgoals)
         return info
+
+    def get_initial_subgoals_from_log(self, log:dict, params:dict):
+        trees = log[1]["subgoal_tree"]
+        subgoal_lists = []
+        for i in range(len(trees)):
+            tree = self.subgoal_trees[i]
+            tree.set_dict(trees[i])
+            tree.reset_access()
+            tree.reduction()
+            tree.extract()
+            tree.remove_failed_node()
+            tree.move_to_leaf()
+            subgoal_lists.append(tree.get_subgoals())
+        return subgoal_lists
 
     # 簡易的に履歴の文字列を取得する
     def get_history_str(self, agent_id:int, is_reflexion:bool, params:dict):

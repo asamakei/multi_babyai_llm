@@ -1,7 +1,7 @@
 import json
 
 import utils.env_utils as env_utils
-import utils.llm_utils as llm_utils
+from utils.llm_utils import LLM
 from utils.reflexion_utils import Reflexion
 import utils.utils as utils
 
@@ -14,7 +14,7 @@ def run_reflexion(directory:str, trial:int, is_rewrite:bool):
     log_path = f'{directory}/log_trial{trial}.json' 
     with open(log_path) as f:
         log = json.load(f)
-    llm_utils.load_llm(config)
+    LLM.load(config)
     seed = utils.get_value(config, "env_fixed_seed", None)
     env = env_utils.make(config)
     obs, _ = env.reset(seed=seed)

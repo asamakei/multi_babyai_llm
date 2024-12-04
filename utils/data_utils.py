@@ -1,5 +1,5 @@
 import utils.utils as utils
-import utils.embedding_utils as embedding_utils
+from utils.embedding_utils import Embedder
 
 # エピソードの履歴を保持するクラス
 class History(utils.Jsonable):
@@ -98,8 +98,13 @@ class SubgoalTree(utils.Jsonable):
         self.childrens:list[list[int]] = []
         self.now_node:int = -1
         self.failed_node:int = -1
+        self.access:list[int] = []
         if len(root_content) > 0:
             self.append(root_content)
+    
+    def reset_access(self):
+        self.access = [0] * len(self.access)
+        self.now_node = 0
 
     def append(self, content:str, is_move:bool=True) -> int:
         new_node_id = self.node_count
@@ -107,33 +112,66 @@ class SubgoalTree(utils.Jsonable):
         self.content.append(content)
         self.parent.append(self.now_node)
         self.childrens.append([])
+        self.access.append(0)
         if self.now_node >= 0:
             self.childrens[self.now_node].append(new_node_id)
+            if is_move: self.access[self.now_node] += 1
         if is_move:
             self.now_node = new_node_id
         return new_node_id
+    
+    def move_to_leaf(self):
+        while True:
+            children = self.childrens[self.now_node]
+            access = self.access[self.now_node]
+            if len(children) <= access:
+                break
+            target = children[access]
+            if target == self.failed_node:
+                break
+            self.access[self.now_node] += 1
+            self.now_node = target
 
     def append_failed_node(self):
         if self.failed_node >= 0: return
         self.failed_node = self.append("")
 
-    def delete_one(self, node:int):
+    def delete_one(self, node:int, apply_access:bool=False):
         parent = self.parent[node]
         index = self.childrens[parent].index(node)
         first_half = self.childrens[parent][:index]
         second_half = self.childrens[parent][index+1:]
-        for child in self.childrens[node]:
+        children = self.childrens[node]
+        if apply_access:
+            children = children[:self.access[node]]
+        for child in children:
             self.parent[child] = parent
             first_half.append(child)
         self.childrens[parent] = first_half + second_half
         self.parent[node] = -1
+        if apply_access:
+            self.access[parent] -= 1
+            self.access[parent] += self.access[node]
 
     def delete(self):
         parent = self.parent[self.now_node]
-        self.delete_one(self.now_node)
+        self.delete_one(self.now_node, True)
         self.now_node = parent
 
+    def delete_subtree(self, node:int):
+        parent = self.parent[node]
+        self.parent[node] = -1
+        subtree = self.dfs(node)
+        if self.failed_node in subtree:
+            index = self.childrens[parent].index(node)
+            self.childrens[parent][index] = self.failed_node
+            self.parent[self.failed_node] = parent
+        else:
+            self.childrens[parent].remove(node)
+
     def move_up(self) -> int:
+        # 不要だったものを削除
+        self.childrens[self.now_node] = self.childrens[self.now_node][:self.access[self.now_node]]
         parent = self.parent[self.now_node]
         if parent >= 0:
             self.now_node = parent
@@ -151,7 +189,15 @@ class SubgoalTree(utils.Jsonable):
         return result
 
     def get_separated_sequence(self, separate_node:int, is_separate_in_front:bool=True) -> tuple[list[str], list[str]]:
+        first_half, second_half = self.get_separated_sequence_ids(separate_node, is_separate_in_front)
+        first_half_str = [self.content[n] for n in first_half]
+        second_half_str = [self.content[n] for n in second_half]
+        return first_half_str, second_half_str
+
+    def get_separated_sequence_ids(self, separate_node:int, is_separate_in_front:bool=True) -> tuple[list[int], list[int]]:
         nodes:list[int] = self.dfs(0)
+        if separate_node not in nodes:
+            return nodes, []
         index = nodes.index(separate_node)
         if not is_separate_in_front: index += 1
         first_half = nodes[:index]
@@ -160,9 +206,7 @@ class SubgoalTree(utils.Jsonable):
             first_half.remove(self.failed_node)
         if self.failed_node in second_half:
             second_half.remove(self.failed_node)
-        first_half_str = [self.content[n] for n in first_half]
-        second_half_str = [self.content[n] for n in second_half]
-        return first_half_str, second_half_str
+        return first_half, second_half
 
     def get_all_sequence(self) -> tuple[list[str], list[str]]:
         return self.get_separated_sequence(self.failed_node)
@@ -191,6 +235,13 @@ class SubgoalTree(utils.Jsonable):
             result = max(self.get_max_depth(n)+1, result)
         return result
 
+    def remove_failed_node(self):
+        self.now_node = 0
+        if self.failed_node < 0: return
+        parent = self.parent[self.failed_node]
+        self.childrens[parent].remove(self.failed_node)
+        self.failed_node = -1
+
     def reduction(self):
         def merge(first_node:int, second_node:int):
             for node in self.childrens[second_node]:
@@ -199,27 +250,16 @@ class SubgoalTree(utils.Jsonable):
             parent = self.parent[second_node]
             self.childrens[parent].remove(second_node)
             self.parent[second_node] = -1
-            
-        def delete_subtree(node:int):
-            parent = self.parent[node]
-            self.parent[node] = -1
-            subtree = self.dfs(node)
-            if self.failed_node in subtree:
-                index = self.childrens[parent].index(node)
-                self.childrens[parent][index] = self.failed_node
-                self.parent[self.failed_node] = parent
-            else:
-                self.childrens[parent].remove(node)
 
         def is_nodes_similar(node1:int, node2:int):
             content1 = self.content[node1]
             content2 = self.content[node2]
             #is_similar = content1 == content2
-            is_similar = embedding_utils.get_similarity(content1, content2) > 0.9
+            is_similar = Embedder.get_similarity(content1, content2) > 0.9
             return is_similar
 
-        if not embedding_utils.is_loaded():
-            embedding_utils.load()
+        if not Embedder.is_loaded:
+            Embedder.load()
 
         while True:
             nodes = self.dfs(0)
@@ -231,7 +271,7 @@ class SubgoalTree(utils.Jsonable):
                     if self.parent[pre_node] == node:
                         self.delete_one(node)
                     else:
-                        delete_subtree(node)
+                        self.delete_subtree(node)
                     is_changed = True
                     break
             if is_changed: continue
@@ -245,8 +285,29 @@ class SubgoalTree(utils.Jsonable):
                         merge(first_node, second_node)
                         is_changed = True
                         break
+                # if is_changed: break
+                # for child in children:
+                #     if is_nodes_similar(node, child):
+                #         self.delete_one(child)
+                #         is_changed = True
+                #         break
                 if is_changed: break
             if not is_changed: break
+    
+    def extract(self):
+        node = 0
+        achieved, _ = self.get_separated_sequence_ids(self.failed_node)
+        while True:
+            if node in achieved: break
+            children = self.childrens[node]
+            if len(children) == 0: break
+            for child in children[1:]:
+                if child not in achieved:
+                    self.delete_subtree(child)
+            if self.childrens[node][0] not in achieved:
+                node = children[0]
+            else:
+                break
 
 class Memory(utils.Jsonable):
     def __init__(self, memory_size:int):

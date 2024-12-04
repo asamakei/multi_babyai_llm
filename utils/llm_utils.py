@@ -20,40 +20,100 @@ import numpy as np
 import torch
 import ENV
 
-image_token:str = ""
-def get_image_token():
-    return image_token
-
 # 初期化とテキスト生成の機能を持ったLLM
 class LLM:
+
+    __llm = None
+    __llm_high = None
+
+    image_token:str = ""
+
+    @staticmethod
+    def __make(model_name) -> 'LLM':
+        if "llama" in model_name:
+            if "llava" in model_name:
+                llm_instance = Llava(model_name)
+            elif "Vision" in model_name:
+                llm_instance = LlamaVision(model_name)            
+            else:
+                llm_instance = Llama(model_name)
+        elif "gpt" in model_name:
+            llm_instance = Gpt(model_name)
+        elif "flan" in model_name:
+            llm_instance = Flan(model_name)
+        else:
+            llm_instance = LLM("free")
+        return llm_instance
+    
+    @classmethod
+    def load(cls, params):
+        is_free_mode = utils.get_value(params, "free_mode", False)
+
+        # 通常のモデルを読み込み
+        model_name = params["llm_model"] if not is_free_mode else "free"
+        if cls.__llm is None or model_name != cls.__llm.model_name:
+            cls.__llm = cls.__make(model_name)
+
+        # よりハイレベルなモデル(通常はGPTを想定)を読み込み
+        high_model_name = utils.get_value(params, "llm_high_model", "none")
+        if high_model_name == "none":
+            cls.__llm_high = cls.__llm
+        else:
+            high_model_name = high_model_name if not is_free_mode else "free"
+            if cls.__llm_high is None or high_model_name != cls.__llm_high.model_name:
+                cls.__llm_high = cls.__make(high_model_name)
+
+    @staticmethod
+    def __generate(llm:'LLM', prompt:str, image):
+        if image is not None:
+            return llm._generate_text_with_vision(prompt, image)
+        return llm._generate_text(prompt)
+
+    @classmethod
+    def generate(cls, prompt:str, image = None) -> str:
+        return cls.__generate(cls.__llm, prompt, image)
+
+    @classmethod
+    def generate_high(cls, prompt:str, image = None) -> str:
+        return cls.__generate(cls.__llm_high, prompt, image)
+
+    @classmethod
+    def get_internal_representation(cls, text:str):
+        return cls.__llm._generate_internal_representation(text)
+
+    # テキスト同士の類似度を取得する
+    @classmethod
+    def get_similarity(cls, text1:str, text2:str) -> float:
+        return cls.__llm._get_similarity(text1, text2)
+
     # LLMの初期化処理
     def __init__(self, model_name):
         self.model_name = model_name
         self.internal_representations = {}
 
     # プロンプトをChat形式に変換
-    def prompt_format(self, prompt):
+    def _prompt_format(self, prompt):
         return [{"role": "system", "content": prompt}]
 
     # 画像付きプロンプトをChat形式に変換
-    def prompt_format_vision(self, prompt, image):
+    def _prompt_format_vision(self, prompt, image):
         return [{"role": "system", "content": prompt}]
 
     # プロンプトをもとに応答を生成
-    def generate_text(self, prompt):
+    def _generate_text(self, prompt):
         return "I don't know.", {}
 
     # プロンプトと画像をもとに応答を生成
-    def generate_text_with_vision(self, prompt, image):
-        return self.generate_text(prompt)
+    def _generate_text_with_vision(self, prompt, image):
+        return self._generate_text(prompt)
     
     # 入力の潜在表現を取得
-    def generate_internal_representation(self, prompt):
+    def _generate_internal_representation(self, prompt):
         return np.array([0])
     
-    def get_similarity(self, text1, text2) -> float:
-        v1 = self.generate_internal_representation(text1)
-        v2 = self.generate_internal_representation(text2)
+    def _get_similarity(self, text1, text2) -> float:
+        v1 = self._generate_internal_representation(text1)
+        v2 = self._generate_internal_representation(text2)
         return utils.get_cos_similarity(v1, v2)
 
 class Llama(LLM):
@@ -86,8 +146,8 @@ class Llama(LLM):
             self.pipeline.tokenizer.convert_tokens_to_ids("<|eot_id|>")
         ]
     
-    def generate_text(self, prompt):
-        message = self.prompt_format(prompt)
+    def _generate_text(self, prompt):
+        message = self._prompt_format(prompt)
         query = self.pipeline.tokenizer.apply_chat_template(
             message,
             tokenize=False,
@@ -106,10 +166,10 @@ class Llama(LLM):
         text = response[0]["generated_text"][len(query):]
         return text, response
     
-    def generate_internal_representation(self, prompt):
+    def _generate_internal_representation(self, prompt):
         if prompt in self.internal_representations.keys():
             return self.internal_representations[prompt]
-        message = self.prompt_format(prompt)
+        message = self._prompt_format(prompt)
         query = self.pipeline.tokenizer.apply_chat_template(
             message,
             tokenize=False,
@@ -136,7 +196,6 @@ class Llama(LLM):
 
 class LlamaVision(LLM):
     def __init__(self, model_name):
-        global image_token
         super().__init__(model_name)
         quantization_config = BitsAndBytesConfig(
             load_in_4bit=True,
@@ -152,13 +211,13 @@ class LlamaVision(LLM):
             #torch_dtype=torch.bfloat16,
         )
         self.processor = AutoProcessor.from_pretrained(model_name)
-        image_token = "<|image|>"
+        LLM.image_token = "<|image|>"
 
-    def generate_text(self, prompt):
+    def _generate_text(self, prompt):
         return "", {}
     
-    def generate_text_with_vision(self, prompt, image):
-        message = self.prompt_format(prompt)
+    def _generate_text_with_vision(self, prompt, image):
+        message = self._prompt_format(prompt)
         input_text = self.processor.apply_chat_template(message, add_generation_prompt=True)
         inputs = self.processor(image, input_text, return_tensors="pt").to(self.model.device)
         response = self.model.generate(**inputs, max_new_tokens=512)
@@ -167,7 +226,6 @@ class LlamaVision(LLM):
 
 class Llava(LLM):
     def __init__(self, model_name):
-        global image_token
         super().__init__(model_name)
         quantization_config = BitsAndBytesConfig(
             load_in_4bit=True, 
@@ -180,19 +238,19 @@ class Llava(LLM):
             quantization_config=quantization_config,
         )
         self.processor = LlavaNextProcessor.from_pretrained(model_name)
-        image_token = "<image>"
+        LLM.image_token = "<image>"
 
-    def prompt_format(self, prompt):
+    def _prompt_format(self, prompt):
         #return f"[INST] {prompt} [/INST]"
         return [
             {"role": "user","content": [{"type": "text", "text": prompt},],},
         ]
 
-    def generate_text(self, prompt):
+    def _generate_text(self, prompt):
         return "", {}
     
-    def generate_text_with_vision(self, prompt, image):
-        message = self.prompt_format(prompt)
+    def _generate_text_with_vision(self, prompt, image):
+        message = self._prompt_format(prompt)
         input_text = self.processor.apply_chat_template(message, add_generation_prompt=True)
         inputs = self.processor(input_text, image, return_tensors="pt").to(self.model.device)
         response = self.model.generate(
@@ -207,8 +265,8 @@ class Gpt(LLM):
         super().__init__(model_name)
         self.client = OpenAI(api_key = ENV.openai_api_key)
     
-    def prompt_format(self, prompt, image = None):
-        if image is None: return super().prompt_format(prompt)
+    def _prompt_format(self, prompt, image = None):
+        if image is None: return super()._prompt_format(prompt)
 
         image_base64 = utils.np_image_to_base64(image)
         return [{
@@ -219,8 +277,8 @@ class Gpt(LLM):
             ]
         }]
 
-    def call_api(self, prompt, image = None):
-        messages = self.prompt_format(prompt, image)
+    def _call_api(self, prompt, image = None):
+        messages = self._prompt_format(prompt, image)
         response = self.client.chat.completions.create(
             model = self.model_name,
             messages = messages
@@ -228,11 +286,11 @@ class Gpt(LLM):
         text = response.choices[0].message.content
         return text, {}        
 
-    def generate_text(self, prompt):
-        return self.call_api(prompt)
+    def _generate_text(self, prompt):
+        return self._call_api(prompt)
 
-    def generate_text_with_vision(self, prompt, image):
-        return self.call_api(prompt, image)
+    def _generate_text_with_vision(self, prompt, image):
+        return self._call_api(prompt, image)
 
 class Flan(LLM):
     def __init__(self, model_name):
@@ -263,7 +321,7 @@ class Flan(LLM):
         self.tokenizer.add_special_tokens({"pad_token": "<pad>"})
         self.model.pretrained_model.resize_token_embeddings(len(self.tokenizer))
 
-    def generate_text(self, prompt):
+    def _generate_text(self, prompt):
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.device)
         output = self.model.generate(
             inputs=inputs.input_ids,
@@ -281,62 +339,3 @@ class Flan(LLM):
         text = response[0].split("[/INST]")[-1].strip()
 
         return text, response
-
-# 何度もロードしなくて良いようにグローバル変数に保持
-llm_api:LLM = None
-llm_high_api:LLM = None
-
-# 事前に読み込んだLLMを使用する関数
-def llm(prompt:str, image = None, is_use_high_level:bool = False):
-    global llm_api, llm_high_api
-    api = llm_api if not is_use_high_level else llm_high_api
-    if image is not None:
-        return api.generate_text_with_vision(prompt, image)
-    return api.generate_text(prompt)
-
-# テキストの潜在表現を取得する
-def get_internal_representation(text:str):
-    global llm_api
-    return llm_api.generate_internal_representation(text)
-
-# テキスト同士の類似度を取得する
-def get_similarity(text1:str, text2:str) -> float:
-    global llm_api
-    return llm_api.get_similarity(text1, text2)
-
-# LLMのインスタンスを生成
-def make_llm(model_name):
-    if "llama" in model_name:
-        if "llava" in model_name:
-            llm_instance = Llava(model_name)
-        elif "Vision" in model_name:
-            llm_instance = LlamaVision(model_name)            
-        else:
-            llm_instance = Llama(model_name)
-    elif "gpt" in model_name:
-        llm_instance = Gpt(model_name)
-    elif "flan" in model_name:
-        llm_instance = Flan(model_name)
-    else:
-        llm_instance = LLM("free")
-    return llm_instance
-
-# LLMを読み込む
-def load_llm(params):
-    global llm_api, llm_high_api
-
-    is_free_mode = utils.get_value(params, "free_mode", False)
-
-    # 通常のモデルを読み込み
-    model_name = params["llm_model"] if not is_free_mode else "free"
-    if llm_api is None or model_name != llm_api.model_name:
-        llm_api = make_llm(model_name)
-
-    # よりハイレベルなモデル(通常はGPTを想定)を読み込み
-    high_model_name = utils.get_value(params, "llm_high_model", "none")
-    if high_model_name == "none":
-        llm_high_api = llm_api
-    else:
-        high_model_name = high_model_name if not is_free_mode else "free"
-        if llm_high_api is None or high_model_name != llm_high_api.model_name:
-            llm_high_api = make_llm(high_model_name)

@@ -4,7 +4,6 @@ from PIL import Image
 import numpy as np
 import glob
 import re
-import json
 
 class Jsonable:
     def get_dict(self) -> dict:
@@ -78,4 +77,9 @@ def text_to_str_list(text:str) -> list[str]:
                 result = list_obj
         except Exception as e:
             continue
+    return result
+
+def extraction_numbers(text):
+    match_list = re.findall(r'\d+', text)
+    result = ','.join(match_list)
     return result

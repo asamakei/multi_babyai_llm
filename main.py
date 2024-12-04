@@ -11,11 +11,11 @@ from logger.movie_maker import MovieMaker
 from logger.logger import Logger
 
 import utils.env_utils as env_utils
-import utils.llm_utils as llm_utils
+from utils.llm_utils import LLM
 from utils.reflexion_utils import Reflexion
 import utils.utils as utils
 from subgoal_visualizer import main as subgoal_visualize
-import utils.embedding_utils as embedding_utils
+from utils.embedding_utils import Embedder
 
 # ファイル名から設定を読み込む
 def load_config(config_name:str):
@@ -39,9 +39,9 @@ def init_and_run(config_name:str):
     logger = Logger("./result/" + config["env_name"] + "/" + config["policy_name"], "_" + config["config_name"])
     logger.output("config", config)
 
-    llm_utils.load_llm(config) # 先にLLMをロードしておく
+    LLM.load(config) # 先にLLMをロードしておく
     if utils.get_value(config, "is_use_embedding_model", False):
-        embedding_utils.load(config)
+        Embedder.load(config)
 
     print(f"------ execute {config_name} ------")
     run(logger, None, 0, config)
@@ -54,10 +54,16 @@ def run(logger:Logger, reflexion:Reflexion, trial_start:int, config:dict):
         history.append("length: " + str(step+1))
         return history
     
-    def initialize_subgoal(log_init):
+    def initialize_subgoal(trial:int, log_init:dict):
         is_init_subgoal = utils.get_value(config, "is_use_init_subgoal", False)
         if is_init_subgoal:
-            info = reflexion.init_subgoal(config)
+            pre_trial = trial - 1
+            if pre_trial >= 0:
+                with open(f"{logger.path}log_trial{pre_trial}.json") as f:
+                    pre_log = json.load(f)
+            else:
+                pre_log = None
+            info = reflexion.init_subgoal(pre_log, config)
             log_init["subgoals"] = info
 
     def finalize_subgoal(env, is_success, log_final):
@@ -84,7 +90,7 @@ def run(logger:Logger, reflexion:Reflexion, trial_start:int, config:dict):
         is_success = False
         reason = ""
 
-        initialize_subgoal(log_init)
+        initialize_subgoal(trial, log_init)
 
         # 指定ステップ数まで繰り返す
         for step in tqdm(range(config["max_step"])):
