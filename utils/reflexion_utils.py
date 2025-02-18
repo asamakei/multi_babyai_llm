@@ -90,9 +90,12 @@ class Reflexion:
 
         for agent_id in range(self.agent_num):
             prompt = self.get_init_subgoal_prompt(agent_id, params)
-            text, _ = LLM.generate_high(prompt, img)
-            text = "['move to yellow key', 'pick up yellow key', 'move to yellow locked door', 'open yellow locked door', 'move to grey box', 'pick up the grey box']"
+            #text, _ = LLM.generate_high(prompt, img)
+            # text = "['move to yellow key', 'pick up yellow key', 'move to yellow locked door', 'open yellow locked door', 'move to grey box', 'pick up the grey box']"
             #text = "['Move to the green key', 'Pick up the green key', 'Move to the green locked door', 'Open the green locked door', 'Move to the red key', 'Pick up the red key', 'Move to the red locked door', 'Open the red locked door', 'Move to the red ball', 'Pick up the ball']"
+            text = "['pick up the ball', 'pick up the key','unlock the door', 'pick up the box']"
+            #text = "['go to the key', 'pick up the key','unlock the door', 'go to the box', 'pick up the box']"
+            #text = "['pick up the box']"
             subgoals = utils.text_to_str_list(text)
             if len(subgoals) >= 1:
                 subgoals = subgoals[:-1]
@@ -171,8 +174,8 @@ class Reflexion:
     # 思考を生成する際のプロンプトを返す
     def get_consideration_prompt(self, agent_id:int, params:dict):
         subgoal_tree = self.subgoal_trees[agent_id]
-        _, subgoals = subgoal_tree.get_separated_sequence(subgoal_tree.now_node)
-        instr = env_utils.get_consideration_instr(self.env_name, agent_id, subgoals, params)
+        achieved, not_achieved = subgoal_tree.get_achieved_not_achieved()
+        instr = env_utils.get_consideration_instr(agent_id, achieved, not_achieved, params)
         prompt = self.get_prompt(agent_id, instr, params)
         return prompt
     
@@ -185,12 +188,21 @@ class Reflexion:
     # サブゴールを行動に変換する際のプロンプトを返す
     def get_subgoal_to_action_prompt(self, agent_id:int, subgoals:list[str], params:dict):
         instr = env_utils.get_subgoal_to_action_instr(self.env_name, agent_id, subgoals, params)
+        
+        temp = utils.get_value(params["history_labels_len"], "consideration", 0)
+        params["history_labels_len"]["consideration"] = 0
         prompt = self.get_prompt(agent_id, instr, params)
+        params["history_labels_len"]["consideration"] = temp
+        
         return prompt
     
     # サブゴールを達成したかどうか判定する際のプロンプトを返す
     def get_subgoal_achieved_prompt(self, agent_id:int, subgoals:list[str], params:dict):
         instr = env_utils.get_subgoal_achieved_instr(self.env_name, agent_id, subgoals, params)
+        prompt = self.get_prompt(agent_id, instr, params)
+        return prompt
+    def get_all_subgoals_achieved_prompt(self, agent_id:int, subgoals:list[str], params:dict):
+        instr = env_utils.get_all_subgoals_achieved_instr(agent_id, subgoals, params)
         prompt = self.get_prompt(agent_id, instr, params)
         return prompt
 

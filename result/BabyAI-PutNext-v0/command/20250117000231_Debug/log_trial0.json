@@ -1,0 +1,2878 @@
+[
+ {
+  "init": {},
+  "steps": [
+   {
+    "step": 0,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 1,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 2,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 3,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 4,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 5,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 6,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 7,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 8,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 9,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 10,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 11,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 12,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 13,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 14,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 15,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 16,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 17,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 18,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 19,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 20,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 21,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 22,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 23,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 24,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 25,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 26,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 27,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 28,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 29,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 30,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 31,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 32,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 33,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 34,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 35,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 36,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 37,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 38,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 39,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 40,
+    "is_success": true,
+    "reason": "achieve the mission",
+    "info": {}
+   }
+  ]
+ },
+ {
+  "history": [
+   {
+    "base_query": "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (21, 0) is northeast, (0, 21) is southwest, (21, 21) is southeast. Note that You cannot move to coordinate there is an object. You cannot pick up any item if you have already item. Each step, You must select actions in 'turn left', 'turn right', 'go to the forward coordinate', 'pick up item that in the forward coordinate', 'drop carrying item to the forward coordinate' or 'open the door at the forward coordinate'. Work with other agents to accomplish tasks.\n\nHere is the task:\nput a red ball next to a grey box",
+    "history": [
+     {
+      "label": "count",
+      "value": 0,
+      "step": 0
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (6, 9). You are facing north You have no item. There is a passable floor in the area. There is wall at (3, 7). There is wall at (4, 7). There is wall at (5, 7). There is wall at (6, 7). There is wall at (7, 7). There is blue ball at (4, 8). There is wall at (7, 8). Agent1 facing east is at (1, 10). Agent2 facing west is at (1, 9).",
+      "step": 0
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (6, 8), there is no object. Your right is cooridnate (7, 9), there is wall. Your left is coordinate (5, 9), there is no object.",
+      "step": 0
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 0
+     },
+     {
+      "label": "count",
+      "value": 1,
+      "step": 1
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (6, 9). You are facing west You have no item. There is a passable floor in the area. There is wall at (0, 12). There is wall at (0, 11). There is wall at (0, 10). There is wall at (0, 9). There is wall at (0, 8). There is wall at (0, 7). There is wall at (1, 7). There is green key at (2, 11). There is wall at (2, 7). There is wall at (3, 7). There is yellow box at (4, 12). There is blue key at (4, 11). There is blue ball at (4, 8). There is wall at (4, 7). There is wall at (5, 7). There is wall at (6, 7). Agent1 facing east is at (2, 10). Agent2 facing south is at (1, 9).",
+      "step": 1
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 9), there is no object. Your right is cooridnate (6, 8), there is no object. Your left is coordinate (6, 10), there is no object.",
+      "step": 1
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 1
+     },
+     {
+      "label": "count",
+      "value": 2,
+      "step": 2
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 9). You are facing west You have no item. There is a passable floor in the area. There is wall at (0, 12). There is wall at (0, 11). There is wall at (0, 10). There is wall at (0, 9). There is wall at (0, 8). There is wall at (0, 7). There is wall at (1, 7). There is green key at (2, 11). There is wall at (2, 7). There is wall at (3, 7). There is yellow box at (4, 12). There is blue key at (4, 11). There is blue ball at (4, 8). There is wall at (4, 7). There is wall at (5, 7). Agent1 facing east is at (3, 10). Agent2 facing south is at (1, 10).",
+      "step": 2
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (4, 9), there is no object. Your right is cooridnate (5, 8), there is no object. Your left is coordinate (5, 10), there is no object.",
+      "step": 2
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 2
+     },
+     {
+      "label": "count",
+      "value": 3,
+      "step": 3
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 9). You are facing south You have no item. There is a passable floor in the area. There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (7, 13). There is purple box at (3, 13). There is yellow door at (7, 12). There is yellow box at (4, 12). There is wall at (7, 11). There is blue key at (4, 11). There is green key at (2, 11). There is wall at (7, 10). There is wall at (7, 9). Agent1 facing east is at (4, 10). Agent2 facing east is at (1, 10).",
+      "step": 3
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 10), there is no object. Your right is cooridnate (4, 9), there is no object. Your left is coordinate (6, 9), there is no object.",
+      "step": 3
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 3
+     },
+     {
+      "label": "count",
+      "value": 4,
+      "step": 4
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 10). You are facing south You have no item. There is a passable floor in the area. There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (7, 13). There is purple box at (3, 13). There is yellow door at (7, 12). There is yellow box at (4, 12). There is wall at (7, 11). There is blue key at (4, 11). There is green key at (2, 11). There is wall at (7, 10). Agent1 facing east is at (4, 10). Agent2 facing east is at (2, 10).",
+      "step": 4
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 11), there is no object. Your right is cooridnate (4, 10), there is agent1 facing east. Your left is coordinate (6, 10), there is no object.",
+      "step": 4
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 4
+     },
+     {
+      "label": "count",
+      "value": 5,
+      "step": 5
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 11). You are facing south You have no item. There is a passable floor in the area. There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (7, 13). There is purple box at (3, 13). There is yellow door at (7, 12). There is yellow box at (4, 12). There is wall at (7, 11). There is green key at (2, 11). Agent1 facing east is at (5, 10). Agent2 facing east is at (3, 10).",
+      "step": 5
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 12), there is no object. Your right is cooridnate (4, 11), there is blue key. Your left is coordinate (6, 11), there is no object.",
+      "step": 5
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 5
+     },
+     {
+      "label": "count",
+      "value": 6,
+      "step": 6
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 12). You are facing south You have no item. There is a passable floor in the area. There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (7, 13). There is purple box at (3, 13). There is yellow door at (7, 12). Agent1 facing south is at (5, 10). Agent2 facing south is at (3, 10).",
+      "step": 6
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 13), there is no object. Your right is cooridnate (4, 12), there is yellow box. Your left is coordinate (6, 12), there is no object.",
+      "step": 6
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 6
+     },
+     {
+      "label": "count",
+      "value": 7,
+      "step": 7
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). Agent1 facing south is at (5, 11). Agent2 facing east is at (3, 10).",
+      "step": 7
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (6, 12), there is no object. Your right is cooridnate (5, 13), there is no object. Your left is coordinate (5, 11), there is agent1 facing south.",
+      "step": 7
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 7
+     },
+     {
+      "label": "count",
+      "value": 8,
+      "step": 8
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (6, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is wall at (7, 13). There is wall at (7, 14). There is wall at (6, 14). Agent1 facing south is at (5, 12). Agent2 facing east is at (4, 10).",
+      "step": 8
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (7, 12), there is yellow door. Your right is cooridnate (6, 13), there is no object. Your left is coordinate (6, 11), there is no object.",
+      "step": 8
+     },
+     {
+      "label": "feedback",
+      "value": "You opened yellow door.",
+      "step": 8
+     },
+     {
+      "label": "count",
+      "value": 9,
+      "step": 9
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (6, 12). You are facing east You have no item. There is a passable floor in the area. There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is wall at (7, 13). There is wall at (7, 14). There is wall at (6, 14). Agent1 facing west is at (5, 12). Agent2 facing east is at (5, 10).",
+      "step": 9
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (7, 12), there is yellow open door. Your right is cooridnate (6, 13), there is no object. Your left is coordinate (6, 11), there is no object.",
+      "step": 9
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 9
+     },
+     {
+      "label": "count",
+      "value": 10,
+      "step": 10
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (7, 12). You are facing east You have no item. There is a passable floor in the area. There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). Agent1 facing north is at (5, 12). Agent2 facing north is at (5, 10).",
+      "step": 10
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (8, 12), there is no object. Your right is cooridnate (7, 13), there is wall. Your left is coordinate (7, 11), there is wall.",
+      "step": 10
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 10
+     },
+     {
+      "label": "count",
+      "value": 11,
+      "step": 11
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (8, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). Agent1 facing east is at (5, 12). Agent2 facing east is at (5, 10).",
+      "step": 11
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (9, 12), there is no object. Your right is cooridnate (8, 13), there is no object. Your left is coordinate (8, 11), there is no object.",
+      "step": 11
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 11
+     },
+     {
+      "label": "count",
+      "value": 12,
+      "step": 12
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (9, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). Agent1 facing east is at (6, 12). Agent2 facing south is at (5, 10).",
+      "step": 12
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (10, 12), there is no object. Your right is cooridnate (9, 13), there is no object. Your left is coordinate (9, 11), there is no object.",
+      "step": 12
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 12
+     },
+     {
+      "label": "count",
+      "value": 13,
+      "step": 13
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (10, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). Agent1 facing east is at (7, 12). Agent2 facing south is at (5, 11).",
+      "step": 13
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (11, 12), there is no object. Your right is cooridnate (10, 13), there is no object. Your left is coordinate (10, 11), there is no object.",
+      "step": 13
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 13
+     },
+     {
+      "label": "count",
+      "value": 14,
+      "step": 14
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (11, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is wall at (11, 14). Agent1 facing east is at (8, 12). Agent2 facing south is at (5, 12).",
+      "step": 14
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (12, 12), there is no object. Your right is cooridnate (11, 13), there is blue key. Your left is coordinate (11, 11), there is no object.",
+      "step": 14
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 14
+     },
+     {
+      "label": "count",
+      "value": 15,
+      "step": 15
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (12, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). Agent1 facing east is at (9, 12). Agent2 facing east is at (5, 12).",
+      "step": 15
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 12), there is no object. Your right is cooridnate (12, 13), there is no object. Your left is coordinate (12, 11), there is no object.",
+      "step": 15
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 15
+     },
+     {
+      "label": "count",
+      "value": 16,
+      "step": 16
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). Agent1 facing east is at (10, 12). Agent2 facing east is at (6, 12).",
+      "step": 16
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (14, 12), there is green door. Your right is cooridnate (13, 13), there is no object. Your left is coordinate (13, 11), there is no object.",
+      "step": 16
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 16
+     },
+     {
+      "label": "count",
+      "value": 17,
+      "step": 17
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 12). You are facing north You have no item. There is a passable floor in the area. There is wall at (10, 7). There is wall at (11, 7). There is wall at (12, 7). There is yellow door at (13, 7). There is wall at (14, 7). There is wall at (14, 8). There is wall at (14, 9). There is yellow key at (12, 10). There is wall at (14, 10). There is wall at (14, 11). Agent1 facing east is at (11, 12). Agent2 facing east is at (7, 12).",
+      "step": 17
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 11), there is no object. Your right is cooridnate (14, 12), there is green door. Your left is coordinate (12, 12), there is no object.",
+      "step": 17
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 17
+     },
+     {
+      "label": "count",
+      "value": 18,
+      "step": 18
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 11). You are facing north You have no item. There is a passable floor in the area. There is wall at (10, 7). There is wall at (11, 7). There is wall at (12, 7). There is yellow door at (13, 7). There is wall at (14, 7). There is wall at (14, 8). There is wall at (14, 9). There is yellow key at (12, 10). There is wall at (14, 10). Agent1 facing east is at (12, 12). Agent2 facing east is at (8, 12).",
+      "step": 18
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 10), there is no object. Your right is cooridnate (14, 11), there is wall. Your left is coordinate (12, 11), there is no object.",
+      "step": 18
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 18
+     },
+     {
+      "label": "count",
+      "value": 19,
+      "step": 19
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 10). You are facing north You have no item. There is a passable floor in the area. There is wall at (10, 7). There is wall at (11, 7). There is wall at (12, 7). There is yellow door at (13, 7). There is wall at (14, 7). There is wall at (14, 8). There is wall at (14, 9). Agent1 facing east is at (13, 12). Agent2 facing east is at (9, 12).",
+      "step": 19
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 9), there is no object. Your right is cooridnate (14, 10), there is wall. Your left is coordinate (12, 10), there is yellow key.",
+      "step": 19
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 19
+     },
+     {
+      "label": "count",
+      "value": 20,
+      "step": 20
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 9). You are facing north You have no item. There is a passable floor in the area. There is wall at (10, 7). There is wall at (11, 7). There is wall at (12, 7). There is yellow door at (13, 7). There is wall at (14, 7). There is wall at (14, 8). Agent1 facing east is at (13, 12). Agent2 facing east is at (10, 12).",
+      "step": 20
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 8), there is no object. Your right is cooridnate (14, 9), there is wall. Your left is coordinate (12, 9), there is no object.",
+      "step": 20
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 20
+     },
+     {
+      "label": "count",
+      "value": 21,
+      "step": 21
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 8). You are facing north You have no item. There is a passable floor in the area. There is wall at (10, 7). There is wall at (11, 7). There is wall at (12, 7). There is wall at (14, 7). Agent1 facing east is at (14, 12). Agent2 facing east is at (11, 12).",
+      "step": 21
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 7), there is yellow door. Your right is cooridnate (14, 8), there is wall. Your left is coordinate (12, 8), there is no object.",
+      "step": 21
+     },
+     {
+      "label": "feedback",
+      "value": "You opened yellow door.",
+      "step": 21
+     },
+     {
+      "label": "count",
+      "value": 22,
+      "step": 22
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 8). You are facing north You have no item. There is a passable floor in the area. There is wall at (14, 2). There is red door at (14, 3). There is wall at (14, 4). There is wall at (14, 5). There is purple ball at (13, 6). There is wall at (14, 6). There is wall at (10, 7). There is wall at (11, 7). There is wall at (12, 7). There is wall at (14, 7). Agent1 facing east is at (15, 12). Agent2 facing east is at (12, 12).",
+      "step": 22
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 7), there is yellow open door. Your right is cooridnate (14, 8), there is wall. Your left is coordinate (12, 8), there is no object.",
+      "step": 22
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 22
+     },
+     {
+      "label": "count",
+      "value": 23,
+      "step": 23
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 7). You are facing north You have no item. There is a passable floor in the area. There is wall at (14, 1). There is wall at (14, 2). There is red door at (14, 3). There is wall at (14, 4). There is wall at (14, 5). There is wall at (14, 6). Agent1 facing east is at (16, 12). Agent2 facing east is at (13, 12).",
+      "step": 23
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 6), there is purple ball. Your right is cooridnate (14, 7), there is wall. Your left is coordinate (12, 7), there is wall.",
+      "step": 23
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 23
+     },
+     {
+      "label": "count",
+      "value": 24,
+      "step": 24
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 7). You are facing west You have no item. There is a passable floor in the area. There is wall at (7, 10). There is wall at (7, 9). There is wall at (7, 8). There is wall at (7, 7). There is wall at (7, 6). There is wall at (7, 5). There is grey door at (7, 4). There is wall at (8, 7). There is wall at (9, 7). There is wall at (10, 7). There is wall at (11, 7). There is yellow key at (12, 10). Agent1 facing east is at (17, 12). Agent2 facing south is at (13, 12).",
+      "step": 24
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (12, 7), there is wall. Your right is cooridnate (13, 6), there is purple ball. Your left is coordinate (13, 8), there is no object.",
+      "step": 24
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 24
+     },
+     {
+      "label": "count",
+      "value": 25,
+      "step": 25
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 7). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 13). There is blue key at (11, 13). There is green open door at (14, 12). There is wall at (14, 11). There is wall at (14, 10). There is yellow key at (12, 10). There is wall at (14, 9). There is wall at (14, 8). Agent1 facing east is at (18, 12). Agent2 facing south is at (13, 13).",
+      "step": 25
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 8), there is no object. Your right is cooridnate (12, 7), there is wall. Your left is coordinate (14, 7), there is wall.",
+      "step": 25
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 25
+     },
+     {
+      "label": "count",
+      "value": 26,
+      "step": 26
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 8). You are facing south You have no item. There is a passable floor in the area. There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 14). There is red open door at (13, 14). There is wall at (12, 14). There is wall at (11, 14). There is wall at (10, 14). There is wall at (14, 13). There is blue key at (11, 13). There is green open door at (14, 12). There is wall at (14, 11). There is wall at (14, 10). There is yellow key at (12, 10). There is wall at (14, 9). Agent1 facing east is at (19, 12). Agent2 facing south is at (13, 13).",
+      "step": 26
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 9), there is no object. Your right is cooridnate (12, 8), there is no object. Your left is coordinate (14, 8), there is wall.",
+      "step": 26
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 26
+     },
+     {
+      "label": "count",
+      "value": 27,
+      "step": 27
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 9). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 15). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 14). There is wall at (12, 14). There is wall at (11, 14). There is wall at (10, 14). There is wall at (14, 13). There is blue key at (11, 13). There is green open door at (14, 12). There is wall at (14, 11). There is wall at (14, 10). There is yellow key at (12, 10). Agent1 facing north is at (19, 12). Agent2 facing south is at (13, 14).",
+      "step": 27
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 10), there is no object. Your right is cooridnate (12, 9), there is no object. Your left is coordinate (14, 9), there is wall.",
+      "step": 27
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 27
+     },
+     {
+      "label": "count",
+      "value": 28,
+      "step": 28
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 10). You are facing south You have no item. There is a passable floor in the area. There is red door at (14, 16). There is wall at (14, 15). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 14). There is red open door at (13, 14). There is wall at (12, 14). There is wall at (11, 14). There is wall at (10, 14). There is wall at (14, 13). There is blue key at (11, 13). There is green open door at (14, 12). There is wall at (14, 11). Agent1 facing north is at (19, 12). Agent2 facing south is at (13, 15).",
+      "step": 28
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 11), there is no object. Your right is cooridnate (12, 10), there is yellow key. Your left is coordinate (14, 10), there is wall.",
+      "step": 28
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 28
+     },
+     {
+      "label": "count",
+      "value": 29,
+      "step": 29
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 11). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 17). There is red door at (14, 16). There is wall at (14, 15). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 14). There is red open door at (13, 14). There is wall at (12, 14). There is wall at (11, 14). There is wall at (10, 14). There is wall at (14, 13). There is blue key at (11, 13). There is green open door at (14, 12). Agent1 facing north is at (19, 11). Agent2 facing south is at (13, 16).",
+      "step": 29
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 12), there is no object. Your right is cooridnate (12, 11), there is no object. Your left is coordinate (14, 11), there is wall.",
+      "step": 29
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 29
+     },
+     {
+      "label": "count",
+      "value": 30,
+      "step": 30
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 12). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 18). There is grey box at (12, 18). There is wall at (14, 17). There is red door at (14, 16). There is wall at (14, 15). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 14). There is red open door at (13, 14). There is wall at (12, 14). There is wall at (11, 14). There is wall at (10, 14). There is wall at (14, 13). There is blue key at (11, 13). Agent1 facing north is at (19, 10). Agent2 facing south is at (13, 17).",
+      "step": 30
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 13), there is no object. Your right is cooridnate (12, 12), there is no object. Your left is coordinate (14, 12), there is green open door.",
+      "step": 30
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 30
+     },
+     {
+      "label": "count",
+      "value": 31,
+      "step": 31
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 13). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 19). There is wall at (14, 18). There is grey box at (12, 18). There is wall at (14, 17). There is red door at (14, 16). There is wall at (14, 15). There is wall at (14, 14). There is wall at (12, 14). There is wall at (11, 14). There is wall at (10, 14). There is blue key at (11, 13). Agent1 facing west is at (19, 10). Agent2 facing south is at (13, 18).",
+      "step": 31
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 14), there is red open door. Your right is cooridnate (12, 13), there is no object. Your left is coordinate (14, 13), there is wall.",
+      "step": 31
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 31
+     },
+     {
+      "label": "count",
+      "value": 32,
+      "step": 32
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 14). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 20). There is grey key at (13, 20). There is wall at (14, 19). There is wall at (14, 18). There is grey box at (12, 18). There is wall at (14, 17). There is red door at (14, 16). There is wall at (14, 15). Agent1 facing west is at (18, 10). Agent2 facing west is at (13, 18).",
+      "step": 32
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 15), there is no object. Your right is cooridnate (12, 14), there is wall. Your left is coordinate (14, 14), there is wall.",
+      "step": 32
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 32
+     },
+     {
+      "label": "count",
+      "value": 33,
+      "step": 33
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 15). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 21). There is wall at (13, 21). There is wall at (12, 21). There is wall at (11, 21). There is wall at (10, 21). There is wall at (14, 20). There is grey key at (13, 20). There is wall at (14, 19). There is wall at (14, 18). There is wall at (14, 17). There is red door at (14, 16). Agent1 facing west is at (17, 10). Agent2 facing west is at (13, 18).",
+      "step": 33
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 16), there is no object. Your right is cooridnate (12, 15), there is no object. Your left is coordinate (14, 15), there is wall.",
+      "step": 33
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 33
+     },
+     {
+      "label": "count",
+      "value": 34,
+      "step": 34
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 16). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 21). There is wall at (13, 21). There is wall at (12, 21). There is wall at (11, 21). There is wall at (10, 21). There is wall at (14, 20). There is grey key at (13, 20). There is wall at (14, 19). There is wall at (14, 18). There is wall at (14, 17). Agent1 facing west is at (16, 10). Agent2 facing north is at (13, 18).",
+      "step": 34
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 17), there is no object. Your right is cooridnate (12, 16), there is no object. Your left is coordinate (14, 16), there is red door.",
+      "step": 34
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 34
+     },
+     {
+      "label": "count",
+      "value": 35,
+      "step": 35
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 16). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 13). There is wall at (14, 14). There is wall at (14, 15). There is wall at (14, 17). There is wall at (14, 18). There is wall at (14, 19). There is red open door at (13, 14). Agent1 facing west is at (15, 10). Agent2 facing north is at (13, 17).",
+      "step": 35
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (14, 16), there is red door. Your right is cooridnate (13, 17), there is agent2 facing north. Your left is coordinate (13, 15), there is no object.",
+      "step": 35
+     },
+     {
+      "label": "feedback",
+      "value": "You opened red door.",
+      "step": 35
+     },
+     {
+      "label": "count",
+      "value": 36,
+      "step": 36
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 16). You are facing east You have no item. There is a passable floor in the area. There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is blue key at (16, 15). There is wall at (15, 14). There is wall at (14, 13). There is wall at (14, 14). There is wall at (14, 15). There is wall at (14, 17). There is wall at (14, 18). There is wall at (14, 19). There is red open door at (13, 14). Agent1 facing south is at (15, 10). Agent2 facing north is at (13, 17).",
+      "step": 36
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (14, 16), there is red open door. Your right is cooridnate (13, 17), there is agent2 facing north. Your left is coordinate (13, 15), there is no object.",
+      "step": 36
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 36
+     },
+     {
+      "label": "count",
+      "value": 37,
+      "step": 37
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (14, 16). You are facing east You have no item. There is a passable floor in the area. There is wall at (20, 14). There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is blue key at (16, 15). There is wall at (15, 14). Agent1 facing south is at (15, 11). Agent2 facing north is at (13, 16).",
+      "step": 37
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (15, 16), there is no object. Your right is cooridnate (14, 17), there is wall. Your left is coordinate (14, 15), there is wall.",
+      "step": 37
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 37
+     },
+     {
+      "label": "count",
+      "value": 38,
+      "step": 38
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (15, 16). You are facing east You have no item. There is a passable floor in the area. There is wall at (21, 14). There is wall at (21, 15). There is wall at (21, 16). There is wall at (21, 17). There is wall at (21, 18). There is wall at (21, 19). There is wall at (20, 14). There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is blue key at (16, 15). There is wall at (15, 14). Agent1 facing south is at (15, 12). Agent2 facing north is at (13, 15).",
+      "step": 38
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (16, 16), there is no object. Your right is cooridnate (15, 17), there is no object. Your left is coordinate (15, 15), there is no object.",
+      "step": 38
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 38
+     },
+     {
+      "label": "count",
+      "value": 39,
+      "step": 39
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (16, 16). You are facing east You have no item. There is a passable floor in the area. There is wall at (21, 14). There is wall at (21, 15). There is wall at (21, 16). There is wall at (21, 17). There is wall at (21, 18). There is wall at (21, 19). There is wall at (20, 14). There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). Agent1 facing west is at (15, 12). Agent2 facing north is at (13, 14).",
+      "step": 39
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (17, 16), there is no object. Your right is cooridnate (16, 17), there is no object. Your left is coordinate (16, 15), there is blue key.",
+      "step": 39
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 39
+     },
+     {
+      "label": "count",
+      "value": 40,
+      "step": 40
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (17, 16). You are facing east You have no item. There is a passable floor in the area. There is wall at (21, 14). There is wall at (21, 15). There is wall at (21, 16). There is wall at (21, 17). There is wall at (21, 18). There is wall at (21, 19). There is wall at (20, 14). There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). Agent1 facing west is at (14, 12). Agent2 facing north is at (13, 14).",
+      "step": 40
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (18, 16), there is no object. Your right is cooridnate (17, 17), there is no object. Your left is coordinate (17, 15), there is no object.",
+      "step": 40
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 40
+     },
+     {
+      "label": "result",
+      "value": "SUCCESS",
+      "step": 40
+     }
+    ],
+    "labels": [
+     "action",
+     "observation",
+     "relative_observation",
+     "feedback",
+     "message",
+     "subgoal",
+     "consideration",
+     "count",
+     "result"
+    ],
+    "indexes": {}
+   },
+   {
+    "base_query": "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (21, 0) is northeast, (0, 21) is southwest, (21, 21) is southeast. Note that You cannot move to coordinate there is an object. You cannot pick up any item if you have already item. Each step, You must select actions in 'turn left', 'turn right', 'go to the forward coordinate', 'pick up item that in the forward coordinate', 'drop carrying item to the forward coordinate' or 'open the door at the forward coordinate'. Work with other agents to accomplish tasks.\n\nHere is the task:\nput a red ball next to a grey box",
+    "history": [
+     {
+      "label": "count",
+      "value": 0,
+      "step": 0
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (1, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). There is wall at (4, 7). There is blue ball at (4, 8). There is blue key at (4, 11). There is yellow box at (4, 12). There is wall at (3, 7). There is purple box at (3, 13). There is wall at (2, 7). There is green key at (2, 11). There is wall at (1, 7). Agent0 facing north is at (6, 9). Agent2 facing west is at (1, 9).",
+      "step": 0
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (2, 10), there is no object. Your right is cooridnate (1, 11), there is no object. Your left is coordinate (1, 9), there is no object.",
+      "step": 0
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 0
+     },
+     {
+      "label": "count",
+      "value": 1,
+      "step": 1
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (2, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). There is wall at (4, 7). There is blue ball at (4, 8). There is blue key at (4, 11). There is yellow box at (4, 12). There is wall at (3, 7). There is purple box at (3, 13). There is wall at (2, 7). Agent0 facing west is at (6, 9). Agent2 facing south is at (1, 9).",
+      "step": 1
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (3, 10), there is no object. Your right is cooridnate (2, 11), there is green key. Your left is coordinate (2, 9), there is no object.",
+      "step": 1
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 1
+     },
+     {
+      "label": "count",
+      "value": 2,
+      "step": 2
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (3, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). There is wall at (4, 7). There is blue ball at (4, 8). There is blue key at (4, 11). There is yellow box at (4, 12). There is wall at (3, 7). There is purple box at (3, 13). Agent0 facing west is at (5, 9). Agent2 facing south is at (1, 10).",
+      "step": 2
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (4, 10), there is no object. Your right is cooridnate (3, 11), there is no object. Your left is coordinate (3, 9), there is no object.",
+      "step": 2
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 2
+     },
+     {
+      "label": "count",
+      "value": 3,
+      "step": 3
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (4, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). There is wall at (4, 7). There is blue ball at (4, 8). There is yellow box at (4, 12). Agent0 facing south is at (5, 9). Agent2 facing east is at (1, 10).",
+      "step": 3
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 10), there is no object. Your right is cooridnate (4, 11), there is blue key. Your left is coordinate (4, 9), there is no object.",
+      "step": 3
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 3
+     },
+     {
+      "label": "count",
+      "value": 4,
+      "step": 4
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (4, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). There is wall at (4, 7). There is blue ball at (4, 8). There is yellow box at (4, 12). Agent0 facing south is at (5, 10). Agent2 facing east is at (2, 10).",
+      "step": 4
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 10), there is agent0 facing south. Your right is cooridnate (4, 11), there is blue key. Your left is coordinate (4, 9), there is no object.",
+      "step": 4
+     },
+     {
+      "label": "feedback",
+      "value": "You couldn't took a step forward because there is an object in your forward coordinate.",
+      "step": 4
+     },
+     {
+      "label": "count",
+      "value": 5,
+      "step": 5
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). Agent0 facing south is at (5, 11). Agent2 facing east is at (3, 10).",
+      "step": 5
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (6, 10), there is no object. Your right is cooridnate (5, 11), there is agent0 facing south. Your left is coordinate (5, 9), there is no object.",
+      "step": 5
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 5
+     },
+     {
+      "label": "count",
+      "value": 6,
+      "step": 6
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 10). You are facing south You have no item. There is a passable floor in the area. There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (7, 13). There is purple box at (3, 13). There is yellow door at (7, 12). There is yellow box at (4, 12). There is wall at (7, 11). There is blue key at (4, 11). There is green key at (2, 11). There is wall at (7, 10). Agent0 facing south is at (5, 12). Agent2 facing south is at (3, 10).",
+      "step": 6
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 11), there is no object. Your right is cooridnate (4, 10), there is no object. Your left is coordinate (6, 10), there is no object.",
+      "step": 6
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 6
+     },
+     {
+      "label": "count",
+      "value": 7,
+      "step": 7
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 11). You are facing south You have no item. There is a passable floor in the area. There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (7, 13). There is purple box at (3, 13). There is yellow door at (7, 12). There is yellow box at (4, 12). There is wall at (7, 11). There is green key at (2, 11). Agent0 facing east is at (5, 12). Agent2 facing east is at (3, 10).",
+      "step": 7
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 12), there is agent0 facing east. Your right is cooridnate (4, 11), there is blue key. Your left is coordinate (6, 11), there is no object.",
+      "step": 7
+     },
+     {
+      "label": "feedback",
+      "value": "You couldn't took a step forward because there is an object in your forward coordinate.",
+      "step": 7
+     },
+     {
+      "label": "count",
+      "value": 8,
+      "step": 8
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 12). You are facing south You have no item. There is a passable floor in the area. There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (7, 13). There is purple box at (3, 13). There is yellow door at (7, 12). Agent0 facing east is at (6, 12). Agent2 facing east is at (4, 10).",
+      "step": 8
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 13), there is no object. Your right is cooridnate (4, 12), there is yellow box. Your left is coordinate (6, 12), there is agent0 facing east.",
+      "step": 8
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 8
+     },
+     {
+      "label": "count",
+      "value": 9,
+      "step": 9
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 12). You are facing west You have no item. There is a passable floor in the area. There is wall at (0, 14). There is wall at (0, 13). There is wall at (0, 12). There is wall at (0, 11). There is wall at (0, 10). There is wall at (0, 9). There is wall at (1, 14). There is wall at (2, 14). There is green key at (2, 11). There is wall at (3, 14). There is purple box at (3, 13). There is wall at (4, 14). There is blue key at (4, 11). There is wall at (5, 14). Agent0 facing east is at (6, 12). Agent2 facing east is at (5, 10).",
+      "step": 9
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (4, 12), there is yellow box. Your right is cooridnate (5, 11), there is no object. Your left is coordinate (5, 13), there is no object.",
+      "step": 9
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 9
+     },
+     {
+      "label": "count",
+      "value": 10,
+      "step": 10
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 12). You are facing north You have no item. There is a passable floor in the area. There is wall at (2, 7). There is wall at (3, 7). There is wall at (4, 7). There is wall at (5, 7). There is wall at (6, 7). There is wall at (7, 7). There is wall at (8, 7). There is blue ball at (4, 8). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is green key at (2, 11). There is blue key at (4, 11). There is wall at (7, 11). Agent0 facing east is at (7, 12). Agent2 facing north is at (5, 10).",
+      "step": 10
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 11), there is no object. Your right is cooridnate (6, 12), there is no object. Your left is coordinate (4, 12), there is yellow box.",
+      "step": 10
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 10
+     },
+     {
+      "label": "count",
+      "value": 11,
+      "step": 11
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 12). You are facing east You have no item. There is a passable floor in the area. There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow open door at (7, 12). There is wall at (7, 13). There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). Agent0 facing east is at (8, 12). Agent2 facing east is at (5, 10).",
+      "step": 11
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (6, 12), there is no object. Your right is cooridnate (5, 13), there is no object. Your left is coordinate (5, 11), there is no object.",
+      "step": 11
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 11
+     },
+     {
+      "label": "count",
+      "value": 12,
+      "step": 12
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (6, 12). You are facing east You have no item. There is a passable floor in the area. There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is wall at (7, 13). There is wall at (7, 14). There is wall at (6, 14). Agent0 facing east is at (9, 12). Agent2 facing south is at (5, 10).",
+      "step": 12
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (7, 12), there is yellow open door. Your right is cooridnate (6, 13), there is no object. Your left is coordinate (6, 11), there is no object.",
+      "step": 12
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 12
+     },
+     {
+      "label": "count",
+      "value": 13,
+      "step": 13
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (7, 12). You are facing east You have no item. There is a passable floor in the area. There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). Agent0 facing east is at (10, 12). Agent2 facing south is at (5, 11).",
+      "step": 13
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (8, 12), there is no object. Your right is cooridnate (7, 13), there is wall. Your left is coordinate (7, 11), there is wall.",
+      "step": 13
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 13
+     },
+     {
+      "label": "count",
+      "value": 14,
+      "step": 14
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (8, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). Agent0 facing east is at (11, 12). Agent2 facing south is at (5, 12).",
+      "step": 14
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (9, 12), there is no object. Your right is cooridnate (8, 13), there is no object. Your left is coordinate (8, 11), there is no object.",
+      "step": 14
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 14
+     },
+     {
+      "label": "count",
+      "value": 15,
+      "step": 15
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (9, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). Agent0 facing east is at (12, 12). Agent2 facing east is at (5, 12).",
+      "step": 15
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (10, 12), there is no object. Your right is cooridnate (9, 13), there is no object. Your left is coordinate (9, 11), there is no object.",
+      "step": 15
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 15
+     },
+     {
+      "label": "count",
+      "value": 16,
+      "step": 16
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (10, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). Agent0 facing east is at (13, 12). Agent2 facing east is at (6, 12).",
+      "step": 16
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (11, 12), there is no object. Your right is cooridnate (10, 13), there is no object. Your left is coordinate (10, 11), there is no object.",
+      "step": 16
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 16
+     },
+     {
+      "label": "count",
+      "value": 17,
+      "step": 17
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (11, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is wall at (11, 14). Agent0 facing north is at (13, 12). Agent2 facing east is at (7, 12).",
+      "step": 17
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (12, 12), there is no object. Your right is cooridnate (11, 13), there is blue key. Your left is coordinate (11, 11), there is no object.",
+      "step": 17
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 17
+     },
+     {
+      "label": "count",
+      "value": 18,
+      "step": 18
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (12, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). Agent0 facing north is at (13, 11). Agent2 facing east is at (8, 12).",
+      "step": 18
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 12), there is no object. Your right is cooridnate (12, 13), there is no object. Your left is coordinate (12, 11), there is no object.",
+      "step": 18
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 18
+     },
+     {
+      "label": "count",
+      "value": 19,
+      "step": 19
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). Agent0 facing north is at (13, 10). Agent2 facing east is at (9, 12).",
+      "step": 19
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (14, 12), there is green door. Your right is cooridnate (13, 13), there is no object. Your left is coordinate (13, 11), there is no object.",
+      "step": 19
+     },
+     {
+      "label": "feedback",
+      "value": "You opened green door.",
+      "step": 19
+     },
+     {
+      "label": "count",
+      "value": 20,
+      "step": 20
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 12). You are facing east You have no item. There is a passable floor in the area. There is red ball at (19, 11). There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). Agent0 facing north is at (13, 9). Agent2 facing east is at (10, 12).",
+      "step": 20
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (14, 12), there is green open door. Your right is cooridnate (13, 13), there is no object. Your left is coordinate (13, 11), there is no object.",
+      "step": 20
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 20
+     },
+     {
+      "label": "count",
+      "value": 21,
+      "step": 21
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (14, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (20, 14). There is red ball at (19, 11). There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is wall at (15, 14). Agent0 facing north is at (13, 8). Agent2 facing east is at (11, 12).",
+      "step": 21
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (15, 12), there is no object. Your right is cooridnate (14, 13), there is wall. Your left is coordinate (14, 11), there is wall.",
+      "step": 21
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 21
+     },
+     {
+      "label": "count",
+      "value": 22,
+      "step": 22
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (15, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (21, 9). There is wall at (21, 10). There is wall at (21, 11). There is wall at (21, 12). There is wall at (21, 13). There is wall at (21, 14). There is wall at (20, 14). There is red ball at (19, 11). There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is wall at (15, 14). Agent0 facing north is at (13, 8). Agent2 facing east is at (12, 12).",
+      "step": 22
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (16, 12), there is no object. Your right is cooridnate (15, 13), there is no object. Your left is coordinate (15, 11), there is no object.",
+      "step": 22
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 22
+     },
+     {
+      "label": "count",
+      "value": 23,
+      "step": 23
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (16, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (21, 9). There is wall at (21, 10). There is wall at (21, 11). There is wall at (21, 12). There is wall at (21, 13). There is wall at (21, 14). There is wall at (20, 14). There is red ball at (19, 11). There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). Agent0 facing north is at (13, 7). Agent2 facing east is at (13, 12).",
+      "step": 23
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (17, 12), there is no object. Your right is cooridnate (16, 13), there is no object. Your left is coordinate (16, 11), there is no object.",
+      "step": 23
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 23
+     },
+     {
+      "label": "count",
+      "value": 24,
+      "step": 24
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (17, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (21, 9). There is wall at (21, 10). There is wall at (21, 11). There is wall at (21, 12). There is wall at (21, 13). There is wall at (21, 14). There is wall at (20, 14). There is red ball at (19, 11). There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). Agent0 facing west is at (13, 7). Agent2 facing south is at (13, 12).",
+      "step": 24
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (18, 12), there is no object. Your right is cooridnate (17, 13), there is no object. Your left is coordinate (17, 11), there is no object.",
+      "step": 24
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 24
+     },
+     {
+      "label": "count",
+      "value": 25,
+      "step": 25
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (18, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (21, 9). There is wall at (21, 10). There is wall at (21, 11). There is wall at (21, 12). There is wall at (21, 13). There is wall at (21, 14). There is wall at (20, 14). There is red ball at (19, 11). There is wall at (19, 14). There is wall at (18, 14). Agent0 facing south is at (13, 7). Agent2 facing south is at (13, 13).",
+      "step": 25
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (19, 12), there is no object. Your right is cooridnate (18, 13), there is no object. Your left is coordinate (18, 11), there is no object.",
+      "step": 25
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 25
+     },
+     {
+      "label": "count",
+      "value": 26,
+      "step": 26
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (19, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (21, 9). There is wall at (21, 10). There is wall at (21, 11). There is wall at (21, 12). There is wall at (21, 13). There is wall at (21, 14). There is wall at (20, 14). There is wall at (19, 14). Agent0 facing south is at (13, 8). Agent2 facing south is at (13, 13).",
+      "step": 26
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (20, 12), there is no object. Your right is cooridnate (19, 13), there is no object. Your left is coordinate (19, 11), there is red ball.",
+      "step": 26
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 26
+     },
+     {
+      "label": "count",
+      "value": 27,
+      "step": 27
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (19, 12). You are facing north You have no item. There is a passable floor in the area. There is wall at (16, 7). There is green door at (17, 7). There is wall at (18, 7). There is wall at (19, 7). There is wall at (20, 7). There is wall at (21, 7). There is wall at (21, 8). There is wall at (21, 9). There is wall at (21, 10). There is wall at (21, 11). There is wall at (21, 12). Agent0 facing south is at (13, 9). Agent2 facing south is at (13, 14).",
+      "step": 27
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (19, 11), there is red ball. Your right is cooridnate (20, 12), there is no object. Your left is coordinate (18, 12), there is no object.",
+      "step": 27
+     },
+     {
+      "label": "feedback",
+      "value": "You picked up red ball.",
+      "step": 27
+     },
+     {
+      "label": "count",
+      "value": 28,
+      "step": 28
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (19, 12). You are facing north You have red ball. There is a passable floor in the area. There is wall at (16, 7). There is green door at (17, 7). There is wall at (18, 7). There is wall at (19, 7). There is wall at (20, 7). There is wall at (21, 7). There is wall at (21, 8). There is wall at (21, 9). There is wall at (21, 10). There is wall at (21, 11). There is wall at (21, 12). Agent0 facing south is at (13, 10). Agent2 facing south is at (13, 15).",
+      "step": 28
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (19, 11), there is no object. Your right is cooridnate (20, 12), there is no object. Your left is coordinate (18, 12), there is no object.",
+      "step": 28
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 28
+     },
+     {
+      "label": "count",
+      "value": 29,
+      "step": 29
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (19, 11). You are facing north You have red ball. There is a passable floor in the area. There is wall at (16, 7). There is green door at (17, 7). There is wall at (18, 7). There is wall at (19, 7). There is wall at (20, 7). There is wall at (21, 7). There is wall at (21, 8). There is wall at (21, 9). There is wall at (21, 10). There is wall at (21, 11). Agent0 facing south is at (13, 11). Agent2 facing south is at (13, 16).",
+      "step": 29
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (19, 10), there is no object. Your right is cooridnate (20, 11), there is no object. Your left is coordinate (18, 11), there is no object.",
+      "step": 29
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 29
+     },
+     {
+      "label": "count",
+      "value": 30,
+      "step": 30
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (19, 10). You are facing north You have red ball. There is a passable floor in the area. There is wall at (16, 7). There is green door at (17, 7). There is wall at (18, 7). There is wall at (19, 7). There is wall at (20, 7). There is wall at (21, 7). There is wall at (21, 8). There is wall at (21, 9). There is wall at (21, 10). Agent0 facing south is at (13, 12). Agent2 facing south is at (13, 17).",
+      "step": 30
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (19, 9), there is no object. Your right is cooridnate (20, 10), there is no object. Your left is coordinate (18, 10), there is no object.",
+      "step": 30
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 30
+     },
+     {
+      "label": "count",
+      "value": 31,
+      "step": 31
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (19, 10). You are facing west You have red ball. There is a passable floor in the area. There is yellow open door at (13, 7). There is wall at (14, 13). There is green open door at (14, 12). There is wall at (14, 11). There is wall at (14, 10). There is wall at (14, 9). There is wall at (14, 8). There is wall at (14, 7). There is wall at (15, 7). There is wall at (16, 7). There is green door at (17, 7). There is wall at (18, 7). There is wall at (19, 7). Agent0 facing south is at (13, 13). Agent2 facing south is at (13, 18).",
+      "step": 31
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (18, 10), there is no object. Your right is cooridnate (19, 9), there is no object. Your left is coordinate (19, 11), there is no object.",
+      "step": 31
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 31
+     },
+     {
+      "label": "count",
+      "value": 32,
+      "step": 32
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (18, 10). You are facing west You have red ball. There is a passable floor in the area. There is yellow key at (12, 10). There is wall at (12, 7). There is yellow open door at (13, 7). There is wall at (14, 13). There is green open door at (14, 12). There is wall at (14, 11). There is wall at (14, 10). There is wall at (14, 9). There is wall at (14, 8). There is wall at (14, 7). There is wall at (15, 7). There is wall at (16, 7). There is green door at (17, 7). There is wall at (18, 7). Agent0 facing south is at (13, 14). Agent2 facing west is at (13, 18).",
+      "step": 32
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (17, 10), there is no object. Your right is cooridnate (18, 9), there is no object. Your left is coordinate (18, 11), there is no object.",
+      "step": 32
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 32
+     },
+     {
+      "label": "count",
+      "value": 33,
+      "step": 33
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (17, 10). You are facing west You have red ball. There is a passable floor in the area. There is blue key at (11, 13). There is wall at (11, 7). There is yellow key at (12, 10). There is wall at (12, 7). There is yellow open door at (13, 7). There is wall at (14, 13). There is green open door at (14, 12). There is wall at (14, 11). There is wall at (14, 10). There is wall at (14, 9). There is wall at (14, 8). There is wall at (14, 7). There is wall at (15, 7). There is wall at (16, 7). There is green door at (17, 7). Agent0 facing south is at (13, 15). Agent2 facing west is at (13, 18).",
+      "step": 33
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (16, 10), there is no object. Your right is cooridnate (17, 9), there is no object. Your left is coordinate (17, 11), there is no object.",
+      "step": 33
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 33
+     },
+     {
+      "label": "count",
+      "value": 34,
+      "step": 34
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (16, 10). You are facing west You have red ball. There is a passable floor in the area. There is wall at (10, 7). There is blue key at (11, 13). There is wall at (11, 7). There is yellow key at (12, 10). There is wall at (12, 7). There is yellow open door at (13, 7). There is wall at (14, 13). There is green open door at (14, 12). There is wall at (14, 11). There is wall at (14, 10). There is wall at (14, 9). There is wall at (14, 8). There is wall at (14, 7). There is wall at (15, 7). There is wall at (16, 7). Agent0 facing south is at (13, 16). Agent2 facing north is at (13, 18).",
+      "step": 34
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (15, 10), there is no object. Your right is cooridnate (16, 9), there is no object. Your left is coordinate (16, 11), there is no object.",
+      "step": 34
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 34
+     },
+     {
+      "label": "count",
+      "value": 35,
+      "step": 35
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (15, 10). You are facing west You have red ball. There is a passable floor in the area. There is wall at (9, 7). There is wall at (10, 7). There is blue key at (11, 13). There is wall at (11, 7). There is yellow key at (12, 10). There is wall at (12, 7). There is yellow open door at (13, 7). There is wall at (14, 13). There is green open door at (14, 12). There is wall at (14, 11). There is wall at (14, 9). There is wall at (14, 8). There is wall at (14, 7). There is wall at (15, 7). Agent0 facing east is at (13, 16). Agent2 facing north is at (13, 17).",
+      "step": 35
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (14, 10), there is wall. Your right is cooridnate (15, 9), there is no object. Your left is coordinate (15, 11), there is no object.",
+      "step": 35
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 35
+     },
+     {
+      "label": "count",
+      "value": 36,
+      "step": 36
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (15, 10). You are facing south You have red ball. There is a passable floor in the area. There is red open door at (14, 16). There is wall at (14, 15). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 14). There is red open door at (13, 14). There is wall at (12, 14). There is wall at (14, 13). There is green open door at (14, 12). There is wall at (14, 11). Agent0 facing east is at (13, 16). Agent2 facing north is at (13, 17).",
+      "step": 36
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (15, 11), there is no object. Your right is cooridnate (14, 10), there is wall. Your left is coordinate (16, 10), there is no object.",
+      "step": 36
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 36
+     },
+     {
+      "label": "count",
+      "value": 37,
+      "step": 37
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (15, 11). You are facing south You have red ball. There is a passable floor in the area. There is wall at (14, 17). There is wall at (14, 15). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 14). There is red open door at (13, 14). There is wall at (12, 14). There is wall at (14, 13). There is green open door at (14, 12). Agent0 facing east is at (14, 16). Agent2 facing north is at (13, 16).",
+      "step": 37
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (15, 12), there is no object. Your right is cooridnate (14, 11), there is wall. Your left is coordinate (16, 11), there is no object.",
+      "step": 37
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 37
+     },
+     {
+      "label": "count",
+      "value": 38,
+      "step": 38
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (15, 12). You are facing south You have red ball. There is a passable floor in the area. There is wall at (14, 18). There is wall at (14, 17). There is red open door at (14, 16). There is wall at (14, 15). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 14). There is red open door at (13, 14). There is wall at (12, 14). There is wall at (14, 13). Agent0 facing east is at (15, 16). Agent2 facing north is at (13, 15).",
+      "step": 38
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (15, 13), there is no object. Your right is cooridnate (14, 12), there is green open door. Your left is coordinate (16, 12), there is no object.",
+      "step": 38
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 38
+     },
+     {
+      "label": "count",
+      "value": 39,
+      "step": 39
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (15, 12). You are facing west You have red ball. There is a passable floor in the area. There is wall at (9, 14). There is wall at (10, 14). There is wall at (11, 14). There is blue key at (11, 13). There is wall at (12, 14). There is yellow key at (12, 10). There is wall at (14, 14). There is wall at (14, 13). There is wall at (14, 11). There is wall at (14, 10). There is wall at (14, 9). There is wall at (15, 14). Agent0 facing east is at (16, 16). Agent2 facing north is at (13, 14).",
+      "step": 39
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (14, 12), there is green open door. Your right is cooridnate (15, 11), there is no object. Your left is coordinate (15, 13), there is no object.",
+      "step": 39
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 39
+     },
+     {
+      "label": "count",
+      "value": 40,
+      "step": 40
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (14, 12). You are facing west You have red ball. There is a passable floor in the area. There is wall at (8, 14). There is wall at (9, 14). There is wall at (10, 14). There is wall at (11, 14). There is blue key at (11, 13). There is wall at (12, 14). There is yellow key at (12, 10). There is grey box at (13, 13). Agent0 facing east is at (17, 16). Agent2 facing north is at (13, 14).",
+      "step": 40
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 12), there is no object. Your right is cooridnate (14, 11), there is wall. Your left is coordinate (14, 13), there is wall.",
+      "step": 40
+     },
+     {
+      "label": "feedback",
+      "value": "You dropped red ball.",
+      "step": 40
+     },
+     {
+      "label": "result",
+      "value": "SUCCESS",
+      "step": 40
+     }
+    ],
+    "labels": [
+     "action",
+     "observation",
+     "relative_observation",
+     "feedback",
+     "message",
+     "subgoal",
+     "consideration",
+     "count",
+     "result"
+    ],
+    "indexes": {}
+   },
+   {
+    "base_query": "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (21, 0) is northeast, (0, 21) is southwest, (21, 21) is southeast. Note that You cannot move to coordinate there is an object. You cannot pick up any item if you have already item. Each step, You must select actions in 'turn left', 'turn right', 'go to the forward coordinate', 'pick up item that in the forward coordinate', 'drop carrying item to the forward coordinate' or 'open the door at the forward coordinate'. Work with other agents to accomplish tasks.\n\nHere is the task:\nput a red ball next to a grey box",
+    "history": [
+     {
+      "label": "count",
+      "value": 0,
+      "step": 0
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (1, 9). You are facing west You have no item. There is a passable floor in the area. There is wall at (0, 12). There is wall at (0, 11). There is wall at (0, 10). There is wall at (0, 8). There is wall at (0, 7). There is wall at (1, 7). Agent0 facing north is at (6, 9). Agent1 facing east is at (1, 10).",
+      "step": 0
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (0, 9), there is wall. Your right is cooridnate (1, 8), there is no object. Your left is coordinate (1, 10), there is no object.",
+      "step": 0
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 0
+     },
+     {
+      "label": "count",
+      "value": 1,
+      "step": 1
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (1, 9). You are facing south You have no item. There is a passable floor in the area. There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (1, 14). There is wall at (0, 14). There is purple box at (3, 13). There is wall at (0, 13). There is yellow box at (4, 12). There is wall at (0, 12). There is blue key at (4, 11). There is green key at (2, 11). There is wall at (0, 11). There is wall at (0, 10). Agent0 facing west is at (6, 9). Agent1 facing east is at (2, 10).",
+      "step": 1
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (1, 10), there is no object. Your right is cooridnate (0, 9), there is wall. Your left is coordinate (2, 9), there is no object.",
+      "step": 1
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 1
+     },
+     {
+      "label": "count",
+      "value": 2,
+      "step": 2
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (1, 10). You are facing south You have no item. There is a passable floor in the area. There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (1, 14). There is wall at (0, 14). There is purple box at (3, 13). There is wall at (0, 13). There is yellow box at (4, 12). There is wall at (0, 12). There is blue key at (4, 11). There is green key at (2, 11). There is wall at (0, 11). Agent0 facing west is at (5, 9). Agent1 facing east is at (3, 10).",
+      "step": 2
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (1, 11), there is no object. Your right is cooridnate (0, 10), there is wall. Your left is coordinate (2, 10), there is no object.",
+      "step": 2
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 2
+     },
+     {
+      "label": "count",
+      "value": 3,
+      "step": 3
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (1, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). There is wall at (4, 7). There is blue ball at (4, 8). There is blue key at (4, 11). There is yellow box at (4, 12). There is wall at (3, 7). There is purple box at (3, 13). There is wall at (2, 7). There is green key at (2, 11). There is wall at (1, 7). Agent0 facing south is at (5, 9). Agent1 facing east is at (4, 10).",
+      "step": 3
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (2, 10), there is no object. Your right is cooridnate (1, 11), there is no object. Your left is coordinate (1, 9), there is no object.",
+      "step": 3
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 3
+     },
+     {
+      "label": "count",
+      "value": 4,
+      "step": 4
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (2, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). There is wall at (4, 7). There is blue ball at (4, 8). There is blue key at (4, 11). There is yellow box at (4, 12). There is wall at (3, 7). There is purple box at (3, 13). There is wall at (2, 7). Agent0 facing south is at (5, 10). Agent1 facing east is at (4, 10).",
+      "step": 4
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (3, 10), there is no object. Your right is cooridnate (2, 11), there is green key. Your left is coordinate (2, 9), there is no object.",
+      "step": 4
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 4
+     },
+     {
+      "label": "count",
+      "value": 5,
+      "step": 5
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (3, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). There is wall at (4, 7). There is blue ball at (4, 8). There is blue key at (4, 11). There is yellow box at (4, 12). There is wall at (3, 7). There is purple box at (3, 13). Agent0 facing south is at (5, 11). Agent1 facing east is at (5, 10).",
+      "step": 5
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (4, 10), there is no object. Your right is cooridnate (3, 11), there is no object. Your left is coordinate (3, 9), there is no object.",
+      "step": 5
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 5
+     },
+     {
+      "label": "count",
+      "value": 6,
+      "step": 6
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (3, 10). You are facing south You have no item. There is a passable floor in the area. There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (1, 14). There is wall at (0, 14). There is purple box at (3, 13). There is wall at (0, 13). There is yellow box at (4, 12). There is wall at (0, 12). There is blue key at (4, 11). There is green key at (2, 11). There is wall at (0, 11). There is wall at (0, 10). Agent0 facing south is at (5, 12). Agent1 facing south is at (5, 10).",
+      "step": 6
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (3, 11), there is no object. Your right is cooridnate (2, 10), there is no object. Your left is coordinate (4, 10), there is no object.",
+      "step": 6
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 6
+     },
+     {
+      "label": "count",
+      "value": 7,
+      "step": 7
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (3, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). There is wall at (4, 7). There is blue ball at (4, 8). There is blue key at (4, 11). There is yellow box at (4, 12). There is wall at (3, 7). There is purple box at (3, 13). Agent0 facing east is at (5, 12). Agent1 facing south is at (5, 11).",
+      "step": 7
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (4, 10), there is no object. Your right is cooridnate (3, 11), there is no object. Your left is coordinate (3, 9), there is no object.",
+      "step": 7
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 7
+     },
+     {
+      "label": "count",
+      "value": 8,
+      "step": 8
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (4, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). There is wall at (4, 7). There is blue ball at (4, 8). There is yellow box at (4, 12). Agent0 facing east is at (6, 12). Agent1 facing south is at (5, 12).",
+      "step": 8
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 10), there is no object. Your right is cooridnate (4, 11), there is blue key. Your left is coordinate (4, 9), there is no object.",
+      "step": 8
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 8
+     },
+     {
+      "label": "count",
+      "value": 9,
+      "step": 9
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (11, 7). There is blue key at (11, 13). There is wall at (10, 7). There is wall at (9, 7). There is wall at (8, 7). There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow open door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). Agent0 facing east is at (6, 12). Agent1 facing west is at (5, 12).",
+      "step": 9
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (6, 10), there is no object. Your right is cooridnate (5, 11), there is no object. Your left is coordinate (5, 9), there is no object.",
+      "step": 9
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 9
+     },
+     {
+      "label": "count",
+      "value": 10,
+      "step": 10
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 10). You are facing north You have no item. There is a passable floor in the area. There is wall at (2, 7). There is wall at (3, 7). There is wall at (4, 7). There is wall at (5, 7). There is wall at (6, 7). There is wall at (7, 7). There is blue ball at (4, 8). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). Agent0 facing east is at (7, 12). Agent1 facing north is at (5, 12).",
+      "step": 10
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 9), there is no object. Your right is cooridnate (6, 10), there is no object. Your left is coordinate (4, 10), there is no object.",
+      "step": 10
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 10
+     },
+     {
+      "label": "count",
+      "value": 11,
+      "step": 11
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 10). You are facing east You have no item. There is a passable floor in the area. There is wall at (11, 7). There is blue key at (11, 13). There is wall at (10, 7). There is wall at (9, 7). There is wall at (8, 7). There is wall at (7, 7). There is wall at (7, 8). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow open door at (7, 12). There is wall at (7, 13). There is wall at (6, 7). There is wall at (5, 7). Agent0 facing east is at (8, 12). Agent1 facing east is at (5, 12).",
+      "step": 11
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (6, 10), there is no object. Your right is cooridnate (5, 11), there is no object. Your left is coordinate (5, 9), there is no object.",
+      "step": 11
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 11
+     },
+     {
+      "label": "count",
+      "value": 12,
+      "step": 12
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 10). You are facing south You have no item. There is a passable floor in the area. There is wall at (8, 14). There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (7, 13). There is purple box at (3, 13). There is yellow open door at (7, 12). There is yellow box at (4, 12). There is wall at (7, 11). There is blue key at (4, 11). There is green key at (2, 11). There is wall at (7, 10). Agent0 facing east is at (9, 12). Agent1 facing east is at (6, 12).",
+      "step": 12
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 11), there is no object. Your right is cooridnate (4, 10), there is no object. Your left is coordinate (6, 10), there is no object.",
+      "step": 12
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 12
+     },
+     {
+      "label": "count",
+      "value": 13,
+      "step": 13
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 11). You are facing south You have no item. There is a passable floor in the area. There is wall at (8, 14). There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (7, 13). There is purple box at (3, 13). There is yellow box at (4, 12). There is wall at (7, 11). There is green key at (2, 11). Agent0 facing east is at (10, 12). Agent1 facing east is at (7, 12).",
+      "step": 13
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 12), there is no object. Your right is cooridnate (4, 11), there is blue key. Your left is coordinate (6, 11), there is no object.",
+      "step": 13
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 13
+     },
+     {
+      "label": "count",
+      "value": 14,
+      "step": 14
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 12). You are facing south You have no item. There is a passable floor in the area. There is wall at (8, 14). There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). There is wall at (4, 14). There is wall at (3, 14). There is wall at (2, 14). There is wall at (7, 13). There is purple box at (3, 13). There is yellow open door at (7, 12). Agent0 facing east is at (11, 12). Agent1 facing east is at (8, 12).",
+      "step": 14
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (5, 13), there is no object. Your right is cooridnate (4, 12), there is yellow box. Your left is coordinate (6, 12), there is no object.",
+      "step": 14
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 14
+     },
+     {
+      "label": "count",
+      "value": 15,
+      "step": 15
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (5, 12). You are facing east You have no item. There is a passable floor in the area. There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is yellow open door at (7, 12). There is wall at (7, 13). There is wall at (7, 14). There is wall at (6, 14). There is wall at (5, 14). Agent0 facing east is at (12, 12). Agent1 facing east is at (9, 12).",
+      "step": 15
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (6, 12), there is no object. Your right is cooridnate (5, 13), there is no object. Your left is coordinate (5, 11), there is no object.",
+      "step": 15
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 15
+     },
+     {
+      "label": "count",
+      "value": 16,
+      "step": 16
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (6, 12). You are facing east You have no item. There is a passable floor in the area. There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). There is wall at (7, 9). There is wall at (7, 10). There is wall at (7, 11). There is wall at (7, 13). There is wall at (7, 14). There is wall at (6, 14). Agent0 facing east is at (13, 12). Agent1 facing east is at (10, 12).",
+      "step": 16
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (7, 12), there is yellow open door. Your right is cooridnate (6, 13), there is no object. Your left is coordinate (6, 11), there is no object.",
+      "step": 16
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 16
+     },
+     {
+      "label": "count",
+      "value": 17,
+      "step": 17
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (7, 12). You are facing east You have no item. There is a passable floor in the area. There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). Agent0 facing north is at (13, 12). Agent1 facing east is at (11, 12).",
+      "step": 17
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (8, 12), there is no object. Your right is cooridnate (7, 13), there is wall. Your left is coordinate (7, 11), there is wall.",
+      "step": 17
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 17
+     },
+     {
+      "label": "count",
+      "value": 18,
+      "step": 18
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (8, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). There is wall at (8, 14). Agent0 facing north is at (13, 11). Agent1 facing east is at (12, 12).",
+      "step": 18
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (9, 12), there is no object. Your right is cooridnate (8, 13), there is no object. Your left is coordinate (8, 11), there is no object.",
+      "step": 18
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 18
+     },
+     {
+      "label": "count",
+      "value": 19,
+      "step": 19
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (9, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). There is wall at (9, 14). Agent0 facing north is at (13, 10). Agent1 facing east is at (13, 12).",
+      "step": 19
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (10, 12), there is no object. Your right is cooridnate (9, 13), there is no object. Your left is coordinate (9, 11), there is no object.",
+      "step": 19
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 19
+     },
+     {
+      "label": "count",
+      "value": 20,
+      "step": 20
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (10, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green open door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is blue key at (11, 13). There is wall at (11, 14). There is wall at (10, 14). Agent0 facing north is at (13, 9). Agent1 facing east is at (13, 12).",
+      "step": 20
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (11, 12), there is no object. Your right is cooridnate (10, 13), there is no object. Your left is coordinate (10, 11), there is no object.",
+      "step": 20
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 20
+     },
+     {
+      "label": "count",
+      "value": 21,
+      "step": 21
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (11, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (17, 14). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). There is wall at (11, 14). Agent0 facing north is at (13, 8). Agent1 facing east is at (14, 12).",
+      "step": 21
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (12, 12), there is no object. Your right is cooridnate (11, 13), there is blue key. Your left is coordinate (11, 11), there is no object.",
+      "step": 21
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 21
+     },
+     {
+      "label": "count",
+      "value": 22,
+      "step": 22
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (12, 12). You are facing east You have no item. There is a passable floor in the area. There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is green open door at (14, 12). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). There is yellow key at (12, 10). There is wall at (12, 14). Agent0 facing north is at (13, 8). Agent1 facing east is at (15, 12).",
+      "step": 22
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 12), there is no object. Your right is cooridnate (12, 13), there is no object. Your left is coordinate (12, 11), there is no object.",
+      "step": 22
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 22
+     },
+     {
+      "label": "count",
+      "value": 23,
+      "step": 23
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 12). You are facing east You have no item. There is a passable floor in the area. There is red ball at (19, 11). There is wall at (19, 14). There is wall at (18, 14). There is wall at (17, 14). There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 9). There is wall at (14, 10). There is wall at (14, 11). There is wall at (14, 13). There is wall at (14, 14). There is red door at (13, 14). Agent0 facing north is at (13, 7). Agent1 facing east is at (16, 12).",
+      "step": 23
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (14, 12), there is green open door. Your right is cooridnate (13, 13), there is no object. Your left is coordinate (13, 11), there is no object.",
+      "step": 23
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 23
+     },
+     {
+      "label": "count",
+      "value": 24,
+      "step": 24
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 12). You are facing south You have no item. There is a passable floor in the area. There is wall at (16, 14). There is wall at (15, 14). There is wall at (14, 14). There is red door at (13, 14). There is wall at (12, 14). There is wall at (11, 14). There is wall at (10, 14). There is wall at (14, 13). There is blue key at (11, 13). Agent0 facing west is at (13, 7). Agent1 facing east is at (17, 12).",
+      "step": 24
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 13), there is no object. Your right is cooridnate (12, 12), there is no object. Your left is coordinate (14, 12), there is green open door.",
+      "step": 24
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 24
+     },
+     {
+      "label": "count",
+      "value": 25,
+      "step": 25
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 13). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 14). There is wall at (12, 14). There is wall at (11, 14). There is wall at (10, 14). There is blue key at (11, 13). Agent0 facing south is at (13, 7). Agent1 facing east is at (18, 12).",
+      "step": 25
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 14), there is red door. Your right is cooridnate (12, 13), there is no object. Your left is coordinate (14, 13), there is wall.",
+      "step": 25
+     },
+     {
+      "label": "feedback",
+      "value": "You opened red door.",
+      "step": 25
+     },
+     {
+      "label": "count",
+      "value": 26,
+      "step": 26
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 13). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 19). There is wall at (14, 18). There is grey box at (12, 18). There is wall at (14, 17). There is red door at (14, 16). There is wall at (14, 15). There is wall at (14, 14). There is wall at (12, 14). There is wall at (11, 14). There is wall at (10, 14). There is blue key at (11, 13). Agent0 facing south is at (13, 8). Agent1 facing east is at (19, 12).",
+      "step": 26
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 14), there is red open door. Your right is cooridnate (12, 13), there is no object. Your left is coordinate (14, 13), there is wall.",
+      "step": 26
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 26
+     },
+     {
+      "label": "count",
+      "value": 27,
+      "step": 27
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 14). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 20). There is grey key at (13, 20). There is wall at (14, 19). There is wall at (14, 18). There is grey box at (12, 18). There is wall at (14, 17). There is red door at (14, 16). There is wall at (14, 15). Agent0 facing south is at (13, 9). Agent1 facing north is at (19, 12).",
+      "step": 27
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 15), there is no object. Your right is cooridnate (12, 14), there is wall. Your left is coordinate (14, 14), there is wall.",
+      "step": 27
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 27
+     },
+     {
+      "label": "count",
+      "value": 28,
+      "step": 28
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 15). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 21). There is wall at (13, 21). There is wall at (12, 21). There is wall at (11, 21). There is wall at (10, 21). There is wall at (14, 20). There is grey key at (13, 20). There is wall at (14, 19). There is wall at (14, 18). There is grey box at (12, 18). There is wall at (14, 17). There is red door at (14, 16). Agent0 facing south is at (13, 10). Agent1 facing north is at (19, 12).",
+      "step": 28
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 16), there is no object. Your right is cooridnate (12, 15), there is no object. Your left is coordinate (14, 15), there is wall.",
+      "step": 28
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 28
+     },
+     {
+      "label": "count",
+      "value": 29,
+      "step": 29
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 16). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 21). There is wall at (13, 21). There is wall at (12, 21). There is wall at (11, 21). There is wall at (10, 21). There is wall at (14, 20). There is grey key at (13, 20). There is wall at (14, 19). There is wall at (14, 18). There is grey box at (12, 18). There is wall at (14, 17). Agent0 facing south is at (13, 11). Agent1 facing north is at (19, 11).",
+      "step": 29
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 17), there is no object. Your right is cooridnate (12, 16), there is no object. Your left is coordinate (14, 16), there is red door.",
+      "step": 29
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 29
+     },
+     {
+      "label": "count",
+      "value": 30,
+      "step": 30
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 17). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 21). There is wall at (13, 21). There is wall at (12, 21). There is wall at (11, 21). There is wall at (10, 21). There is wall at (14, 20). There is grey key at (13, 20). There is wall at (14, 19). There is wall at (14, 18). There is grey box at (12, 18). Agent0 facing south is at (13, 12). Agent1 facing north is at (19, 10).",
+      "step": 30
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 18), there is no object. Your right is cooridnate (12, 17), there is no object. Your left is coordinate (14, 17), there is wall.",
+      "step": 30
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 30
+     },
+     {
+      "label": "count",
+      "value": 31,
+      "step": 31
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 18). You are facing south You have no item. There is a passable floor in the area. There is wall at (14, 21). There is wall at (13, 21). There is wall at (12, 21). There is wall at (11, 21). There is wall at (10, 21). There is wall at (14, 20). There is grey key at (13, 20). There is wall at (14, 19). Agent0 facing south is at (13, 13). Agent1 facing west is at (19, 10).",
+      "step": 31
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 19), there is no object. Your right is cooridnate (12, 18), there is grey box. Your left is coordinate (14, 18), there is wall.",
+      "step": 31
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 31
+     },
+     {
+      "label": "count",
+      "value": 32,
+      "step": 32
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 18). You are facing west You have no item. There is a passable floor in the area. There is wall at (7, 21). There is wall at (7, 20). There is wall at (7, 19). There is wall at (7, 18). There is wall at (7, 17). There is wall at (7, 16). There is blue door at (7, 15). There is wall at (8, 21). There is wall at (9, 21). There is wall at (10, 21). There is wall at (11, 21). There is wall at (12, 21). There is wall at (13, 21). There is grey key at (13, 20). Agent0 facing south is at (13, 14). Agent1 facing west is at (18, 10).",
+      "step": 32
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (12, 18), there is grey box. Your right is cooridnate (13, 17), there is no object. Your left is coordinate (13, 19), there is no object.",
+      "step": 32
+     },
+     {
+      "label": "feedback",
+      "value": "You picked up grey box.",
+      "step": 32
+     },
+     {
+      "label": "count",
+      "value": 33,
+      "step": 33
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 18). You are facing west You have grey box. There is a passable floor in the area. There is wall at (7, 21). There is wall at (7, 20). There is wall at (7, 19). There is wall at (7, 18). There is wall at (7, 17). There is wall at (7, 16). There is blue door at (7, 15). There is wall at (8, 21). There is wall at (9, 21). There is wall at (10, 21). There is wall at (11, 21). There is wall at (12, 21). There is wall at (13, 21). There is grey key at (13, 20). Agent0 facing south is at (13, 15). Agent1 facing west is at (17, 10).",
+      "step": 33
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (12, 18), there is no object. Your right is cooridnate (13, 17), there is no object. Your left is coordinate (13, 19), there is no object.",
+      "step": 33
+     },
+     {
+      "label": "feedback",
+      "value": "You turned right.",
+      "step": 33
+     },
+     {
+      "label": "count",
+      "value": 34,
+      "step": 34
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 18). You are facing north You have grey box. There is a passable floor in the area. There is green open door at (14, 12). There is blue key at (11, 13). There is wall at (14, 13). There is wall at (10, 14). There is wall at (11, 14). There is wall at (12, 14). There is red open door at (13, 14). There is wall at (14, 14). There is wall at (14, 15). There is red door at (14, 16). There is wall at (14, 17). Agent0 facing south is at (13, 16). Agent1 facing west is at (16, 10).",
+      "step": 34
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 17), there is no object. Your right is cooridnate (14, 18), there is wall. Your left is coordinate (12, 18), there is no object.",
+      "step": 34
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 34
+     },
+     {
+      "label": "count",
+      "value": 35,
+      "step": 35
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 17). You are facing north You have grey box. There is a passable floor in the area. There is wall at (14, 11). There is green open door at (14, 12). There is blue key at (11, 13). There is wall at (14, 13). There is wall at (10, 14). There is wall at (11, 14). There is wall at (12, 14). There is red open door at (13, 14). There is wall at (14, 14). There is wall at (14, 15). There is red door at (14, 16). Agent0 facing east is at (13, 16). Agent1 facing west is at (15, 10).",
+      "step": 35
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 16), there is agent0 facing east. Your right is cooridnate (14, 17), there is wall. Your left is coordinate (12, 17), there is no object.",
+      "step": 35
+     },
+     {
+      "label": "feedback",
+      "value": "You couldn't took a step forward because there is an object in your forward coordinate.",
+      "step": 35
+     },
+     {
+      "label": "count",
+      "value": 36,
+      "step": 36
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 17). You are facing north You have grey box. There is a passable floor in the area. There is wall at (14, 11). There is green open door at (14, 12). There is blue key at (11, 13). There is wall at (14, 13). There is wall at (10, 14). There is wall at (11, 14). There is wall at (12, 14). There is red open door at (13, 14). There is wall at (14, 14). There is wall at (15, 14). There is wall at (16, 14). There is wall at (14, 15). There is blue key at (16, 15). There is red open door at (14, 16). Agent0 facing east is at (13, 16). Agent1 facing south is at (15, 10).",
+      "step": 36
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 16), there is agent0 facing east. Your right is cooridnate (14, 17), there is wall. Your left is coordinate (12, 17), there is no object.",
+      "step": 36
+     },
+     {
+      "label": "feedback",
+      "value": "You couldn't took a step forward because there is an object in your forward coordinate.",
+      "step": 36
+     },
+     {
+      "label": "count",
+      "value": 37,
+      "step": 37
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 16). You are facing north You have grey box. There is a passable floor in the area. There is yellow key at (12, 10). There is wall at (14, 10). There is wall at (14, 11). There is green open door at (14, 12). There is blue key at (11, 13). There is wall at (14, 13). There is wall at (10, 14). There is wall at (11, 14). There is wall at (12, 14). There is red open door at (13, 14). There is wall at (14, 14). There is wall at (15, 14). There is wall at (16, 14). There is wall at (14, 15). There is blue key at (16, 15). Agent0 facing east is at (14, 16). Agent1 facing south is at (15, 11).",
+      "step": 37
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 15), there is no object. Your right is cooridnate (14, 16), there is agent0 facing east. Your left is coordinate (12, 16), there is no object.",
+      "step": 37
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 37
+     },
+     {
+      "label": "count",
+      "value": 38,
+      "step": 38
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 15). You are facing north You have grey box. There is a passable floor in the area. There is wall at (14, 9). There is yellow key at (12, 10). There is wall at (14, 10). There is wall at (14, 11). There is green open door at (14, 12). There is blue key at (11, 13). There is wall at (14, 13). There is wall at (10, 14). There is wall at (11, 14). There is wall at (12, 14). There is wall at (14, 14). Agent0 facing east is at (15, 16). Agent1 facing south is at (15, 12).",
+      "step": 38
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 14), there is red open door. Your right is cooridnate (14, 15), there is wall. Your left is coordinate (12, 15), there is no object.",
+      "step": 38
+     },
+     {
+      "label": "feedback",
+      "value": "You took a step forward.",
+      "step": 38
+     },
+     {
+      "label": "count",
+      "value": 39,
+      "step": 39
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 14). You are facing north You have grey box. There is a passable floor in the area. There is wall at (14, 8). There is wall at (14, 9). There is yellow key at (12, 10). There is wall at (14, 10). There is wall at (14, 11). There is green open door at (14, 12). There is blue key at (11, 13). There is wall at (14, 13). Agent0 facing east is at (16, 16). Agent1 facing west is at (15, 12).",
+      "step": 39
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 13), there is no object. Your right is cooridnate (14, 14), there is wall. Your left is coordinate (12, 14), there is wall.",
+      "step": 39
+     },
+     {
+      "label": "feedback",
+      "value": "You dropped grey box.",
+      "step": 39
+     },
+     {
+      "label": "count",
+      "value": 40,
+      "step": 40
+     },
+     {
+      "label": "observation",
+      "value": "Your position is coordinate (13, 14). You are facing north You have no item. There is a passable floor in the area. There is wall at (14, 8). There is wall at (14, 9). There is yellow key at (12, 10). There is wall at (14, 10). There is wall at (14, 11). There is blue key at (11, 13). There is wall at (14, 13). Agent0 facing east is at (17, 16). Agent1 facing west is at (14, 12).",
+      "step": 40
+     },
+     {
+      "label": "relative_observation",
+      "value": "Your forward is coordinate (13, 13), there is grey box. Your right is cooridnate (14, 14), there is wall. Your left is coordinate (12, 14), there is wall.",
+      "step": 40
+     },
+     {
+      "label": "feedback",
+      "value": "You turned left.",
+      "step": 40
+     },
+     {
+      "label": "result",
+      "value": "SUCCESS",
+      "step": 40
+     }
+    ],
+    "labels": [
+     "action",
+     "observation",
+     "relative_observation",
+     "feedback",
+     "message",
+     "subgoal",
+     "consideration",
+     "count",
+     "result"
+    ],
+    "indexes": {}
+   }
+  ],
+  "finallize_subgoal": {
+   "queries": [],
+   "responses": [],
+   "achieved": [
+    [
+     [
+      "put a red ball next to a grey box",
+      "Yes"
+     ]
+    ],
+    [
+     [
+      "put a red ball next to a grey box",
+      "Yes"
+     ]
+    ],
+    [
+     [
+      "put a red ball next to a grey box",
+      "Yes"
+     ]
+    ]
+   ]
+  },
+  "subgoal_tree": [
+   {
+    "node_count": 1,
+    "content": [
+     "put a red ball next to a grey box"
+    ],
+    "parent": [
+     -1
+    ],
+    "childrens": [
+     []
+    ],
+    "now_node": 0,
+    "failed_node": -1,
+    "access": [
+     0
+    ],
+    "halfway_node": -1
+   },
+   {
+    "node_count": 1,
+    "content": [
+     "put a red ball next to a grey box"
+    ],
+    "parent": [
+     -1
+    ],
+    "childrens": [
+     []
+    ],
+    "now_node": 0,
+    "failed_node": -1,
+    "access": [
+     0
+    ],
+    "halfway_node": -1
+   },
+   {
+    "node_count": 1,
+    "content": [
+     "put a red ball next to a grey box"
+    ],
+    "parent": [
+     -1
+    ],
+    "childrens": [
+     []
+    ],
+    "now_node": 0,
+    "failed_node": -1,
+    "access": [
+     0
+    ],
+    "halfway_node": -1
+   }
+  ],
+  "reflexion_queries": [],
+  "memory": [
+   {
+    "size": 3,
+    "contents": []
+   },
+   {
+    "size": 3,
+    "contents": []
+   },
+   {
+    "size": 3,
+    "contents": []
+   }
+  ]
+ }
+]

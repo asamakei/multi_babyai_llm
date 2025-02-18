@@ -10,7 +10,7 @@ def save_image(directory_path:str, trial:int, image:Image.Image):
     image_dir_path = f"{directory_path}/subgoal_tree"
     if not os.path.exists(image_dir_path):
         os.mkdir(image_dir_path)
-    image_path = f"{image_dir_path}/trial{trial}.png"
+    image_path = f"{image_dir_path}/trial{trial}_0.png"
     image.save(image_path)
 
 def draw_subgoaltree(tree:SubgoalTree) -> Image:
@@ -69,7 +69,8 @@ def draw_subgoaltree(tree:SubgoalTree) -> Image:
         child_count = 0
 
         if is_leaf_node:
-            child_count = 1
+            if not is_failed_node:
+                child_count = 1
             is_achieved &= not is_failed_node
         else:
             for child in tree.childrens[node]:
@@ -117,7 +118,7 @@ def main(directory_name:str, trials:list[int]):
     return
 
 if __name__ == "__main__":
-    directory_name = "20241204000001_Failed"
-    trials = list(range(100))
+    directory_name = "20241202202051_Debug"
+    trials = [1]#list(range(100))
     main(directory_name, trials)
     print(f"[INFO] The process is terminated.")

@@ -21,6 +21,15 @@ def output(content, path):
     with open(path, 'w') as f:
         json.dump(content, f, indent=1, cls=NumpyJSONEncoder)
 
+def output_token_count(input:int, output:int):
+    path = "./token_count.json"
+    with open(path) as f:
+        content = list(json.load(f))
+    dt_now = str(datetime.datetime.now())
+    content.append([dt_now, input, output])
+    with open(path, "w") as f:
+        json.dump(content, f, indent=1, cls=NumpyJSONEncoder)
+
 class Logger:
     def __init__(self, path, name = "", is_create = True):
         self.log = []

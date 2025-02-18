@@ -47,11 +47,15 @@ def act_by_hierarchical_subgoal(env:gym.Env, reflexion:Reflexion, pre_info:dict,
     imgs = env_utils.get_imgs(env, params)
 
     def subgoal_format(text:str) -> str:
+        if ":" in text:
+            text = text.split(":")[1]
+            text = text.strip()
         symbols = ["'", '"', '.', ',']
         for symbol in symbols:
             text = utils.remove_edge_symbol(text, symbol)
         text = text.lower()
         text = text.replace(' the ', ' ')
+        text = text.replace('coordinate (', '(')
         return text
 
     def get_max_similarity(text:str, targets:list[str]) -> tuple[int, float]:
@@ -84,27 +88,28 @@ def act_by_hierarchical_subgoal(env:gym.Env, reflexion:Reflexion, pre_info:dict,
 
         # 続きのサブゴールを生成する
         is_subgoal_atomic = False
-        for _ in range(len(subgoals), subgoal_max_generation):
-            prompt = reflexion.get_subgoal_prompt(agent_id, achieved_subgoals, subgoals, params)
-            subgoal, _ = LLM.generate(prompt, imgs[agent_id])
-            subgoal = subgoal_format(subgoal)
-            info["queries"].append(prompt)
-            info["responses"].append(subgoal)
+        if subgoal_tree.is_after_halfway_node() or True:
+            for _ in range(len(subgoals), subgoal_max_generation):
+                prompt = reflexion.get_subgoal_prompt(agent_id, achieved_subgoals, subgoals, params)
+                subgoal, _ = LLM.generate(prompt, imgs[agent_id])
+                subgoal = subgoal_format(subgoal)
+                info["queries"].append(prompt)
+                info["responses"].append(subgoal)
 
-            # 行動に相当するサブゴールかどうかをチェックする
-            index, similarity = get_max_similarity(subgoal, actions_str)
-            if similarity > threshold_action:
-                subgoal = actions_str[index]
-                is_subgoal_atomic = True
-                break
+                # 行動に相当するサブゴールかどうかをチェックする
+                index, similarity = get_max_similarity(subgoal, actions_str)
+                if similarity > threshold_action:
+                    subgoal = actions_str[index]
+                    is_subgoal_atomic = True
+                    break
 
-            # すでに存在するサブゴールかどうかをチェックする
-            _, similarity = get_max_similarity(subgoal, subgoals)
-            if similarity > threshold_subgoal:#0.85?
-                continue # break?
+                # すでに存在するサブゴールかどうかをチェックする
+                _, similarity = get_max_similarity(subgoal, subgoals)
+                if similarity > threshold_subgoal:#0.85?
+                    break
 
-            subgoals = [subgoal] + subgoals
-            subgoal_tree.append(subgoal)
+                subgoals = [subgoal] + subgoals
+                subgoal_tree.append(subgoal)
 
         # サブゴールを行動に変換する
         if not is_subgoal_atomic:
@@ -148,7 +153,7 @@ def consideration(env:gym.Env, reflexion:Reflexion, pre_info:dict, params:dict={
         # 履歴をもとに状態(文字列)を生成
         prompt = reflexion.get_consideration_prompt(agent_id, params)
         text, response = LLM.generate(prompt, imgs[agent_id])
-        text = "Your think:" + text
+        text = "You think:" + text
 
         info["queries"].append(prompt)
         info["responses"].append(response)
@@ -225,6 +230,7 @@ def conversation(env:gym.Env, reflexion:Reflexion, pre_info:dict, params:dict={}
     utils.dict_of_lists_extend(pre_info, info)
 
 def judge_subgoal_achievement(env:gym.Env, reflexion:Reflexion, pre_info:dict, is_clear:bool, params:dict={}):
+    if env.now_step <= 0: return
     info = {
         "queries":[],
         "responses":[],
@@ -240,12 +246,31 @@ def judge_subgoal_achievement(env:gym.Env, reflexion:Reflexion, pre_info:dict, i
         if is_clear:
             is_achieved[-1] = True
             log_outputs[-1] = "Yes"
-        for i in range(len(subgoals)-1):
-            prompt = reflexion.get_subgoal_achieved_prompt(agent_id, subgoals[i:], params)
-            judge, _ = LLM.generate(prompt, imgs[agent_id])
-            is_achieved[i] = "yes" in judge.lower()
-            log_outputs[i] = judge
-            info["queries"].append(prompt)
+
+        # 一括で判定したかった(精度が悪い)        
+        # prompt = reflexion.get_all_subgoals_achieved_prompt(agent_id, subgoals, params)
+        # judge, _ = LLM.generate(prompt, imgs[agent_id])
+        # if judge[0] != '[':
+        #     judge = '[' + judge
+        # if judge[-1] != ']':
+        #     judge = judge + ']'
+        # judge_list = utils.text_to_str_list(judge)
+        # judge_failed = len(judge_list) != len(subgoals)
+        # info["queries"].append(prompt)
+        # info["achieved"].append(judge)
+        judge_failed = True
+
+        if judge_failed:
+            for i in range(len(subgoals)-1):
+                prompt = reflexion.get_subgoal_achieved_prompt(agent_id, subgoals[i:], params)
+                judge, _ = LLM.generate(prompt, imgs[agent_id])
+                is_achieved[i] = "yes" in judge.lower()
+                log_outputs[i] = judge
+                info["queries"].append(prompt)
+        # else:
+        #     for i in range(len(subgoals)-1):
+        #         is_achieved[i] = "yes" in judge_list[i].lower()
+        #         log_outputs[i] = judge_list[i]
 
         log_achieved = [(subgoals[i], log_outputs[i]) for i in range(len(subgoals))]
         info["achieved"].append(log_achieved)

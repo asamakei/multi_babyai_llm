@@ -9,10 +9,11 @@
         "sight_include_agents": true,
         "is_use_consideration" : true,
         "is_use_feedback" : true,
-        "history_labels" : ["action", "observation", "feedback", "message", "consideration", "count", "result"],
+        "history_labels" : ["action", "observation", "relative_observation", "feedback", "message", "consideration", "count", "result"],
         "history_labels_len" : {
             "message" : 1,
-            "consideration" : 2
+            "consideration" : 2,
+            "relative_observation" : 1
         },
         "history_size" : 5
     }

@@ -2,6 +2,7 @@ import os
 import utils.utils as utils
 
 from openai import OpenAI
+import tiktoken
 
 import transformers
 from transformers import (
@@ -19,6 +20,7 @@ from transformers import (
 import numpy as np
 import torch
 import ENV
+from logger.logger import output_token_count
 
 # 初期化とテキスト生成の機能を持ったLLM
 class LLM:
@@ -264,6 +266,9 @@ class Gpt(LLM):
     def __init__(self, model_name):
         super().__init__(model_name)
         self.client = OpenAI(api_key = ENV.openai_api_key)
+        self.encoding = tiktoken.encoding_for_model(model_name)
+        self.input_token = 0
+        self.output_token = 0
     
     def _prompt_format(self, prompt, image = None):
         if image is None: return super()._prompt_format(prompt)
@@ -277,6 +282,24 @@ class Gpt(LLM):
             ]
         }]
 
+    def _token_checker(self, input, output):
+        input_token_len = self._calc_token(input)
+        output_token_len = self._calc_token(output)
+        self.input_token += input_token_len
+        self.output_token += output_token_len
+        output_token_count(input_token_len, output_token_len)
+
+        cost = self.input_token / 1000000 * 0.15 + self.output_token / 1000000 * 0.6
+        if cost > 0.45:
+            print(f"input:{self.input_token}")
+            print(f"output:{self.output_token}")
+            print(f"cost:{cost}")
+            import sys
+            a = 1
+            b = a[1]
+            print(b)
+            sys.exit()
+
     def _call_api(self, prompt, image = None):
         messages = self._prompt_format(prompt, image)
         response = self.client.chat.completions.create(
@@ -284,7 +307,14 @@ class Gpt(LLM):
             messages = messages
         )
         text = response.choices[0].message.content
+
+        self._token_checker(prompt, text)
         return text, {}        
+
+    def _calc_token(self, text):
+        encoding = tiktoken.get_encoding(self.encoding.name)
+        num_tokens = len(encoding.encode(text))
+        return num_tokens
 
     def _generate_text(self, prompt):
         return self._call_api(prompt)

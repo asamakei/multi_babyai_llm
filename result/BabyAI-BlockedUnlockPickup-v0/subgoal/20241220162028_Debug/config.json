@@ -1,0 +1,56 @@
+{
+ "agent_num": 1,
+ "realtime_rendering": true,
+ "free_mode": false,
+ "sight_include_agents": true,
+ "is_use_consideration": false,
+ "is_use_feedback": true,
+ "history_labels": [
+  "action",
+  "observation",
+  "relative_observation",
+  "feedback",
+  "message",
+  "consideration",
+  "count",
+  "result"
+ ],
+ "history_labels_len": {
+  "message": 1,
+  "consideration": 2,
+  "relative_observation": 1
+ },
+ "history_size": 5,
+ "config_name": "Debug",
+ "reflexion_memory_size": 3,
+ "reflexion_history_size": 100,
+ "reflexion_type": "none",
+ "trial_count": 100,
+ "reflexion_history_labels": [
+  "action",
+  "observation",
+  "feedback",
+  "message",
+  "count",
+  "result"
+ ],
+ "reflexion_history_labels_len": {
+  "observation": 3,
+  "message": 3,
+  "consideration": 3
+ },
+ "env_name": "BabyAI-BlockedUnlockPickup-v0",
+ "max_step": 75,
+ "env_fixed_seed": 16,
+ "is_use_embedding_model": true,
+ "embedding_model": "paraphrase-MiniLM-L6-v2",
+ "subgoal_equal_threshold": 0.9,
+ "action_equal_threshold": 0.9,
+ "llm_high_model": "gpt-4o",
+ "policy_name": "subgoal",
+ "subgoal_max_generation": 20,
+ "is_use_init_subgoal": true,
+ "llm_model": "meta-llama/Meta-Llama-3.1-70B-Instruct",
+ "is_use_vision": false,
+ "is_use_fixed_init_subgoal": false
+}

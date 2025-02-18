@@ -1,0 +1,29 @@
+[
+ [
+  "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. It is not possible to overlap objects. You cannot pick up any item if you have already item. Each step, You must select actions in 'turn left', 'turn right', 'go to the forward coordinate', 'pick up item that in the forward coordinate', 'drop carrying item to the forward coordinate' or 'open the door at the forward coordinate'.",
+  "",
+  "Here is the task:",
+  "pick up the box",
+  "",
+  "The following is your history:",
+  "time 0:",
+  "Your position is coordinate (3, 3). Your forward is (2, 3), west. Your right is (3, 2), north. Your left is (3, 4), south. You have no item. There is a passable floor in the area. There is wall at (0, 5). There is wall at (0, 4). There is wall at (0, 3). There is wall at (0, 2). There is wall at (0, 1). There is wall at (0, 0). There is wall at (1, 5). There is purple key at (1, 1). There is wall at (1, 0). There is wall at (2, 5). There is wall at (2, 0). There is wall at (3, 5). There is wall at (3, 0). There is no object in your forward coordinate (2, 3). There is no object in your right coordinate (3, 2). There is no object in your left coordinate (3, 4).",
+  "Your think:I will go to the coordinate of the box and pick it up.",
+  "subgoals: ['go to (4, 3)', 'go to box', 'get the ball out of the way', 'obtain the key', 'unlock the door', 'pick up the box']",
+  "Your action: turn left",
+  "You turned left.",
+  "time 1:",
+  "Your position is coordinate (3, 3). Your forward is (3, 4), south. Your right is (2, 3), west. Your left is (4, 3), east. You have no item. There is a passable floor in the area. There is wall at (5, 5). There is wall at (4, 5). There is wall at (3, 5). There is wall at (2, 5). There is wall at (1, 5). There is wall at (0, 5). There is wall at (5, 4). There is wall at (0, 4). There is purple locked door at (5, 3). There is wall at (0, 3). There is no object in your forward coordinate (3, 4). There is no object in your right coordinate (2, 3). There is yellow ball in your left coordinate (4, 3).",
+  "Your think:I will go to the coordinate of the box, move the ball out of the way, obtain the key, unlock the door, and then pick up the box.",
+  "subgoals: ['go to coordinate (4, 3)', 'go to (4, 3)', 'go to box', 'get the ball out of the way', 'obtain the key', 'unlock the door', 'pick up the box']",
+  "Your action: turn left",
+  "You turned left.",
+  "time 2:",
+  "Your position is coordinate (3, 3). Your forward is (4, 3), east. Your right is (3, 4), south. Your left is (3, 2), north. You have no item. There is a passable floor in the area. There is wall at (5, 0). There is wall at (5, 1). There is wall at (5, 2). There is purple locked door at (5, 3). There is wall at (5, 4). There is wall at (5, 5). There is wall at (4, 0). There is wall at (4, 5). There is wall at (3, 0). There is wall at (3, 5). There is yellow ball in your forward coordinate (4, 3). There is no object in your right coordinate (3, 4). There is no object in your left coordinate (3, 2).",
+  "Your think:To accomplish the task, I should move the yellow ball out of the way, then go to the coordinate of the purple key, obtain the key, unlock the purple locked door, and finally go to the box and pick it up.",
+  "subgoals: ['pick up yellow ball', 'move ball', 'go to box', 'get the ball out of the way', 'obtain the key', 'unlock the door', 'pick up the box']",
+  "Your action: pick up item that in the forward coordinate",
+  "You picked up yellow ball."
+ ],
+ "length: 3"
+]

@@ -17,6 +17,11 @@ import utils.utils as utils
 from subgoal_visualizer import main as subgoal_visualize
 from utils.embedding_utils import Embedder
 
+import sys
+import os
+# カスタマイズしたライブラリは作業フォルダから優先的に参照する
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
 # ファイル名から設定を読み込む
 def load_config(config_name:str):
     with open(f'./config/{config_name}.json') as f:
@@ -56,8 +61,12 @@ def run(logger:Logger, reflexion:Reflexion, trial_start:int, config:dict):
     
     def initialize_subgoal(trial:int, log_init:dict):
         is_init_subgoal = utils.get_value(config, "is_use_init_subgoal", False)
+        is_fixed = utils.get_value(config, "is_use_fixed_init_subgoal", False)
+        fixed_trial = utils.get_value(config, "fixed_init_subgoal_trial", -1)
         if is_init_subgoal:
             pre_trial = trial - 1
+            if is_fixed:
+                pre_trial = min(pre_trial, fixed_trial)
             if pre_trial >= 0:
                 with open(f"{logger.path}log_trial{pre_trial}.json") as f:
                     pre_log = json.load(f)
@@ -103,7 +112,10 @@ def run(logger:Logger, reflexion:Reflexion, trial_start:int, config:dict):
             # 現在の状態を履歴に追加
             obs_texts = env_utils.obs_to_str(env, obs, config)
             reflexion.add_histories("count", step)
-            reflexion.add_histories("observation", obs_texts)
+            relative = [t[0] for t in obs_texts]
+            absolute = [t[1] for t in obs_texts]
+            reflexion.add_histories("observation", absolute)
+            reflexion.add_histories("relative_observation", relative)
 
             env.now_step = step
 

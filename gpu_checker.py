@@ -2,6 +2,15 @@ import subprocess
 import time
 from datetime import datetime
 
+# GPUぶん取りプログラム
+# バックグラウンドで実行 → GPUを常に監視して指定容量が空いた瞬間に指定のコマンドを自動で実行する
+# 使うと嫌われます
+
+# user settings
+require = 42 #GB
+cmd = "python main.py"
+# ------------
+
 DEFAULT_ATTRIBUTES = (
     'index',
     'uuid',
@@ -23,9 +32,6 @@ def get_gpu_info(nvidia_smi_path='nvidia-smi', keys=DEFAULT_ATTRIBUTES, no_units
 
     return [ { k: v for k, v in zip(keys, line.split(', ')) } for line in lines ]
 
-require = 42
-cmd = "python main.py"
-
 print(str(datetime.now()) + " start checking", flush=True)
 while True:
     info = get_gpu_info()
@@ -34,4 +40,4 @@ while True:
         print(str(datetime.now()) + " get memory", flush=True)
         subprocess.check_output(cmd, shell=True)
         break
-    time.sleep(15)
+    time.sleep(15) # 15秒に一度チェック

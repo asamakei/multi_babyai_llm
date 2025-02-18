@@ -7,7 +7,7 @@ class History(utils.Jsonable):
         super().__init__()
         self.base_query: str = self.get_base_query(base_query, task_info, memory)
         self.history: list[dict[str, str, str]] = []
-        self.labels = ['action', 'observation', 'feedback', 'message', 'subgoal', 'consideration', 'count', 'result']
+        self.labels = ['action', 'observation', 'relative_observation', 'feedback', 'message', 'subgoal', 'consideration', 'count', 'result']
         self.indexes: dict[int, int] = {}
 
     # 履歴をラベル付けして追加
@@ -99,6 +99,7 @@ class SubgoalTree(utils.Jsonable):
         self.now_node:int = -1
         self.failed_node:int = -1
         self.access:list[int] = []
+        self.halfway_node = -1
         if len(root_content) > 0:
             self.append(root_content)
     
@@ -210,6 +211,9 @@ class SubgoalTree(utils.Jsonable):
 
     def get_all_sequence(self) -> tuple[list[str], list[str]]:
         return self.get_separated_sequence(self.failed_node)
+    
+    def get_achieved_not_achieved(self) -> tuple[list[str], list[str]]:
+        return self.get_separated_sequence(self.now_node)
 
     def dfs(self, node:int) -> list[int]:
         result:list[int] = []
@@ -219,12 +223,12 @@ class SubgoalTree(utils.Jsonable):
         return result
     
     def get_leaf_count(self, node:int=0) -> int:
-        if node == self.failed_node and len(self.childrens[self.parent[node]]) > 1:
-            return 0
-        if len(self.childrens[node]) == 0:
-            return 1
+        children = self.childrens[node].copy()
+        if self.failed_node in children:
+            children.remove(self.failed_node)
         result = 0
-        for n in self.childrens[node]:
+        if len(children) == 0: return 1
+        for n in children:
             result += self.get_leaf_count(n)
         return result
 
@@ -294,20 +298,35 @@ class SubgoalTree(utils.Jsonable):
                 if is_changed: break
             if not is_changed: break
     
+    def is_after_halfway_node(self):
+        if self.halfway_node == -1: return True
+        achieved, not_achieved = self.get_separated_sequence_ids(self.now_node)
+        if self.halfway_node in achieved: return True
+        if self.halfway_node not in achieved and self.halfway_node not in not_achieved: return True
+        return False
+
     def extract(self):
         node = 0
         achieved, _ = self.get_separated_sequence_ids(self.failed_node)
+        self.remove_failed_node()
+        self.halfway_node = -1 # 達成した後はサブゴールを生成しても良いというノード
         while True:
-            if node in achieved: break
+            if node in achieved:
+                self.halfway_node = node
+                break
             children = self.childrens[node]
-            if len(children) == 0: break
+            if len(children) == 0:
+                self.halfway_node = -1
+                break
             for child in children[1:]:
                 if child not in achieved:
                     self.delete_subtree(child)
             if self.childrens[node][0] not in achieved:
                 node = children[0]
             else:
+                self.halfway_node = self.childrens[node][-1]
                 break
+        print(self.halfway_node)
 
 class Memory(utils.Jsonable):
     def __init__(self, memory_size:int):

@@ -1,0 +1,7 @@
+{
+    "hyperparam": {
+        "env_name" : "BabyAI-PutNext-v0",
+        "max_step" : 100,
+        "env_fixed_seed" : 0
+    }
+}

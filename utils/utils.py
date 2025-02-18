@@ -31,6 +31,7 @@ def np_image_to_base64(img, format="jpeg") -> str:
     pil_image = Image.fromarray(img)
     width, height = pil_image.size
     pil_image = pil_image.resize((width // 2, height // 2))
+    pil_image.save("tmp.jpg")
 
     buffer = BytesIO()
     pil_image.save(buffer, format)

@@ -1,0 +1,17 @@
+[
+ [
+  "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. It is not possible to overlap objects. You cannot pick up any item if you have already item. Each step, You must select actions in 'turn left', 'turn right', 'go to the forward coordinate', 'pick up item that in the forward coordinate', 'drop carrying item to the forward coordinate' or 'open the door at the forward coordinate'.",
+  "",
+  "Here is the task:",
+  "pick up the box",
+  "",
+  "The following is your history:",
+  "time 0:",
+  "Your position is coordinate (3, 3). Your forward is (2, 3), west. Your right is (3, 2), north. Your left is (3, 4), south. You have no item. There is a passable floor in the area. There is wall at (0, 5). There is wall at (0, 4). There is wall at (0, 3). There is wall at (0, 2). There is wall at (0, 1). There is wall at (0, 0). There is wall at (1, 5). There is purple key at (1, 1). There is wall at (1, 0). There is wall at (2, 5). There is wall at (2, 0). There is wall at (3, 5). There is wall at (3, 0). There is no object in your forward coordinate (2, 3). There is no object in your right coordinate (3, 2). There is no object in your left coordinate (3, 4).",
+  "Your think:To achieve the subgoals, I think I should first go to the purple key at (1,1) to obtain the key, then use the key to unlock the door, and then pick up the box. However, I don't see any information about the ball in the current situation, so I'm not sure how to get the ball out of the way.",
+  "subgoals: ['go to ball', 'get the ball out of the way', 'obtain the key', 'unlock the door', 'pick up the box']",
+  "Your action: turn left",
+  "You turned left."
+ ],
+ "length: 1"
+]

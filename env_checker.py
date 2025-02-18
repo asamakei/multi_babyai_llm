@@ -8,8 +8,8 @@ def generate_init_images():
 
     for seed in seeds:
         env = env_utils.make({
-            "env_name": "BabyAI-UnlockToUnlock-v0",
-            "agent_num": 1,
+            "env_name": "BabyAI-BlockedUnlockPickup-v0",
+            "agent_num": 2,
         })
         obs, _ = env.reset(seed=seed)
         rgb = env.render()
@@ -19,7 +19,7 @@ def generate_init_images():
 
 def prompt_test():
     config = {
-        "env_name": "BabyAI-UnlockToUnlock-v0",
+        "env_name": "BabyAI-BlockedUnlockPickup-v0",
         "agent_num": 1,
     }
     env = env_utils.make(config)

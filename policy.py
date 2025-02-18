@@ -11,7 +11,8 @@ def get_action(env:gym.Env, reflexion:Reflexion, params:dict={}) -> tuple[list[i
 
 # ユーザがコマンドラインで行動を決定する方策
 def command_policy(env:gym.Env, reflexion:Reflexion, info:dict, params:dict={}):
-    return [int(input())] * env.agent_num
+    commands = [int(x) for x in input().split()]
+    return commands
 
 # ランダムに行動を決定する方策
 def random_policy(env:gym.Env, reflexion:Reflexion, info:dict, params:dict={}):
@@ -39,8 +40,7 @@ def conversation_policy(env:gym.Env, reflexion:Reflexion, info:dict, params:dict
 
 # サブゴールを階層的に生成して行動を決定する方策
 def subgoal_policy(env:gym.Env, reflexion:Reflexion, info:dict, params:dict={}):
-    if env.now_step > 0:
-        judge_subgoal_achievement(env, reflexion, info, False, params)
+    judge_subgoal_achievement(env, reflexion, info, False, params)
     consideration(env, reflexion, info, params)
     actions = act_by_hierarchical_subgoal(env, reflexion, info, params)
     return actions
@@ -48,8 +48,7 @@ def subgoal_policy(env:gym.Env, reflexion:Reflexion, info:dict, params:dict={}):
 # サブゴールを初回のみ生成して行動を決定する方策
 def simple_subgoal_policy(env:gym.Env, reflexion:Reflexion, info:dict, params:dict={}):
     # サブゴールを履歴に一時的に載せる 処理が汚いので直したい
-    if env.now_step > 0:
-        judge_subgoal_achievement(env, reflexion, info, False, params)
+    judge_subgoal_achievement(env, reflexion, info, False, params)
     reflexion.remove_label("subgoal")
     reflexion.add_now_subgoal()
     

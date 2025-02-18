@@ -1,0 +1,43 @@
+[
+ {
+  "init": {},
+  "steps": [
+   {
+    "step": 0,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 1,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 2,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 3,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 4,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   },
+   {
+    "step": 5,
+    "is_success": false,
+    "reason": "",
+    "info": {}
+   }
+  ]
+ }
+]

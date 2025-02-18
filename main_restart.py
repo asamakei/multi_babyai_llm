@@ -49,7 +49,7 @@ def main(directory:str, trial:int=-1, is_run_reflexion:bool=False):
 
 # 処理を再開する
 if __name__ == "__main__":
-    directory = "20241204000001_Failed"
+    directory = "20241230140531_Debug"
     trial = 1
     is_run_reflexion = False
     main(directory, trial, is_run_reflexion)

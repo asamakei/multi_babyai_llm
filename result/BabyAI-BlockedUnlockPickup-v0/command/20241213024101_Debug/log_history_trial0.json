@@ -1,0 +1,27 @@
+[
+ [
+  "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. It is not possible to overlap objects. You cannot pick up any item if you have already item. Each step, You must select actions in 'turn left', 'turn right', 'go to the forward coordinate', 'pick up item that in the forward coordinate', 'drop carrying item to the forward coordinate' or 'open the door at the forward coordinate'. Work with other agents to accomplish tasks.",
+  "",
+  "Here is the task:",
+  "pick up the box",
+  "",
+  "The following is your history:",
+  "time 0:",
+  "Your position is coordinate (2, 2). Your forward is coordinate (1, 2), which is west, there is no object. Your right is cooridnate (2, 1), which is north, there is no object. Your left is coordinate (2, 3), which is south, there is green key.",
+  "You have no item. There is a passable floor in the area. There is wall at (0, 5). There is wall at (0, 4). There is wall at (0, 3). There is wall at (0, 2). There is wall at (0, 1). There is wall at (0, 0). There is wall at (1, 5). There is wall at (1, 0). There is wall at (2, 5). There is wall at (2, 0). Agent1 facing north is at (2, 1).",
+  "You turned left."
+ ],
+ [
+  "Interact with an grid world environment to solve a task. The grid (0,0) is at the northwest end, (10, 0) is northeast, (0, 5) is southwest, (10, 5) is southeast. It is not possible to overlap objects. You cannot pick up any item if you have already item. Each step, You must select actions in 'turn left', 'turn right', 'go to the forward coordinate', 'pick up item that in the forward coordinate', 'drop carrying item to the forward coordinate' or 'open the door at the forward coordinate'. Work with other agents to accomplish tasks.",
+  "",
+  "Here is the task:",
+  "pick up the box",
+  "",
+  "The following is your history:",
+  "time 0:",
+  "Your position is coordinate (2, 1). Your forward is coordinate (2, 0), which is north, there is wall. Your right is cooridnate (3, 1), which is east, there is no object. Your left is coordinate (1, 1), which is west, there is no object.",
+  "You have no item. There is a passable floor in the area. There is wall at (0, 0). There is wall at (1, 0). There is wall at (3, 0). There is wall at (4, 0). There is wall at (5, 0). There is wall at (0, 1). There is wall at (5, 1). Agent0 facing west is at (2, 2).",
+  "You turned right."
+ ],
+ "length: 1"
+]

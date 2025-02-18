@@ -2,19 +2,22 @@
     "extends": [
         "base/General",
         "base/Reflexion",
-        "base/UnlockPickup",
-        "base/Subgoal",
-        "base/Llama3.1-70B"
+        "base/PutNext",
+        "base/Simple",
+        "base/Llama3.1-8B"
     ],
 
     "hyperparam": {
-        "agent_num" : 1,
-        "reflexion_type" : "none"
+        "agent_num" : 2,
+        "reflexion_type" : "none",
+        "is_use_fixed_init_subgoal" : false,
+        "trial_count" : 100
     },
 
     "policy_option":{
         "free_mode" : false,
         "is_use_consideration" : true,
-        "history_size" : 5
+        "history_size" : 7,
+        "env_fixed_seed" : 76
     }
 }

@@ -45,7 +45,7 @@ def local_to_obj(obs, pos):
     return obj_id, color_id, state_id
 
 # 観測をテキストに変換する処理
-def obs_to_str_baby(env, observations, params:dict={}) -> list[str]:
+def obs_to_str_baby(env, observations, params:dict={}) -> list:
     
     def object_to_detail_text(obj, params):
         if obj[0] >= 10:
@@ -115,29 +115,34 @@ def obs_to_str_baby(env, observations, params:dict={}) -> list[str]:
         right_pos = local_to_world_pos((-1, 0), self_dir, self_pos)
         left_pos = local_to_world_pos((1, 0), self_dir, self_pos)
 
-        #self_dir_str = DIRECTIONS_STR[self_dir]
+        self_dir_str = DIRECTIONS_STR[self_dir]
         forward_dir = DIRECTIONS_STR[self_dir]
         right_dir = DIRECTIONS_STR[(self_dir+1)%len(DIRECTIONS_STR)]
         left_dir = DIRECTIONS_STR[self_dir-1]
         #mission = obs['mission']
 
         sentences = []
-        #sentences.append(f'Your mission is "{mission}".') # 目標
-        #sentences.append(f'You are facing {self_dir_str}.') # 方角
-        #sentences.append(f'You are at {self_pos}.') # 絶対位置
-        sentences.append(f'Your position is coordinate {self_pos}.') # 絶対位置
-        sentences.append(f'Your forward is {forward_pos}, {forward_dir}.') # 正面
-        sentences.append(f'Your right is {right_pos}, {right_dir}.') # 右
-        sentences.append(f'Your left is {left_pos}, {left_dir}.') # 左
+
+        # sentences.append(f'Your forward is coordinate {forward_pos}, which is {forward_dir}, there is {forward_obj_name}.') # 正面
+        # sentences.append(f'Your right is cooridnate {right_pos}, which is {right_dir}, there is {right_obj_name}.') # 右
+        # sentences.append(f'Your left is coordinate {left_pos}, which is {left_dir}, there is {left_obj_name}.') # 左
+        sentences.append(f'Your forward is coordinate {forward_pos}, there is {forward_obj_name}.') # 正面
+        sentences.append(f'Your right is cooridnate {right_pos}, there is {right_obj_name}.') # 右
+        sentences.append(f'Your left is coordinate {left_pos}, there is {left_obj_name}.') # 左
+
+        relative = " ".join(sentences)
+        sentences = []
+
+        sentences.append(f'Your position is coordinate {self_pos}. You are facing {forward_dir}') # 絶対位置
         sentences.append(f'You have {carrying_obj_name}.') # 所持品
         sentences.append(f"There is a passable floor in the area.") # 通行可能であることを説明
         sentences.extend(obj_texts) # 視界にあるオブジェクト
         sentences.extend(agent_texts) # 他エージェントの位置情報
-        sentences.append(f"There is {forward_obj_name} in your forward coordinate {forward_pos}.") # 目の前のオブジェクト
-        sentences.append(f"There is {right_obj_name} in your right coordinate {right_pos}.") # 右のオブジェクト
-        sentences.append(f"There is {left_obj_name} in your left coordinate {left_pos}.") # 左のオブジェクト
-        result = utils.join_sentences(sentences)
-        return result
+        #sentences.append(f"There is {forward_obj_name} in your forward coordinate {forward_pos}.") # 目の前のオブジェクト
+        #sentences.append(f"There is {right_obj_name} in your right coordinate {right_pos}.") # 右のオブジェクト
+        #sentences.append(f"There is {left_obj_name} in your left coordinate {left_pos}.") # 左のオブジェクト
+        absolute = utils.join_sentences(sentences)
+        return (relative, absolute)
 
     return [one_agent(obs, agent_id) for agent_id, obs in enumerate(observations)]
 
